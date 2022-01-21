@@ -1,0 +1,39 @@
+header {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 0;
+}
+.w-logo {
+    padding: 0 0 0 55px;
+}
+.w-nav {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(99px);
+    padding: 0 165px 0 123px;
+    position: relative;
+    &::after {
+        content: '';
+        position: absolute;
+        width: 473px;
+        height: 1px;
+        background: #FFFFFF;
+        mix-blend-mode: normal;
+        opacity: 0.25;
+        top: 50%;
+        left: 0;
+        transform: translate(calc(-100% + 40px),-50% );
+    }
+    nav {
+        display: flex;
+        gap: 45px;
+        
+        span {
+            padding: 38.5px 0;
+            color: #fff;
+        }
+    }
+}

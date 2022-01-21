@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    vertical-align: baseline;
+    text-decoration: none;
+    text-transform: none;
+    transition: 0.15s;
+    list-style: none;
+    user-select: none;
+    color: inherit;
+    box-sizing: border-box;
+    color: inherit;
+}
+body {
+    color: #fff;
+    &> img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+    }
+}

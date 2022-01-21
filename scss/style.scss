@@ -1,0 +1,56 @@
+@import "./utils/variables";
+@import "./utils/fonts";
+@import "./base/base";
+@import "./layouts/main";
+@import "./layouts/header";
+@import "./layouts/sections";
+@import "./pages/home";
+@media (min-width: 1550px) and (max-width:1800px) {
+   
+}
+@media (min-width: 1250px) and (max-width:1550px) {
+   
+}
+@media (max-width:1350px) {
+    
+}
+@media (max-width: 1150px) {
+}
+@media (max-width: 1000px) {
+    
+}
+@media (max-width: 450px) {
+    
+}
+h1 {
+    font-weight: 900;
+    font-size: 80px;
+    color: #fff;
+}
+h3 {
+    font-size: 48px;
+    font-weight: 700;
+    color: #fff;
+}
+#mouse {
+    width: 75px;
+    height: 75px;
+    transform: translate(-50%,-50%);
+    background: transparent;
+    top: 90px;
+    border-radius: 50%;
+    border: 2px solid green;
+    position: fixed;
+    z-index: 0;
+    transition: 0s;
+    pointer-events: none;
+    transition: opacity 1s ;
+    &::after {
+        content: '';
+        opacity: 0;
+        position: absolute;
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+    }
+}
