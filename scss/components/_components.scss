@@ -1,0 +1,51 @@
+.w-planet-nav {
+    nav {
+        display: flex;
+        gap: 35px;
+        span {
+            padding: 0 0 15px;
+            position: relative;
+            cursor: pointer;
+            &::after {
+                content: '';
+                width: 100%;
+                height: 3px;
+                left: 0;
+                bottom: 0;
+                background: #fff;
+                opacity: 0;
+                position: absolute;
+                transition: 0.7s;
+            }
+            &:hover {
+                &::after {
+                    opacity: 0.5;
+                }
+            }
+            &.active {
+                &::after {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+.w-2-half-wrapper {
+    display: flex;
+    margin:  55px 0 0;
+    padding: 25px 0 0;
+    border-top: 1px solid var(--dark-blue);
+    div {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        p {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            span {
+                position: relative;
+            }
+        }
+    }
+}

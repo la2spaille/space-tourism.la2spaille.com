@@ -3,8 +3,11 @@
 @import "./base/base";
 @import "./layouts/main";
 @import "./layouts/header";
-@import "./layouts/sections";
+@import "./layouts/wrappers";
 @import "./pages/home";
+@import "./pages/destination";
+@import "./pages/crew";
+@import "./components/components";
 @media (min-width: 1550px) and (max-width:1800px) {
    
 }
@@ -21,16 +24,6 @@
 }
 @media (max-width: 450px) {
     
-}
-h1 {
-    font-weight: 900;
-    font-size: 80px;
-    color: #fff;
-}
-h3 {
-    font-size: 48px;
-    font-weight: 700;
-    color: #fff;
 }
 #mouse {
     width: 75px;

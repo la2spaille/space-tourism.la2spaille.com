@@ -1,6 +1,7 @@
 .w-home-cta {
     cursor: pointer;
     display: flex;
+    align-self: flex-end;
     position: relative;
     justify-content: center;
     background: var(--white);
@@ -18,14 +19,14 @@
         border-radius: 50%;
         top: 50%;
         left: 50%;
-        z-index: 0;
-        transform: translate(-50%,-50%) scale(0);
+        z-index: 1;
+        transform: translate(-50%,-50%) scale(0.6);
         transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-        // pointer-events: none;
+        pointer-events: none;
     }
     &:hover {
         &::after {
-            transition: 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: 2s cubic-bezier(0.23, 1, 0.32, 1);
             transform: translate(-50%,-50%) scale(1);
         }
     }

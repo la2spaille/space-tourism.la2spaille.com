@@ -16,6 +16,7 @@ header {
     padding: 0 165px 0 123px;
     position: relative;
     &::after {
+        // content: attr(href);
         content: '';
         position: absolute;
         width: 473px;
@@ -30,10 +31,39 @@ header {
     nav {
         display: flex;
         gap: 45px;
-        
         span {
-            padding: 38.5px 0;
             color: #fff;
+            position: relative;
+            cursor: pointer;
+            padding: 38.5px 0;
+            text-transform: uppercase;
+            &::after {
+                content: '';
+                width: 100%;
+                height: 3px;
+                left: 0;
+                bottom: 0;
+                background: #fff;
+                opacity: 0;
+                position: absolute;
+                transition: 0.7s;
+            }
+            &:hover {
+                &::after {
+                    opacity: 0.5;
+                }
+            }
+            &.active {
+                &::after {
+                    opacity: 1;
+                }
+            }
+            strong {
+                font-weight: 700 !important;
+            }
+            a {
+            padding: 38.5px 0;
+        }
         }
     }
 }

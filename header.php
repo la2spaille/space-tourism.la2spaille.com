@@ -1,4 +1,14 @@
-<!DOCTYPE html>
+<?php
+try
+{
+	// On se connecte à MySQL
+	$pdo = new PDO('mysql:host=localhost;dbname=space-tourism-website;charset=utf8', 'root', 'root');
+}
+catch(Exception $e)
+{
+        die('Erreur : '.$e->getMessage());
+}
+?>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -6,16 +16,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
   <title><?="Space tourism website | $title"?></title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed&family=Barlow:wght@400;700&family=Bellefair&display=swap');
+</style>
+
 </head>
 <body>
  <?php
- function headerNav($number,$link) {
+ function headerNav($number,$link,$adress) {
   global $title;
    if($link == $title) {
-    return "<span class='active'><a href='$link.php'>$number $link</a></span>";
+    return <<<HTML
+    <span class='active f-nav-text'>
+      <strong>$number</strong>  
+      <a href='$adress.php'> $link</a>
+    </span>
+HTML;
 
    } else {
-    return "<span><a href='$link.php'>$number $link</a></span>";
+    return <<<HTML
+    <span class='f-nav-text'>
+      <strong>$number</strong> 
+      <a href='$adress.php'> $link</a>
+    </span>
+HTML;
 
    }
  }
@@ -26,10 +50,10 @@
     </div>
     <div class="w-nav">
       <nav>
-        <?= headerNav('00', 'Home')?>
-        <?= headerNav('01', 'Destination')?>
-        <?= headerNav('02', 'Crew')?>
-        <?= headerNav('03', 'Technology')?>
+        <?= headerNav('00', 'Home','index')?>
+        <?= headerNav('01', 'Destination','destination')?>
+        <?= headerNav('02', 'Crew','crew')?>
+        <?= headerNav('03', 'Technology','technology')?>
       </nav>
     </div>
   </header>

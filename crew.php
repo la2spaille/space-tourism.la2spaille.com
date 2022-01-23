@@ -1,27 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php
+$title = "Crew";
+require('header.php') ?>
+<?php
+$sql = 'SELECT * FROM crew';
+$t_crew = $pdo->prepare($sql);
+$t_crew->execute();
+$crews = $t_crew->fetchAll();
+?>
+<main id="app">
+  <h3 class="w-page-title f-heading5">
+    <strong>02</strong>
+    <span class="">Meet your crew</span>
+  </h3>
+  <div class="l-wrapper">
+    <div class="w-text crew">
+      <div class="w-crew-job f-heading4">
+        <?php foreach ($crews as $crew) { ?>
+          <span class="js-crew-job"><?= $crew['job'] ?></span>
+        <?php } ?>
+      </div>
+      <h1 class="w-crew-name f-heading3">
+        <?php foreach ($crews as $crew) { ?>
+          <span class="js-crew-name"><?= $crew['name'] ?></span>
+        <?php } ?>
+      </h1>
+      <p class="w-crew-description body-copy f-body-copy">
+        <?php foreach ($crews as $crew) { ?>
+          <span class="js-crew-description"><?= $crew['description'] ?></span>
+        <?php } ?>
+      </p>
+      <div class="w-crew-nav">
+        <span class="js-crew-nav"></span><span class="js-crew-nav"></span><span class="js-crew-nav"></span><span class="js-crew-nav"></span>
+      </div>
+    </div>
+    <div class="w-img-wrapper crew">
+      <img class="js-crew-img" src="assets/crew/image-douglas-hurley.png" alt="">
+      <img class="js-crew-img" src="assets/crew/image-mark-shuttleworth.png" alt="">
+      <img class="js-crew-img" src="assets/crew/image-victor-glover.png" alt="">
+      <img class="js-crew-img" src="assets/crew/image-anousheh-ansari.png" alt="">
+    </div>
+  </div>
+</main>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Space tourism website</title>
-</head>
-<body>
 
-  00 Home
-  01 Destination
-  02 Crew
-  03 Technology
-
-  02 Meet your crew
-
-  Commander
-  Douglas Hurley
-
-  Douglas Gerald Hurley is an American engineer, former Marine Corps pilot 
-  and former NASA astronaut. He launched into space for the third time as 
-  commander of Crew Dragon Demo-2.
-</body>
-</html>
+<?php require('footer.php') ?>

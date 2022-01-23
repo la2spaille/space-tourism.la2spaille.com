@@ -5,23 +5,31 @@
     outline: none;
     vertical-align: baseline;
     text-decoration: none;
-    text-transform: none;
+    text-transform: inherit;
     transition: 0.15s;
     list-style: none;
     user-select: none;
     color: inherit;
     box-sizing: border-box;
     color: inherit;
+    font-weight: inherit;
 }
 body {
     color: #fff;
+    font-weight: 400;
+    text-transform: none;
+    position: relative;
     &> img {
         position: absolute;
         top: 0;
         left: 0;
         z-index: -1;
         width: 100vw;
-        height: 100vh;
+        height: 100%;
         object-fit: cover;
     }
+}
+h1,h3,p {
+    overflow-y: hidden;
+    // overflow-x: auto;
 }

@@ -1,0 +1,26 @@
+.w-planet-title {
+    margin: 35px 0 0;
+}
+.w-planet-description {
+    margin: 15px 0 0;
+}
+.w-planet-distance,.w-planet-travel {
+    margin: 12.5px 0 0;
+}
+.js-planet-img,.js-planet-title,.js-planet-description,.js-planet-distance,.js-planet-travel {
+    display: none;
+    position: relative;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    &.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    &.transition {
+        display: inline-block;        
+    }
+    &.transition-leave {
+        transform: translateY(-100%);
+    }
+}

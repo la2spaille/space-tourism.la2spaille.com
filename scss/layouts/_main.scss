@@ -1,7 +1,10 @@
 #app {
     position: relative;
-    height: 100vh;
+    // height: 100vh;
+    display: flex;
+    flex-direction: column;
+    // background: #000;
     width: 100vw;
-    padding: 215px 0 115px;
+    padding: 215px 0 0;
     
 }
