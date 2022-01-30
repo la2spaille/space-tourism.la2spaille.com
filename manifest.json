@@ -1,0 +1,20 @@
+{
+    "short_name" : "Space Tourism",
+    "name":"Space Tourism",
+    "icons" : [
+        {
+            "src": "/assets/512.png",
+            "type" : "image/png",
+            "sizes" : "512x512"
+        },
+        {
+            "src": "/assets/192.png",
+            "type" : "image/png",
+            "sizes" : "192x192"
+        }
+    ],
+    "start_url" : "/?source=pwa",
+    "background_color":"#0B0D17",
+    "display" : "fullscreen",
+    "theme_color":"#0B0D17"
+}

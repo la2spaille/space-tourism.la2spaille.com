@@ -1,30 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php
+$title = "Technology";
+require('header.php') ?>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Space tourism website</title>
-</head>
-<body>
-
-  00 Home
-  01 Destination
-  02 Crew
-  03 Technology
-
-  03 Space launch 101
-
-  1
-  2
-  3
-
-  The terminology...
-  Space capsule
-
-  
-  
-</body>
-</html>
+<div id="app" class="technology">
+  <?php
+  $sql = 'SELECT * FROM technology';
+  $t_technology = $pdo->prepare($sql);
+  $t_technology->execute();
+  $technologies = $t_technology->fetchAll();
+  ?>
+  <h3 class="w-page-title f-heading5 transformation">
+    <span number="03" class="">SPACE LAUNCH 101</span>
+  </h3>
+  <div class="l-wrapper technology">
+    <div class="w-navXtext technology">
+      <div class="w-technology-nav transformation">
+        <?php foreach ($technologies as $technology) { ?>
+          <span class="js-technology-nav" data-parallax="0.25"><?= $technology['id']?></span>
+        <?php } ?>
+      </div>
+      <div class="w-text technology">
+        <strong class="w-strong technology f-nav-text transformation "><span>THE TERMINOLOGY…</span></strong>
+        <h1 class="w-h1 technology f-heading3">
+          <?php foreach ($technologies as $technology) { ?>
+            <span class="js-technology-name"><?= $technology['name'] ?></span>
+          <?php } ?>
+        </h1>
+        <p class="w-paragraph technology f-body-copy">
+          <?php foreach ($technologies as $technology) { ?>
+            <span class="js-technology-description"><?= $technology['description'] ?></span>
+          <?php } ?>
+        </p>
+      </div>
+    </div>
+    <div class="w-img technology">
+      <?php foreach ($technologies as $technology) { ?>
+        <div class="js-technology-img"></div>
+      <?php } ?>
+    </div>
+  </div>
+</div>
+<?php require('footer.php') ?>

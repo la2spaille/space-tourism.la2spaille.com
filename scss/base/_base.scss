@@ -13,23 +13,29 @@
     box-sizing: border-box;
     color: inherit;
     font-weight: inherit;
+    background-repeat: no-repeat;
+    &::selection {
+        background: transparent;
+    }
 }
-body {
+body,
+main {
     color: #fff;
     font-weight: 400;
     text-transform: none;
-    position: relative;
-    &> img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-        width: 100vw;
-        height: 100%;
-        object-fit: cover;
-    }
 }
-h1,h3,p {
+body,main {
+    position: relative;
+}
+h1,
+h3,
+p,
+strong {
     overflow-y: hidden;
-    // overflow-x: auto;
+}
+svg {
+    pointer-events: none;
+}
+span {
+    display: inline-block;
 }

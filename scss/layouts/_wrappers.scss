@@ -1,30 +1,70 @@
 .w-page-title {
     padding: 0 165px;
-    strong {
-        opacity: 0.25;
+    position: relative;
+    z-index: 1;
+    overflow-y: hidden;
+    transition: 0.7s;
+    span {
+        transition: 1s;
+        &::before {
+            content: attr(number);
+            font-weight: 700;
+            margin: 0 11px 0 0;
+            opacity: 0.25;
+        }
+    }
+    &.transformation {
+        span {
+            transform: translateY(125%) rotate(5deg);
+        }
     }
 }
 .l-wrapper {
     color: #fff;
     display: flex;
     flex: 1;
-    justify-content: space-between;
     padding: 0 165px;
-}
-.w-img-wrapper {
-    display: flex;
-    overflow-y: hidden;
-    justify-content: flex-end;
-    max-width: 50%;
-    flex-direction: column;
-
+    justify-content: space-between;
+    &.home {
+        align-items: flex-end;
+    }
     &.destination {
-        margin: 95px 0 0;
-        padding: 0 0 0 80px;
+        gap: 157.5px;
+        justify-content: space-around;
     }
     &.crew {
-        height: 705px;
+        gap: 80.5px;
+        padding: 0  165px;
+        justify-content: space-between;
+    }
+    &.technology {
+        padding: 0 0 0 165px;
+        gap: 100px;
+        align-items: center;
+        position: relative;
+    }
+}
+.w-img {
+    max-width: 50%;
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    position: relative;
+    &.destination {
+        cursor: pointer;
+        img {
+            z-index: 0;
+        }
+    }
+    &.crew {
+        max-width: 50%;
+        min-height: 700px;
         margin: -50px 0 0;
+        img {
+            width: 90%;
+            left: 5%;
+            height: auto;
+        }
     }
     img {
         width: 100%;
@@ -32,21 +72,217 @@
     }
 }
 .w-text {
-    width: 50%;
     display: flex;
     flex-direction: column;
-    padding: 20px 0 0;
     &.home {
         padding: 175px 0 0;
+        flex: 1;
+        overflow-y: hidden;
+        &.transformation {
+            span {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
     }
     &.destination {
-        max-width: 455px;
+        max-width: 445px;
+        width: 100%;
     }
     &.crew {
-        width: auto;
-        padding: 155px 0 0;
-        p {
-            max-width: 450px;
+        width: 100%;
+    }
+    &.technology {
+        width: 100%;
+        justify-self: flex-start;
+    }
+}
+.w-navXtext {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    flex: 1;
+    &.crew {
+        flex: none;
+        justify-content: flex-end;
+        gap: 120px;
+        margin: 0 0 95px;
+        flex: none;
+    }
+    &.technology {
+        flex-direction: row;
+        gap: 80px;
+        align-items: center;
+    }
+}
+
+.w-strong {
+    &.home {
+        overflow: visible;
+        span {
+            transition: 0.7s;
         }
+    }
+    &.crew {
+        opacity: 0.5;
+    }
+    &.technology {
+        transition: 1s 0.5s;
+        &.transformation {
+            opacity: 0;
+        }
+    }
+}
+.w-h1 {
+    &.home {
+        margin: 25px 0 0;
+        overflow: visible;
+        span {
+            transition: 0.7s 0.5s;
+        }
+    }
+    &.destination {
+        margin: 35px 0 0;
+    }
+    &.crew {
+        margin: 15px 0 0;
+    }
+    &.technology {
+        margin: 11px 0 0;
+    }
+}
+.w-paragraph {
+    position: relative;
+    width: 100%;
+    max-width: 444px;
+    &.home {
+        margin: 25px 0 0;
+        overflow: visible;
+        span {
+            transition: 0.7s 0.75s;
+        }
+    }
+
+    &.destination {
+        margin: 15px 0 0;
+    }
+    &.crew {
+        margin: 27px 0 0;
+    }
+    &.technology {
+        margin: 17.5px 0 0;
+        max-width: 444px;
+    }
+}
+
+.w-bg-img {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+.w-img {
+    &.technology {
+        position: relative;
+        max-width: 515px;
+        flex: 1;
+        padding-bottom: 515px;
+        overflow: hidden;
+        div {
+            width: 100%;
+            height: 97%;
+            top: 0;
+            background-size: cover;
+            transition: 0.5s;
+            position: absolute;
+            &:hover {
+                transform: scale(1.15);
+            }
+        }
+        div:nth-child(1) {
+            background-image: url("/assets/technology/image-launch-vehicle-portrait.jpg");
+        }
+        div:nth-child(2) {
+            background-image: url("/assets/technology/image-spaceport-portrait.jpg");
+        }
+        div:nth-child(3) {
+            background-image: url("/assets/technology/image-space-capsule-portrait.jpg");
+        }
+    }
+}
+.bg-img {
+    transform: scale(1);
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    animation: space 40s 1 linear;
+    &.home {
+        background-image: url("/assets/home/background-home-desktop.jpg");
+    }
+    &.destination {
+        background-image: url("/assets/destination/background-destination-desktop.jpg");
+    }
+    &.crew {
+        background-image: url("/assets/crew/background-crew-desktop.jpg");
+    }
+    &.technology {
+        background-image: url("/assets/technology/background-technology-desktop.jpg");
+    }
+}
+@media (max-width: 1024px) {
+    .bg-img {
+        &.home {
+            background-image: url("/assets/home/background-home-tablet.jpg");
+        }
+        &.destination {
+            background-image: url("/assets/destination/background-destination-tablet.jpg");
+        }
+        &.crew {
+            background-image: url("/assets/crew/background-crew-tablet.jpg");
+        }
+        &.technology {
+            background-image: url("/assets/technology/background-technology-tablet.jpg");
+        }
+    }
+    .w-img {
+        &.technology {
+            
+            div:nth-child(1) {
+                background-image: url("/assets/technology/image-launch-vehicle-landscape.jpg");
+            }
+            div:nth-child(2) {
+                background-image: url("/assets/technology/image-spaceport-landscape.jpg");
+            }
+            div:nth-child(3) {
+                background-image: url("/assets/technology/image-space-capsule-t-landscape.jpg");
+            }
+        }
+    }
+}
+@media (max-width: 480px) {
+    .bg-img {
+        &.home {
+            background-image: url("/assets/home/background-home-mobile.jpg");
+        }
+        &.destination {
+            background-image: url("/assets/destination/background-destination-mobile.jpg");
+        }
+        &.crew {
+            background-image: url("/assets/crew/background-crew-mobile.jpg");
+        }
+        &.technology {
+            background-image: url("/assets/technology/background-technology-mobile.jpg");
+        }
+    }
+}
+@keyframes space {
+    0% {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.25);
     }
 }

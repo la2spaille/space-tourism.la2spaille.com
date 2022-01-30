@@ -1,13 +1,51 @@
-.w-planet-title {
-    margin: 35px 0 0;
+.w-destination-nav {
+    overflow: hidden;
+    nav {
+        display: flex;
+        gap: 35px;
+        transition: 1s 0.7s;
+        &.transformation {
+            opacity: 0;
+        }
+    }
+    span {
+        padding: 0 0 15px;
+        position: relative;
+        cursor: pointer;
+        &::after {
+            content: "";
+            width: 100%;
+            height: 3px;
+            left: 0;
+            bottom: 0;
+            background: #fff;
+            opacity: 0;
+            position: absolute;
+            transition: 0.7s;
+        }
+        &:hover {
+            &::after {
+                opacity: 0.5;
+            }
+        }
+        &.active {
+            &::after {
+                opacity: 1;
+            }
+        }
+    }
 }
-.w-planet-description {
-    margin: 15px 0 0;
+.js-destination-nav {
+    color: var(--blue);
+    &.active {
+        color: var(--white);
+    }
 }
-.w-planet-distance,.w-planet-travel {
-    margin: 12.5px 0 0;
-}
-.js-planet-img,.js-planet-title,.js-planet-description,.js-planet-distance,.js-planet-travel {
+
+
+.js-destination-name,
+.js-destination-distance,
+.js-destination-travel {
     display: none;
     position: relative;
     transform: translateY(100%);
@@ -18,9 +56,48 @@
         opacity: 1;
     }
     &.transition {
-        display: inline-block;        
+        display:block;
     }
     &.transition-leave {
         transform: translateY(-100%);
+        opacity: 0.25;
     }
 }
+.js-destination-description  {
+    position: absolute;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    top: 0;
+    transform: translateY(100%);
+    transition: transform 1s ,visibility 0s ,opacity 0.7s;
+    &.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    &.transition {
+        visibility: visible;
+    }
+    &.transition-leave {
+        transform: translateY(-100%);
+        opacity: 0.25;
+    }
+}
+.js-destination-img {
+    display: none;
+    position: relative;
+    opacity: 0;
+    transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    transform: translateY(25%);
+    &.transition-leave {
+        transform: translateY(-10%);
+    }
+    &.transition {
+        display: block;
+    }
+    &.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+

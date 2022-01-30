@@ -1,55 +1,10 @@
-.w-crew-job {
-    overflow-y: hidden;
-}
-.js-crew-job {
-    opacity: 0.5 !important;
-    mix-blend-mode: normal;
-}
-.w-crew-name {
-    margin: 15px 0 0;
-}
-.w-crew-description {
-    margin: 25px 0 0;
-    height: 9em;
-}
-.js-crew-img,.js-crew-job,.js-crew-name,.js-crew-description {
-    display: none;
-    position: relative;
-    transform: translateY(calc(100% + 1.5em));
-    opacity: 1;
-    transition: 0.7s transform cubic-bezier(0.23, 1, 0.32, 1);
-    &.active {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    &.transition {
-        display: inline-block;
-    }
-    &.transition-leave {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-}
-.js-crew-img {
-    transform: translateY(100%);
-    opacity: 1;
-    transition: 0.7s  cubic-bezier(0.23, 1, 0.32, 1);
-    &.active {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    &.transition {
-        display: inline-block;
-    }
-    &.transition-leave {
-        transform: translateY(0);
-        opacity: 0;
-    }
-}
 .w-crew-nav {
     display: flex;
-    padding: 120px 0 0;
     gap:24px ;
+    transition: 1s 1s; 
+    &.transformation {
+        opacity: 0;
+    }
 }
 .js-crew-nav {
     background: #fff;
@@ -57,10 +12,72 @@
     height: 15px;
     border-radius: 50%;
     opacity: 0.17;
+    cursor: pointer;
     &:hover {
         opacity: 0.5;
     }
     &.active {
         opacity: 1;
+    }
+}
+
+
+.js-crew-job,.js-crew-name{
+    display: none;
+    position: relative;
+    transform: translateY(calc(100% + 1.5em));
+    opacity: 1;
+    transition: 0.7s  cubic-bezier(0.23, 1, 0.32, 1);
+    &.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    &.transition {
+        display: block;
+    }
+    &.transition-leave {
+        transform: translateY(-100%);
+        opacity: 1;
+    }
+}
+.js-crew-description  {
+    position: absolute;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    top: 0;
+    transform: translateY(100%);
+    transition: transform 0.7s ,visibility 0s ,opacity 0.7s;
+    &.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    &.transition {
+        visibility: visible;
+    }
+    &.transition-leave {
+        transform: translateY(-100%);
+        opacity: 0.25;
+    }
+}
+.js-crew-img {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    transform: translateY(100%);
+    opacity: 1;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.7s ,visibility 0s ,opacity 0.7s;
+    &.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    &.transition {
+        visibility: visible;
+    }
+    &.transition-leave {
+        transform: translateY(0);
+        opacity: 0;
     }
 }

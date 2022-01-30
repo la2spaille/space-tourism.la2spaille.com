@@ -9,61 +9,73 @@ header {
 }
 .w-logo {
     padding: 0 0 0 55px;
+    display: flex;
+    align-items: stretch;
+    span {
+        display: flex;
+        align-items: stretch;
+    }
 }
 .w-nav {
     background: rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(99px);
     padding: 0 165px 0 123px;
-    position: relative;
     &::after {
-        // content: attr(href);
-        content: '';
+        display: block;
+        content: "";
         position: absolute;
-        width: 473px;
+        width: calc(100vw - 155px - 100% + 40px);
         height: 1px;
-        background: #FFFFFF;
+        background: #ffffff;
         mix-blend-mode: normal;
         opacity: 0.25;
         top: 50%;
         left: 0;
-        transform: translate(calc(-100% + 40px),-50% );
+        transform: translate(calc(-100% + 40px), -50%);
     }
     nav {
         display: flex;
         gap: 45px;
-        span {
-            color: #fff;
-            position: relative;
-            cursor: pointer;
-            padding: 38.5px 0;
-            text-transform: uppercase;
-            &::after {
-                content: '';
-                width: 100%;
-                height: 3px;
-                left: 0;
-                bottom: 0;
-                background: #fff;
-                opacity: 0;
-                position: absolute;
-                transition: 0.7s;
-            }
-            &:hover {
-                &::after {
-                    opacity: 0.5;
-                }
-            }
-            &.active {
-                &::after {
-                    opacity: 1;
-                }
-            }
-            strong {
-                font-weight: 700 !important;
-            }
-            a {
-            padding: 38.5px 0;
+    }
+    span {
+        color: #fff;
+        position: relative;
+        text-transform: uppercase;
+        &::after {
+            content: "";
+            width: 100%;
+            height: 3px;
+            left: 0;
+            bottom: 0;
+            background: #fff;
+            opacity: 0;
+            position: absolute;
+            transition: 0.7s;
         }
+        &:hover {
+            &::after {
+                opacity: 0.5;
+            }
+        }
+        &.active {
+            &::after {
+                opacity: 1;
+            }
         }
     }
+    a {
+        display: flex;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: 2.7px;
+        padding: 38.5px 0;
+        &::before {
+            content: attr(number);
+            font-weight: 700;
+            margin: 0 11px 0 0;
+        }
+    }
+}
+.w-menu-btn,.w-close-btn {
+    display: none;
 }

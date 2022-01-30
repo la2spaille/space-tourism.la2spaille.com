@@ -1,55 +1,294 @@
-document.addEventListener('DOMContentLoaded', () => {
-    planets = new Array(4)
-    planetsImg = document.querySelectorAll('.js-planet-img')
-    planetsNav = document.querySelectorAll('.js-planet-nav')
-    planetsName = document.querySelectorAll('.js-planet-title')
-    planetsDescription = document.querySelectorAll('.js-planet-description')
-    planetsDistance = document.querySelectorAll('.js-planet-distance')
-    planetsTravel = document.querySelectorAll('.js-planet-travel')
-    try {
-        for (let i = 0; i < planets.length; i++) {
-            planets[i] = new Array(6)
-            planets[i][0] = planetsImg[i]
-            planets[i][1] = planetsNav[i]
-            planets[i][2] = planetsName[i]
-            planets[i][3] = planetsDescription[i]
-            planets[i][4] = planetsDistance[i]
-            planets[i][5] = planetsTravel[i]
-        }
-        planets[0].forEach(element => {
-            element.classList.add('active')
-            element.classList.add('transition')
-        });
-        let currentIndex = 0
-        planetsNav.forEach((element, index) => {
-            element.addEventListener('click', (e) => {
-                currentIndex = index
-                planetsNav.forEach((element, index) => {
-                    element = element
-                    for (let i = 0; i < 6; i++) {
-                        if (currentIndex != index) {
-                            planets[index][i].classList.remove('active')
-                            planets[index][i].classList.add('transition-leave')
-                            setTimeout(() => {
-                                planets[index][i].classList.remove('transition')
-                            }, 200);
-                        } else {
-                            planets[index][i].classList.remove('transition-leave')
-                            setTimeout(() => {
-                                planets[index][i].classList.add('transition')
-                            }, 200);
-                            setTimeout(() => {
-                                planets[index][i].classList.add('active')
-                            }, 400);
-                        }
-                    }
-    
-                });
-                e.stopPropagation()
+import { destination } from "/js/destination.js";
+import { crew } from "/js/crew.js";
+import { technology } from "/js/technology.js";
+let loader, homeCTA, linkHover, techCTA, menuBtn, closeBtn, headerNav, reveal, allImg, isLoad, links, hack
+
+function pageScript() {
+    destination()
+    crew()
+    technology()
+}
+function init() {
+    homeCTA = document.querySelector('.w-home-cta')
+    linkHover = document.querySelectorAll('.link-hover')
+    techCTA = document.querySelectorAll('.js-technology-nav')
+    menuBtn = document.querySelector('.w-menu-btn')
+    closeBtn = document.querySelector('.w-close-btn')
+    headerNav = document.querySelector('.w-nav')
+    reveal = document.querySelectorAll('.transformation')
+    links = document.querySelectorAll('a')
+
+    //////////////////////////////////////////////////////////
+
+    // Mobile Navigation Apparition
+    menuBtn.addEventListener('click', (e) => {
+        headerNav.classList.add('is-active')
+        menuBtn.classList.add('is-active')
+        document.body.style.overflowY = "hidden"
+        e.stopPropagation()
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                document.body.style.overflowY = "auto"
             })
-        });
-    } catch (error) {
-        
+        })
+
+        window.addEventListener('click', (event) => {
+            if (event.target != headerNav) {
+                headerNav.classList.remove('is-active')
+                menuBtn.classList.remove('is-active')
+                document.body.style.overflowY = "auto"
+            }
+        })
+    })
+    closeBtn.addEventListener('click', (e) => {
+        headerNav.classList.remove('is-active')
+        menuBtn.classList.remove('is-active')
+        document.body.style.overflowY = "auto"
+        e.stopPropagation()
+    })
+
+    //////////////////////////////////////////////////////////
+
+    // hack =document.querySelectorAll('[style]')
+    // hack[hack.length - 1].style.opacity="0"
+
+    //////////////////////////////////////////////////////////
+
+    // Parallax
+    let accY, accX, transform
+    /**
+    * Calcul la position de l'element par rapport au haut de la page
+    * @param {HTMLElement} element 
+    * @return {Number}
+    */
+    function offsetTop(element) {
+        accY = 0
+        if (element.offsetParent) {
+            accY = offsetTop(element.offsetParent)
+        }
+        return element.offsetTop + accY
     }
-    
+    /**
+     * Calcul la position de l'element par rapport a la gauche de la page
+     * @param {HTMLElement} element 
+     * @return {Number}
+     */
+    function offsetLeft(element) {
+        accX = 0
+        if (element.offsetParent) {
+            accX = offsetLeft(element.offsetParent)
+        }
+        return element.offsetLeft + accX
+    }
+        class Parallax {
+            constructor(element) {
+                this.element = element
+                this.paraM = this.element.dataset.parallax
+                this.MouseParallaxTransform = this.MouseParallaxTransform.bind(this)
+
+                this.elementY = offsetTop(this.element) + (this.element.offsetHeight / 2)
+                this.elementX = offsetLeft(this.element) + (this.element.offsetWidth / 2)
+                this.MouseParallaxTransform()
+            }
+
+
+            MouseParallaxTransform() {
+                this.element.addEventListener('mouseenter', () => {
+                    this.transition = "0.2s"
+                    this.element.style.setProperty('transition', this.transition)
+                    this.element.addEventListener('mousemove', (e) => {
+                        window.requestAnimationFrame(() => {
+                            let mouseX = e.pageX;
+                            let mouseY = e.pageY;
+                            let diffX = mouseX - (offsetLeft(this.element) + (this.element.offsetWidth / 2));
+                            let diffY = mouseY - (offsetTop(this.element) + (this.element.offsetHeight / 2));
+                            transform = `translate(${this.paraM * diffX}px, ${this.paraM * diffY}px)`
+                            this.element.style.setProperty('transform', transform)
+                            e.stopPropagation()
+                        })
+                    })
+                })
+                this.element.addEventListener('mouseleave', (e) => {
+                    window.requestAnimationFrame(() => {
+                        this.transition = "0.5s"
+                        this.element.style.setProperty('transition', this.transition)
+                        transform = `translate(${0.0}px, ${0.0}px)`
+                        this.element.style.setProperty('transform', transform)
+                        e.stopPropagation()
+                    })
+                })
+            }
+            /**
+             * 
+             * @returns {Parallax[]}
+             */
+            static bind() {
+                return Array.from(document.querySelectorAll('[data-parallax]')).map(
+                    (element) => {
+                        return new Parallax(element)
+                    }
+                )
+            }
+        }
+        if(window.innerWidth > 1024) {
+            Parallax.bind()
+        }
+
+}
+
+// Loader
+loader = document.querySelector('.loader')
+window.addEventListener('load', () => {
+    loader.classList.add('dom-loaded')
+    reveal.forEach(reveal => {
+        setTimeout(() => {
+            reveal.classList.remove('transformation')
+        }, 800);
+    })
+})
+// Cursor
+const siteCursor = document.querySelector('.w-site-cursor')
+if (window.innerWidth > 1024) {
+    let mouseX, mouseY, transformMouse
+    document.addEventListener('mousemove', (e) => {
+        window.requestAnimationFrame(() => {
+            mouseY = `${e.clientY}px`
+            mouseX = `${e.clientX}px`
+            transformMouse = `translate(calc(${mouseX} - 50%),calc(${mouseY} - 50%))`
+            siteCursor.style.setProperty('transform', transformMouse)
+            siteCursor.style.setProperty(' -webkit-transform', transformMouse)
+            linkHover.forEach(link => {
+                link.addEventListener('mouseenter', (event) => {
+                    siteCursor.classList.add('site-cursor--link-hover')
+                    event.stopPropagation()
+                })
+                link.addEventListener('mouseleave', (event) => {
+                    siteCursor.classList.remove('site-cursor--link-hover')
+                    event.stopPropagation()
+                })
+            })
+            if (homeCTA) {
+                homeCTA.addEventListener('mouseenter', (event) => {
+                    siteCursor.classList.add('site-cursor--explore-hover')
+                    event.stopPropagation()
+                })
+                homeCTA.addEventListener('mouseleave', (event) => {
+                    siteCursor.classList.remove('site-cursor--explore-hover')
+                    event.stopPropagation()
+                })
+            }
+            if (techCTA.lenght != 0) {
+                techCTA.forEach(link => {
+                    link.addEventListener('mouseenter', (event) => {
+                        siteCursor.classList.add('site-cursor--tech-hover')
+                        event.stopPropagation()
+                    })
+                    link.addEventListener('mouseleave', (event) => {
+                        siteCursor.classList.remove('site-cursor--tech-hover')
+                        event.stopPropagation()
+                    })
+                })
+
+            }
+
+        })
+    })
+} else {
+    siteCursor.style.display="nine"
+}
+
+
+
+// AJAX
+const xhr = new XMLHttpRequest()
+let cuts, select
+function transitionBefore() {
+    loader.classList.remove('dom-loaded')
+    loader.classList.add('init')
+    setTimeout(() => {
+        loader.classList.remove('init')
+        loader.classList.add('transition')
+    }, 700);
+}
+function transitionAfter() {
+    cuts = xhr.responseText.split('<main>') //On récupère le DOM de la page appelé et on le découpe
+    cuts = cuts[1].split('</main>')
+    select = cuts[0]
+    // On termine la transition
+    setTimeout(() => {
+        document.querySelector("main").innerHTML = select // contient le résultat de la page
+        if (allImg.lenght != 0) {
+            while (allImg.every(isLoad) != true) {
+                if (allImg.every(isLoad)) {
+                    break
+                }
+            }
+        }
+        setTimeout(() => {
+            loader.classList.add('dom-loaded')
+            // Reveal
+            reveal.forEach(reveal => {
+                setTimeout(() => {
+                    reveal.classList.remove('transformation')
+                    pageScript()
+                }, 800);
+            })
+        }, 1000);
+        setTimeout(() => {
+            loader.classList.remove('transition')
+        }, 1700);
+        window.scrollTo(0, 0) //On réinitialise le scroll
+        pageTransition()
+    }, 1800)
+
+}
+let pageTransition = function () {
+    let ajaxLinks = document.querySelectorAll('a')
+    allImg = Array.from(document.querySelectorAll('img'))
+    isLoad = (currentValue) => currentValue.complete == true
+    pageScript()
+    init()
+    ajaxLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Début de la transition (un bouton est cliqué)
+            transitionBefore()
+            //
+            e.preventDefault()
+            e.stopPropagation()
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        transitionAfter()
+                    } else {
+                        console.log('Pas de chance')
+                    }
+                }
+            }
+            xhr.open('GET', e.target.getAttribute('href'), true)
+            xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest')
+            xhr.send()
+            if (e.target.getAttribute('href') != window.location) {
+                window.history.pushState({ path: e.target.getAttribute('href') }, '', e.target.getAttribute('href'))
+            }
+        })
+
+    })
+}
+pageTransition()
+window.addEventListener('popstate', () => {
+    // Début de la transition (un bouton est cliqué)
+    transitionBefore()
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                transitionAfter()
+            } else {
+                console.log("Pas bon, pas bon du tout...")
+                // Le serveur a renvoyé un status d'erreur
+            }
+        }
+    }
+    xhr.open('GET', window.location.href, true)
+    xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest')
+    xhr.send()
 })

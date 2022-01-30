@@ -26,6 +26,7 @@
     font-size: 28px;
     line-height: 34px;
     letter-spacing: 4.725px;
+    
 }
 .f-sub-heading1 {
     font-family: 'Bellefair',serif;
@@ -39,6 +40,7 @@
     line-height: 17px;
     letter-spacing: 2.3625px;
     text-transform: uppercase;
+    color: var(--blue);
 }
 .f-nav-text {
     font-family: 'Barlow Condensed', sans-serif ;
@@ -46,11 +48,15 @@
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
-    
+    letter-spacing: 2.7px;
+    color: var(--blue);
 }
 .f-body-copy {
     font-family: 'Barlow', sans-serif;
     font-size: 18px;
     line-height: 32px;
     color: var(--blue) !important;
+}
+.f-blue {
+    color: var(--blue);
 }
