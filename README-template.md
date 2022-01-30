@@ -52,11 +52,9 @@ Users should be able to:
 
 Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
 
-To see how you can add code snippets, see below:
+To see how you can add code snippets, see below
 
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
+une propriété css permettant
 ```css
 .proud-of-this-css {
   color: papayawhip;
@@ -79,11 +77,11 @@ element.addEventListener('evenement', (e) => {
      console.log(e)
     })
 ```
-pour optimiser le plus possible mes animation
+pour optimiser le plus possible mes animations
 
 ### Useful resources
 
-- [La récuperation de donné en Ajax](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
+- [La récuperation de donné en Ajax](https://www.example.com) - Cela ma permis de récuperer le contenu
 - [La notion de parallax dans un site web](https://www.example.com) - Superbe vidéo m'ayant permis de comprendre l'effet de parallax cependant j'ai effectuer des modification pour la fonction 
 ```js
 offsetTop()

@@ -194,7 +194,7 @@ if (window.innerWidth > 1024) {
         })
     })
 } else {
-    siteCursor.style.display="nine"
+    siteCursor.style.display="none"
 }
 
 
@@ -275,6 +275,7 @@ let pageTransition = function () {
     })
 }
 pageTransition()
+// Transion entre les page avec les bonton
 window.addEventListener('popstate', () => {
     // Début de la transition (un bouton est cliqué)
     transitionBefore()
