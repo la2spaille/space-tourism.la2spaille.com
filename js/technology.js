@@ -34,7 +34,7 @@ export function technology() {
                     element.classList.add('active')
                 });
             }
-        }, 3000);
+        }, 2000);
         
         let currentIndex = 0
         technologiesNav.forEach((element, index) => {
@@ -47,19 +47,19 @@ export function technology() {
                             if (i != 3) technologies[index][i].classList.remove('active')
                             setTimeout(() => {
                                 technologies[index][3].classList.remove('active')
-                            }, 1500);
+                            }, 600);
                             technologies[index][i].classList.add('transition-leave')
                             setTimeout(() => {
                                 technologies[index][i].classList.remove('transition')
-                            }, 1000);
+                            }, 200);
                         } else {
                             technologies[index][i].classList.remove('transition-leave')
                             setTimeout(() => {
                                 technologies[index][i].classList.add('transition')
-                            }, 1000);
+                            }, 200);
                             setTimeout(() => {
                                 technologies[index][i].classList.add('active')
-                            }, 1500);
+                            }, 400);
                         }
                     }
 

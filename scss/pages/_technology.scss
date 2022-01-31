@@ -55,8 +55,8 @@
 .js-technology-img {
     display: none;
     transform: translateY(110%);
-    opacity: 1;
-    transition: 0.7s  cubic-bezier(0.23, 1, 0.32, 1);
+    opacity: 0;
+    transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
     &.active {
         transform: translateY(0);
         opacity: 1;

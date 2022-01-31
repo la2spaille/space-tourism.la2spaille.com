@@ -8,11 +8,10 @@ export function crew() {
     let wImg = document.querySelector('.w-img')
     let wParagraph = document.querySelector('.w-paragraph')
     if (crewsImg.length != 0) {
-        
-        // wImg.style.minHeight =`${crewsImg[1].offsetHeight}px`
-        window.addEventListener('resize' ,( ) => {
-            wImg.style.minHeight =`${crewsImg[1].offsetHeight}`
-            wParagraph.style.height =`${crewsDescription[2].offsetHeight}px`
+
+        window.addEventListener('resize', () => {
+            wImg.style.minHeight = `${crewsImg[1].offsetHeight}`
+            wParagraph.style.height = `${crewsDescription[2].offsetHeight}px`
         })
         for (let i = 0; i < crews.length; i++) {
             crews[i] = new Array(5)
@@ -22,7 +21,7 @@ export function crew() {
             crews[i][3] = crewsDescription[i]
             crews[i][4] = crewsNav[i]
         }
-        window.addEventListener('load' , () => {
+        window.addEventListener('load', () => {
             crews[0].forEach(element => {
                 element.classList.add('transition')
                 setTimeout(() => {
@@ -37,11 +36,11 @@ export function crew() {
         setTimeout(() => {
             if (crewsImg.every(imgLoaded)) {
                 crews[0].forEach(element => {
-                        element.classList.add('active')
+                    element.classList.add('active')
                 });
             }
         }, 3000);
-        
+
         let currentIndex = 0
         // let lastindex = 0
         crewsNav.forEach((element, index) => {
@@ -58,7 +57,7 @@ export function crew() {
                                 setTimeout(() => {
                                     crews[index][i].classList.remove('transition-leave')
                                 }, 600);
-                            },200);
+                            }, 200);
                         } else {
                             crews[index][i].classList.remove('transition-leave')
                             setTimeout(() => {
@@ -73,7 +72,8 @@ export function crew() {
                 });
                 e.stopPropagation()
             })
-            wParagraph.style.height =`${crewsDescription[2].offsetHeight}px`
+            wParagraph.style.height = `${crewsDescription[2].offsetHeight}px`
+            wImg.style.minHeight = `${crewsImg[1].offsetHeight}px`
         });
     }
 

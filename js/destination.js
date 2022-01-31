@@ -38,7 +38,7 @@ export function destination() {
                     element.classList.add('active')
                 });
             }
-        }, 2500);
+        }, 2000);
 
         let currentIndex = 0
         destinationsNav.forEach((element, index) => {

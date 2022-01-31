@@ -78,7 +78,7 @@
     z-index: 100;
     width: 100vw;
     background: var(--dark-blue);
-    transition: 1s cubic-bezier(0.6, 0.01, 0.43, 0.99);
+    transition: .7s cubic-bezier(0.6, 0.01, 0.43, 0.99);
     clip-path: inset(0 0 0 0);
     &.init {
         transition: 0s;

@@ -2,8 +2,8 @@
 try
 {
 	// On se connecte à MySQL
-	// $pdo = new PDO('mysql:host=localhost;dbname=id18357372_spacetourism;charset=utf8', 'id18357372_la2spaille', 'J9GRHEda+*43>>\1');
-	$pdo = new PDO('mysql:host=localhost;dbname=space-tourism-website;charset=utf8', 'root', 'root');
+	$pdo = new PDO('mysql:host=localhost;dbname=id18357372_spacetourism;charse÷t=utf8', 'id18357372_la2spaille', 'J9GRHEda+*43>>\1');
+	// $pdo = new PDO('mysql:host=localhost;dbname=space-tourism-website;charset=utf8', 'root', 'root');
 }
 catch(Exception $e)
 {

@@ -58,7 +58,6 @@
     }
     &.crew {
         max-width: 50%;
-        min-height: 700px;
         margin: -50px 0 0;
         img {
             width: 90%;
@@ -194,7 +193,7 @@
         div {
             width: 100%;
             height: 97%;
-            top: 0;
+            top: 1.5%;
             background-size: cover;
             transition: 0.5s;
             position: absolute;
@@ -214,11 +213,11 @@
     }
 }
 .bg-img {
-    transform: scale(1);
     background-size: cover;
     width: 100%;
     height: 100%;
-    animation: space 40s 1 linear;
+    animation: space 40s 1 ease-in-out;
+    animation-fill-mode: forwards;
     &.home {
         background-image: url("/assets/home/background-home-desktop.jpg");
     }
@@ -232,7 +231,7 @@
         background-image: url("/assets/technology/background-technology-desktop.jpg");
     }
 }
-@media (max-width: 1024px) {
+@media (max-width: 1050px) {
     .bg-img {
         &.home {
             background-image: url("/assets/home/background-home-tablet.jpg");
@@ -257,7 +256,7 @@
                 background-image: url("/assets/technology/image-spaceport-landscape.jpg");
             }
             div:nth-child(3) {
-                background-image: url("/assets/technology/image-space-capsule-t-landscape.jpg");
+                background-image: url("/assets/technology/image-space-capsule-landscape.jpg");
             }
         }
     }
@@ -279,7 +278,7 @@
     }
 }
 @keyframes space {
-    0% {
+    from {
         transform: scale(1);
     }
     to {

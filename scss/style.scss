@@ -49,6 +49,11 @@
             }
         }
     }
+    #app {
+        &.crew {
+            gap: 60px;
+        }
+    }
 }
 
 @media (max-width: 1400px) {
@@ -92,7 +97,7 @@
         }
         &.crew {
             gap: 20px;
-            padding: 0  50px;
+            padding: 0 50px;
         }
     }
     .w-navXtext {
@@ -100,7 +105,6 @@
             gap: 40px;
         }
     }
-
 }
 
 // Version Tablet
@@ -169,6 +173,7 @@
         }
         &.crew {
             padding: 135px 0 0;
+            gap: 60px;
         }
         &.technology {
             padding: 135px 0 100px;
@@ -194,7 +199,7 @@
         &.crew {
             gap: 40px;
             margin: 0;
-            justify-content: flex-start;
+            justify-content: space-between;
             padding: 0 135px 0 165px;
         }
         &.technology {
@@ -214,7 +219,6 @@
             flex-direction: column;
             gap: 45px;
         }
-        
     }
     .w-technology-nav {
         flex-direction: row;
@@ -237,7 +241,6 @@
         &.destination {
             max-width: 100%;
         }
-        
     }
     .w-paragraph {
         width: 100%;
@@ -260,6 +263,14 @@
     }
     .w-img {
         max-width: 100%;
+        &.crew {
+            overflow: hidden;
+            margin: 0;
+            img {
+                width: 100%;
+                left: 0;
+            }
+        }
         &.technology {
             min-width: 100% !important;
             max-height: 310px;
@@ -272,10 +283,8 @@
                 top: 0;
             }
         }
-        
     }
 }
-
 
 // Appartion du menu hamburger
 @media (max-width: 680px) {
@@ -313,6 +322,7 @@
         right: 0;
         top: 0;
         height: 100vh;
+        max-width: calc(100vw - 96px);
         clip-path: inset(0 0 0 100%);
         transition: 0.7s cubic-bezier(0.6, 0.01, 0.43, 0.99);
         &.is-active {
@@ -445,19 +455,28 @@
             margin: 16px 0 0;
         }
     }
-
     .w-destination-nav {
         nav {
             display: flex;
             justify-content: center;
             gap: 26px;
-            span {
-                padding: 0 0 8px;
+        }
+        span {
+            padding: 0 0 8px;
+            &:hover {
+                &::after {
+                    opacity: 0;
+                }
             }
         }
     }
     .w-crew-nav {
         padding: 0;
+    }
+    .js-crew-nav {
+        &:hover {
+            opacity: 0.17;
+        }
     }
     .w-2-half-wrapper {
         display: flex;
@@ -474,25 +493,24 @@
 
 // Arrangement de la police
 @media (max-width: 550px) {
-
-.loader {
-    &.transition {
-        transition: 1s;
+    .loader {
+        &.transition {
+            transition: 1s;
+            svg {
+                transform: scale(2.75) rotate(360deg);
+            }
+            span {
+                transform: translateY(0) rotate(0);
+                transition: 1s 0.5s ease-out;
+            }
+        }
         svg {
-            transform: scale(2.75) rotate(360deg);
+            transform: scale(2.75);
         }
-        span {
-            transform: translateY(0) rotate(0);
-            transition: 1s 0.5s ease-out;
+        strong {
+            transform: scale(2.5) translateY(225%);
         }
     }
-    svg {
-        transform: scale(2.75);
-    }
-    strong {
-        transform: scale(2.5) translateY(225%);
-    }
-}
 
     .f-heading1 {
         font-size: 80px;
@@ -587,7 +605,7 @@
     }
 }
 
-@media (max-width:450px) { 
+@media (max-width: 450px) {
     #app {
         padding: 110px 0 50px;
         gap: 32px;
@@ -603,8 +621,7 @@
     }
 }
 
-
-// Img 
+// Img
 @media (max-width: 1440px) {
     .w-img {
         &.technology {

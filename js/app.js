@@ -49,15 +49,15 @@ function init() {
 
     //////////////////////////////////////////////////////////
 
-    // hack =document.querySelectorAll('[style]')
-    // hack[hack.length - 1].style.opacity="0"
+    hack = document.querySelectorAll('[style]')
+    if (hack.length != 0) { hack[hack.length - 1].style.opacity = "0" }
 
     //////////////////////////////////////////////////////////
 
     // Parallax
     let accY, accX, transform
     /**
-    * Calcul la position de l'element par rapport au haut de la page
+    * Calcule la position de l'élement par rapport au haut de l'élement document
     * @param {HTMLElement} element 
     * @return {Number}
     */
@@ -69,9 +69,11 @@ function init() {
         return element.offsetTop + accY
     }
     /**
-     * Calcul la position de l'element par rapport a la gauche de la page
+     * Calcule la position de l'element par rapport à la gauche de l'élement document
+     * @author la2spaille
      * @param {HTMLElement} element 
      * @return {Number}
+     * @
      */
     function offsetLeft(element) {
         accX = 0
@@ -80,59 +82,58 @@ function init() {
         }
         return element.offsetLeft + accX
     }
-        class Parallax {
-            constructor(element) {
-                this.element = element
-                this.paraM = this.element.dataset.parallax
-                this.MouseParallaxTransform = this.MouseParallaxTransform.bind(this)
+    class Parallax {
+        constructor(element) {
+            this.element = element
+            this.paraM = this.element.dataset.parallax
+            this.MouseParallaxTransform = this.MouseParallaxTransform.bind(this)
 
-                this.elementY = offsetTop(this.element) + (this.element.offsetHeight / 2)
-                this.elementX = offsetLeft(this.element) + (this.element.offsetWidth / 2)
-                this.MouseParallaxTransform()
-            }
+            this.elementY = offsetTop(this.element) + (this.element.offsetHeight / 2)
+            this.elementX = offsetLeft(this.element) + (this.element.offsetWidth / 2)
+            this.MouseParallaxTransform()
+        }
 
-
-            MouseParallaxTransform() {
-                this.element.addEventListener('mouseenter', () => {
-                    this.transition = "0.2s"
-                    this.element.style.setProperty('transition', this.transition)
-                    this.element.addEventListener('mousemove', (e) => {
-                        window.requestAnimationFrame(() => {
-                            let mouseX = e.pageX;
-                            let mouseY = e.pageY;
-                            let diffX = mouseX - (offsetLeft(this.element) + (this.element.offsetWidth / 2));
-                            let diffY = mouseY - (offsetTop(this.element) + (this.element.offsetHeight / 2));
-                            transform = `translate(${this.paraM * diffX}px, ${this.paraM * diffY}px)`
-                            this.element.style.setProperty('transform', transform)
-                            e.stopPropagation()
-                        })
-                    })
-                })
-                this.element.addEventListener('mouseleave', (e) => {
+        MouseParallaxTransform() {
+            this.element.addEventListener('mouseenter', () => {
+                this.transition = "0.2s"
+                this.element.style.setProperty('transition', this.transition)
+                this.element.addEventListener('mousemove', (e) => {
                     window.requestAnimationFrame(() => {
-                        this.transition = "0.5s"
-                        this.element.style.setProperty('transition', this.transition)
-                        transform = `translate(${0.0}px, ${0.0}px)`
+                        let mouseX = e.pageX;
+                        let mouseY = e.pageY;
+                        let diffX = mouseX - (offsetLeft(this.element) + (this.element.offsetWidth / 2));
+                        let diffY = mouseY - (offsetTop(this.element) + (this.element.offsetHeight / 2));
+                        transform = `translate(${this.paraM * diffX}px, ${this.paraM * diffY}px)`
                         this.element.style.setProperty('transform', transform)
                         e.stopPropagation()
                     })
                 })
-            }
-            /**
-             * 
-             * @returns {Parallax[]}
-             */
-            static bind() {
-                return Array.from(document.querySelectorAll('[data-parallax]')).map(
-                    (element) => {
-                        return new Parallax(element)
-                    }
-                )
-            }
+            })
+            this.element.addEventListener('mouseleave', (e) => {
+                window.requestAnimationFrame(() => {
+                    this.transition = "0.5s"
+                    this.element.style.setProperty('transition', this.transition)
+                    transform = `translate(${0.0}px, ${0.0}px)`
+                    this.element.style.setProperty('transform', transform)
+                    e.stopPropagation()
+                })
+            })
         }
-        if(window.innerWidth > 1024) {
-            Parallax.bind()
+        /**
+         * @author Grafikart
+         * @returns {Parallax[]}
+         */
+        static bind() {
+            return Array.from(document.querySelectorAll('[data-parallax]')).map(
+                (element) => {
+                    return new Parallax(element)
+                }
+            )
         }
+    }
+    if (window.innerWidth > 1024) {
+        Parallax.bind()
+    }
 
 }
 
@@ -146,58 +147,53 @@ window.addEventListener('load', () => {
         }, 800);
     })
 })
+
 // Cursor
 const siteCursor = document.querySelector('.w-site-cursor')
-if (window.innerWidth > 1024) {
-    let mouseX, mouseY, transformMouse
-    document.addEventListener('mousemove', (e) => {
-        window.requestAnimationFrame(() => {
-            mouseY = `${e.clientY}px`
-            mouseX = `${e.clientX}px`
-            transformMouse = `translate(calc(${mouseX} - 50%),calc(${mouseY} - 50%))`
-            siteCursor.style.setProperty('transform', transformMouse)
-            siteCursor.style.setProperty(' -webkit-transform', transformMouse)
-            linkHover.forEach(link => {
+let mouseX, mouseY, transformMouse
+document.addEventListener('mousemove', (e) => {
+    window.requestAnimationFrame(() => {
+        mouseY = `${e.clientY}px`
+        mouseX = `${e.clientX}px`
+        transformMouse = `translate(calc(${mouseX} - 50%),calc(${mouseY} - 50%))`
+        siteCursor.style.setProperty('transform', transformMouse)
+        siteCursor.style.setProperty(' -webkit-transform', transformMouse)
+        linkHover.forEach(link => {
+            link.addEventListener('mouseenter', (event) => {
+                siteCursor.classList.add('site-cursor--link-hover')
+                event.stopPropagation()
+            })
+            link.addEventListener('mouseleave', (event) => {
+                siteCursor.classList.remove('site-cursor--link-hover')
+                event.stopPropagation()
+            })
+        })
+        if (homeCTA) {
+            homeCTA.addEventListener('mouseenter', (event) => {
+                siteCursor.classList.add('site-cursor--explore-hover')
+                event.stopPropagation()
+            })
+            homeCTA.addEventListener('mouseleave', (event) => {
+                siteCursor.classList.remove('site-cursor--explore-hover')
+                event.stopPropagation()
+            })
+        }
+        if (techCTA.lenght != 0) {
+            techCTA.forEach(link => {
                 link.addEventListener('mouseenter', (event) => {
-                    siteCursor.classList.add('site-cursor--link-hover')
+                    siteCursor.classList.add('site-cursor--tech-hover')
                     event.stopPropagation()
                 })
                 link.addEventListener('mouseleave', (event) => {
-                    siteCursor.classList.remove('site-cursor--link-hover')
+                    siteCursor.classList.remove('site-cursor--tech-hover')
                     event.stopPropagation()
                 })
             })
-            if (homeCTA) {
-                homeCTA.addEventListener('mouseenter', (event) => {
-                    siteCursor.classList.add('site-cursor--explore-hover')
-                    event.stopPropagation()
-                })
-                homeCTA.addEventListener('mouseleave', (event) => {
-                    siteCursor.classList.remove('site-cursor--explore-hover')
-                    event.stopPropagation()
-                })
-            }
-            if (techCTA.lenght != 0) {
-                techCTA.forEach(link => {
-                    link.addEventListener('mouseenter', (event) => {
-                        siteCursor.classList.add('site-cursor--tech-hover')
-                        event.stopPropagation()
-                    })
-                    link.addEventListener('mouseleave', (event) => {
-                        siteCursor.classList.remove('site-cursor--tech-hover')
-                        event.stopPropagation()
-                    })
-                })
 
-            }
+        }
 
-        })
     })
-} else {
-    siteCursor.style.display="none"
-}
-
-
+})
 
 // AJAX
 const xhr = new XMLHttpRequest()
@@ -217,35 +213,33 @@ function transitionAfter() {
     // On termine la transition
     setTimeout(() => {
         document.querySelector("main").innerHTML = select // contient le résultat de la page
-        if (allImg.lenght != 0) {
-            while (allImg.every(isLoad) != true) {
-                if (allImg.every(isLoad)) {
-                    break
-                }
-            }
-        }
-        setTimeout(() => {
-            loader.classList.add('dom-loaded')
-            // Reveal
-            reveal.forEach(reveal => {
+        allImg = Array.from(document.querySelectorAll('img'))
+        isLoad = (currentValue) => currentValue.complete == true 
+        var loadEvent = setInterval(() => {
+            if (allImg.every(isLoad)) {
+                clearInterval(loadEvent)
                 setTimeout(() => {
-                    reveal.classList.remove('transformation')
-                    pageScript()
-                }, 800);
-            })
-        }, 1000);
-        setTimeout(() => {
-            loader.classList.remove('transition')
-        }, 1700);
-        window.scrollTo(0, 0) //On réinitialise le scroll
-        pageTransition()
-    }, 1800)
-
+                    loader.classList.add('dom-loaded')
+                    // Reveal
+                    reveal.forEach(reveal => {
+                        setTimeout(() => {
+                            reveal.classList.remove('transformation')
+                            pageScript()
+                        }, 800);
+                    })
+                }, 500);
+                setTimeout(() => {
+                    loader.classList.remove('transition')
+                }, 1400);
+                window.scrollTo(0, 0) //On réinitialise le scroll
+                pageTransition()
+            }
+        }, 500);
+    }, 1750);
 }
+
 let pageTransition = function () {
     let ajaxLinks = document.querySelectorAll('a')
-    allImg = Array.from(document.querySelectorAll('img'))
-    isLoad = (currentValue) => currentValue.complete == true
     pageScript()
     init()
     ajaxLinks.forEach(link => {
