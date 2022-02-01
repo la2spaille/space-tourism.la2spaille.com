@@ -42,34 +42,37 @@ export function destination() {
 
         let currentIndex = 0
         destinationsNav.forEach((element, index) => {
-            element.addEventListener('click', (e) => {
-                currentIndex = index
-                destinationsNav.forEach((element, index) => {
-                    element = element
-                    for (let i = 0; i < 6; i++) {
-                        if (currentIndex != index) {
-                            destinations[index][i].classList.remove('active')
-                            destinations[index][i].classList.add('transition-leave')
-                            setTimeout(() => {
-                                destinations[index][i].classList.remove('transition')
+                element.addEventListener('click', (e) => {
+                    currentIndex = index
+                    destinationsNav.forEach((element, index) => {
+                        element.style.pointerEvents = "none"
+                        for (let i = 0; i < 6; i++) {
+                            if (currentIndex != index) {
+                                destinations[index][i].classList.remove('active')
+                                destinations[index][i].classList.add('transition-leave')
                                 setTimeout(() => {
-                                    destinations[index][i].classList.remove('transition-leave')
-                                }, 600);
-                            }, 200);
-                        } else {
-                            destinations[index][i].classList.remove('transition-leave')
-                            setTimeout(() => {
-                                destinations[index][i].classList.add('transition')
-                            }, 200);
-                            setTimeout(() => {
-                                destinations[index][i].classList.add('active')
-                            }, 400);
+                                    destinations[index][i].classList.remove('transition')
+                                    setTimeout(() => {
+                                        destinations[index][i].classList.remove('transition-leave')
+                                    }, 600);
+                                }, 200);
+                            } else {
+                                destinations[index][i].classList.remove('transition-leave')
+                                setTimeout(() => {
+                                    destinations[index][i].classList.add('transition')
+                                }, 200);
+                                setTimeout(() => {
+                                    destinations[index][i].classList.add('active')
+                                }, 400);
+                            }
                         }
-                    }
-
-                });
-                e.stopPropagation()
-            })
+                        setTimeout(() => {
+                            element.style.pointerEvents = "auto"
+                        }, 950);
+                    });
+                    e.stopPropagation()
+                })
+                
             wParagraph.style.minHeight = `${destinationsDescription[0].offsetHeight}`
         });
     }

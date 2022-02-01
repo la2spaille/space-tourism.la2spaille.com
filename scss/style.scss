@@ -9,7 +9,7 @@
 @import "./pages/crew";
 @import "./pages/technology";
 @import "./components/components";
-@media (max-width: 1160px) {
+@media (max-width: 1050px) {
     .w-site-cursor {
         display: none;
     }
@@ -181,6 +181,7 @@
         }
     }
     .w-page-title {
+        z-index: 0;
         padding: 0 38.5px;
     }
     .l-wrapper {
@@ -279,7 +280,7 @@
             div {
                 width: 100%;
                 height: 100%;
-                transform: scale(1);
+                transform: scale(1.025);
                 top: 0;
             }
         }

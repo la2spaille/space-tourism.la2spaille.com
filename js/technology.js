@@ -41,7 +41,7 @@ export function technology() {
             element.addEventListener('click', (e) => {
                 currentIndex = index
                 technologiesNav.forEach((element, index) => {
-                    element = element
+                    element.style.pointerEvents = "none"
                     for (let i = 0; i < 4; i++) {
                         if (currentIndex != index) {
                             if (i != 3) technologies[index][i].classList.remove('active')
@@ -62,7 +62,9 @@ export function technology() {
                             }, 400);
                         }
                     }
-
+                    setTimeout(() => {
+                        element.style.pointerEvents = "auto"
+                    }, 850);
                 });
                 e.stopPropagation()
             })

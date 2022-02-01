@@ -17,7 +17,7 @@
     justify-content: center;
     border: 1px solid rgba(#fff, 0.25);
     background: rgba(#fff,0);
-    transition: 1s ;
+    transition: 0.7s ;
     &:hover {
     border: 1px solid rgba(#fff, 1);
 
@@ -65,7 +65,6 @@
         display: block;
     }
     &.transition-leave {
-        opacity: 0;
         transform: translateY(0);
     }
 }

@@ -215,26 +215,46 @@ function transitionAfter() {
         document.querySelector("main").innerHTML = select // contient le résultat de la page
         allImg = Array.from(document.querySelectorAll('img'))
         isLoad = (currentValue) => currentValue.complete == true 
-        var loadEvent = setInterval(() => {
-            if (allImg.every(isLoad)) {
+        let loadEvent = setInterval(() => {
+            if(allImg.lenght !=0) {
+                if (allImg.every(isLoad)) {
+                    clearInterval(loadEvent)
+                    setTimeout(() => {
+                        loader.classList.add('dom-loaded')
+                        // Reveal
+                        reveal.forEach(reveal => {
+                            setTimeout(() => {
+                                reveal.classList.remove('transformation')
+                                pageScript()
+                            }, 800);
+                        })
+                    }, 500);
+                    setTimeout(() => {
+                        loader.classList.remove('transition')
+                    }, 1400);
+                    window.scrollTo(0, 0) //On réinitialise le scroll
+                    pageTransition()
+                }
+            } else {
                 clearInterval(loadEvent)
-                setTimeout(() => {
-                    loader.classList.add('dom-loaded')
-                    // Reveal
-                    reveal.forEach(reveal => {
-                        setTimeout(() => {
-                            reveal.classList.remove('transformation')
-                            pageScript()
-                        }, 800);
-                    })
-                }, 500);
-                setTimeout(() => {
-                    loader.classList.remove('transition')
-                }, 1400);
-                window.scrollTo(0, 0) //On réinitialise le scroll
-                pageTransition()
+                    setTimeout(() => {
+                        loader.classList.add('dom-loaded')
+                        // Reveal
+                        reveal.forEach(reveal => {
+                            setTimeout(() => {
+                                reveal.classList.remove('transformation')
+                                pageScript()
+                            }, 800);
+                        })
+                    }, 500);
+                    setTimeout(() => {
+                        loader.classList.remove('transition')
+                    }, 1400);
+                    window.scrollTo(0, 0) //On réinitialise le scroll
+                    pageTransition()
             }
-        }, 500);
+           
+        }, 100);
     }, 1750);
 }
 

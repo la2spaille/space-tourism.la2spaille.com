@@ -30,7 +30,7 @@
         }
         &.active {
             &::after {
-                opacity: 1;
+                opacity: 1 !important;
             }
         }
     }
@@ -69,7 +69,7 @@
     visibility: hidden;
     opacity: 0;
     top: 0;
-    transform: translateY(100%);
+    transform: translateY(125%);
     transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1) ,visibility 0s ,opacity 0.7s;
     &.active {
         transform: translateY(0);
@@ -80,12 +80,10 @@
     }
     &.transition-leave {
         transform: translateY(-100%);
-        opacity: 0.25;
     }
 }
 .js-destination-img {
     display: none;
-    position: relative;
     opacity: 0;
     transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
     transform: translateY(25%);

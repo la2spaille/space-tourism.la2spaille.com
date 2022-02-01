@@ -47,7 +47,7 @@ export function crew() {
             element.addEventListener('click', (e) => {
                 currentIndex = index
                 crewsNav.forEach((element, index) => {
-                    element = element
+                    element.style.pointerEvents = "none"
                     for (let i = 0; i < 5; i++) {
                         if (currentIndex != index) {
                             crews[index][i].classList.remove('active')
@@ -65,13 +65,17 @@ export function crew() {
                             }, 200);
                             setTimeout(() => {
                                 crews[index][i].classList.add('active')
-                            }, 400);
+                            }, 600);
                         }
                     }
-
+                    setTimeout(() => {
+                        element.style.pointerEvents = "auto"
+                    }, 950);
                 });
+                
                 e.stopPropagation()
             })
+            
             wParagraph.style.height = `${crewsDescription[2].offsetHeight}px`
             wImg.style.minHeight = `${crewsImg[1].offsetHeight}px`
         });
