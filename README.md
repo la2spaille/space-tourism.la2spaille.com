@@ -35,7 +35,7 @@ Coming soon
 
 ### Links
 
-- Solution URL: []()
+- Solution URL: [https://github.com/la2spaille/space.tourism](https://github.com/la2spaille/space.tourism)
 - Live Site URL: []()
 
 ## My process
@@ -166,8 +166,8 @@ pour essayer de maîtriser cette notion en JavaScript
 
 ### Useful resources
 
-- [La récuperation de données en Ajax](https://www.example.com) - Cela m'a permis d'apprendre à récuperer le contenu de la page que l'on souhaite appeler pour le manipuler à notre guise.
-- [La notion de parallaxe sur une page web](https://www.example.com) - Superbe vidéo m'ayant permis de comprendre l'effet de parallaxe cependant j'ai effectué des modifications pour la fonction "offsetTop()" Car je comprenais le but de cette fonction certe mais pas son approche avec un accumulateur en parametre. En ce qui concerne l'effet de parallaxe, je l'ai modifié pour qu'il soit un effet de parallaxe "à la souris" et non "au scroll" pour cela j'ai du créer la fonction "offsetLeft()" qui calcule la position entre l'élément et le coté gauche du docuemnt avec la même approche que la fonction "offsetTop()".
+- [La récuperation de données en Ajax](https://grafikart.fr/tutoriels/ajax-780)) - Cela m'a permis d'apprendre à récuperer le contenu de la page que l'on souhaite appeler pour le manipuler à notre guise.
+- [La notion de parallaxe sur une page web](https://grafikart.fr/tutoriels/scroll-defilement-1931) - Superbe vidéo m'ayant permis de comprendre l'effet de parallaxe cependant j'ai effectué des modifications pour la fonction "offsetTop()" Car je comprenais le but de cette fonction certe mais pas son approche avec un accumulateur en parametre. En ce qui concerne l'effet de parallaxe, je l'ai modifié pour qu'il soit un effet de parallaxe "à la souris" et non "au scroll" pour cela j'ai du créer la fonction "offsetLeft()" qui calcule la position entre l'élément et le coté gauche du docuemnt avec la même approche que la fonction "offsetTop()".
 
 ## Author
 
@@ -177,6 +177,6 @@ pour essayer de maîtriser cette notion en JavaScript
 
 ## Acknowledgments
 
-Merci à [Grafikart]() pour son contenue incroyable sur youtube ! 🙏🏾
+Merci à [Grafikart](https://www.youtube.com/user/grafikarttv) pour son contenue incroyable sur youtube ! 🙏🏾
 Merci aussi aux contributeurs du site [MDN](https://developer.mozilla.org/en-US/)
 
