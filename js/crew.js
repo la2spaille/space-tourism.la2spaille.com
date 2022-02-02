@@ -70,7 +70,7 @@ export function crew() {
                     }
                     setTimeout(() => {
                         element.style.pointerEvents = "auto"
-                    }, 950);
+                    }, 1100);
                 });
                 
                 e.stopPropagation()
