@@ -1,7 +1,7 @@
 import { destination } from "/js/destination.js";
 import { crew } from "/js/crew.js";
 import { technology } from "/js/technology.js";
-let loader, homeCTA, linkHover, techCTA, menuBtn, closeBtn, headerNav, reveal, allImg, isLoad, links, hack
+let loader, homeCTA, linkHover, techCTA, menuBtn, closeBtn, headerNav, reveal, allImg, isLoad, links, hack, siteCursor
 
 function pageScript() {
     destination()
@@ -149,7 +149,7 @@ window.addEventListener('load', () => {
 })
 
 // Cursor
-const siteCursor = document.querySelector('.w-site-cursor')
+siteCursor = document.querySelector('.w-site-cursor')
 let mouseX, mouseY, transformMouse
 document.addEventListener('mousemove', (e) => {
     window.requestAnimationFrame(() => {
