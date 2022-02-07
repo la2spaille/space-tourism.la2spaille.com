@@ -31,7 +31,6 @@ HTML
     ?>
 <?php } ?>
 
-<script type="module" src="js/app.js"></script>
 
 </main>
 <div class="loader">
@@ -48,6 +47,7 @@ HTML
 <div class="w-site-cursor">
     <div class="site-cursor"></div>
 </div>
+<script type="module" src="js/app.js"></script>
 </body>
 
 </html>
