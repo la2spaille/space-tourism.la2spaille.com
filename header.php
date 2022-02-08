@@ -2,7 +2,7 @@
 try
 {
 	// On se connecte à sqlite
-	$pdo = new PDO('sqlite:./data.db');
+	$pdo = new PDO('sqlite:data.db');
 
 }
 catch(Exception $e)
