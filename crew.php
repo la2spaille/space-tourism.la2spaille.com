@@ -3,10 +3,8 @@ $title = "Crew";
 require('header.php') ?>
 <div id="app" class="crew">
   <?php
-  $sql = 'SELECT * FROM crew';
-  $t_crew = $pdo->prepare($sql);
-  $t_crew->execute();
-  $crews = $t_crew->fetchAll();
+  $query = $pdo->query('SELECT * FROM crew');
+  $crews = $query->fetchAll(PDO::FETCH_OBJ);
   ?>
   <h3 class="w-page-title f-heading5 transformation">
     <span number="02" class="">Meet your crew</span>
@@ -15,23 +13,23 @@ require('header.php') ?>
     <div class="w-navXtext crew">
       <div class="w-text crew">
         <strong class="w-strong crew f-heading4">
-          <?php foreach ($crews as $crew) { ?>
-            <span class="js-crew-job"><?= $crew['job'] ?></span>
+          <?php foreach($crews as $crew) { ?>
+            <span class="js-crew-job"><?= $crew->job ?></span>
           <?php } ?>
-          </strong>
+        </strong>
         <h1 class="w-h1 crew f-heading3">
-          <?php foreach ($crews as $crew) { ?>
-            <span class="js-crew-name"><?= $crew['name'] ?></span>
+          <?php foreach($crews as $crew) { ?>
+            <span class="js-crew-name"><?= $crew->name ?></span>
           <?php } ?>
         </h1>
         <p class="w-paragraph crew f-body-copy">
-          <?php foreach ($crews as $crew) { ?>
-            <span class="js-crew-description"><?= $crew['description'] ?></span>
+          <?php foreach($crews as $crew) { ?>
+            <span class="js-crew-description"><?= $crew->description ?></span>
           <?php } ?>
         </p>
       </div>
       <div class="w-crew-nav transformation">
-        <?php foreach ($crews as $crew) { ?>
+        <?php foreach($crews as $crew) { ?>
           <span class="js-crew-nav"></span>
         <?php } ?>
       </div>

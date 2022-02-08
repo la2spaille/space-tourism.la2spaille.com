@@ -4,10 +4,8 @@ require('header.php') ?>
 
 <div id="app" class="technology">
   <?php
-  $sql = 'SELECT * FROM technology';
-  $t_technology = $pdo->prepare($sql);
-  $t_technology->execute();
-  $technologies = $t_technology->fetchAll();
+  $query = $pdo->query('SELECT * FROM technology');
+  $technologies = $query->fetchAll(PDO::FETCH_OBJ);
   ?>
   <h3 class="w-page-title f-heading5 transformation">
     <span number="03" class="">SPACE LAUNCH 101</span>
@@ -16,19 +14,19 @@ require('header.php') ?>
     <div class="w-navXtext technology">
       <div class="w-technology-nav transformation">
         <?php foreach ($technologies as $technology) { ?>
-          <span class="js-technology-nav" data-parallax="0.25"><?= $technology['id']?></span>
+          <span class="js-technology-nav" data-parallax="0.25"><?= $technology->id ?></span>
         <?php } ?>
       </div>
       <div class="w-text technology">
         <strong class="w-strong technology f-nav-text transformation "><span>THE TERMINOLOGY…</span></strong>
         <h1 class="w-h1 technology f-heading3">
           <?php foreach ($technologies as $technology) { ?>
-            <span class="js-technology-name"><?= $technology['name'] ?></span>
+            <span class="js-technology-name"><?= $technology->name ?></span>
           <?php } ?>
         </h1>
         <p class="w-paragraph technology f-body-copy">
           <?php foreach ($technologies as $technology) { ?>
-            <span class="js-technology-description"><?= $technology['description'] ?></span>
+            <span class="js-technology-description"><?= $technology->description ?></span>
           <?php } ?>
         </p>
       </div>

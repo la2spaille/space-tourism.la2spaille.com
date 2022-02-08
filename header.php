@@ -1,8 +1,9 @@
 <?php
 try
 {
-	// On se connecte à MySQL
-	$pdo = new PDO('mysql:host=localhost;dbname=space-tourism-website;charset=utf8', 'root', 'root');
+	// On se connecte à sqlite
+	$pdo = new PDO('sqlite:data.db');
+
 }
 catch(Exception $e)
 {

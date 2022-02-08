@@ -1,7 +1,7 @@
 import { destination } from "/js/destination.js";
 import { crew } from "/js/crew.js";
 import { technology } from "/js/technology.js";
-let loader, homeCTA, linkHover, techCTA, menuBtn, closeBtn, headerNav, reveal, allImg, isLoad, links, hack, siteCursor
+let loader, homeCTA, linkHover, techCTA, menuBtn, closeBtn, headerNav, reveal, allImg, isLoad, links, siteCursor
 
 function pageScript() {
     destination()
@@ -49,8 +49,8 @@ function init() {
 
     //////////////////////////////////////////////////////////
 
-    hack = document.querySelectorAll('[style]')
-    if (hack.length != 0) { hack[hack.length - 1].style.opacity = "0" }
+    // hack = document.querySelectorAll('[style]')
+    // if (hack.length != 0) { hack[hack.length - 1].style.opacity = "0" }
 
     //////////////////////////////////////////////////////////
 

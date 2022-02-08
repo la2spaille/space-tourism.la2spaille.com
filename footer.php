@@ -47,7 +47,7 @@ HTML
 <div class="w-site-cursor">
     <div class="site-cursor"></div>
 </div>
-<script type="module" src="js/app.js"></script>
+<script type="module" src="/js/app.js"></script>
 </body>
 
 </html>
