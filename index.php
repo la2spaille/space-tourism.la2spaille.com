@@ -15,7 +15,8 @@ require('header.php')
                 <span>Let’s face it; if you want to go to space, you might as well genuinely go to outer space and not hover kind of on the edge of it. Well sit back, and relax because we’ll give you a truly out of this world experience!</span>
             </p>
         </div>
-        <div data-parallax="0.1" class="w-home-cta transformation f-heading4">
+        <div data-parallax="0.2" class="w-home-cta transformation f-heading4">
+            <span class="w-magnet"></span>
             <a  href="destination.php">EXPLORE</a>
         </div>
     </div>
