@@ -1,20 +1,4 @@
-<?php
-try
-{
-	// On se connecte à sqlite
-	// $pdo = new PDO('sqlite:data.db', null, null, [
-  //   PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-  //   PDO::ATTR_DEFAULT_FETCH_MODE =>PDO::FETCH_OBJ
-  // ]);
-	$pdo = new PDO('sqlite:data.db');
-  $pdo->setAttribute(PDO::ATTR_ERRMODE , PDO::ERRMODE_EXCEPTION);
 
-}
-catch(Exception $e)
-{
-        die('Erreur : '.$e->getMessage());
-}
-?>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -24,24 +8,6 @@ catch(Exception $e)
   <meta name="theme-color" content="#0B0D17"/>
   <link rel="stylesheet" href="css/style.css">
   <link rel="manifest" href="manifest.json">
-  <link rel="preload" href="assets/home/background-home-desktop.jpg" as="image">
-  <link rel="preload" href="assets/home/background-home-tablet.jpg" as="image">
-  <link rel="preload" href="assets/home/background-home-mobile.jpg" as="image">
-  <link rel="preload" href="assets/destination/background-destination-desktop.jpg" as="image">
-  <link rel="preload" href="assets/destination/background-destination-mobile.jpg" as="image">
-  <link rel="preload" href="assets/destination/background-destination-tablet.jpg" as="image">
-  <link rel="preload" href="assets/crew/background-crew-desktop.jpg" as="image">
-  <link rel="preload" href="assets/crew/background-crew-tablet.jpg" as="image">
-  <link rel="preload" href="assets/crew/background-crew-mobile.jpg" as="image">
-  <link rel="preload" href="assets/technology/background-technology-desktop.jpg" as="image">
-  <link rel="preload" href="assets/technology/background-technology-tablet.jpg" as="image">
-  <link rel="preload" href="assets/technology/background-technology-mobile.jpg" as="image">
-  <link rel="preload" href="assets/technology/image-launch-vehicle-landscape.jpg" as="image">
-  <link rel="preload" href="assets/technology/image-launch-vehicle-portrait.jpg" as="image">
-  <link rel="preload" href="assets/technology/image-space-capsule-landscape.jpg" as="image">
-  <link rel="preload" href="assets/technology/image-space-capsule-portrait.jpg" as="image">
-  <link rel="preload" href="assets/technology/image-spaceport-landscape.jpg" as="image">
-  <link rel="preload" href="assets/technology/image-spaceport-portrait.jpg" as="image">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
   <script>

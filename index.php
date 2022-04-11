@@ -5,7 +5,7 @@ require('header.php')
 <div id="app">
     <div class="l-wrapper home">
         <div class="w-text home transformation">
-            <strong class="w-strong home f-heading5">
+            <strong class="w-strong home f-heading5">n
                 <span>SO, YOU WANT TO TRAVEL TO</span>
             </strong>
             <h1 class="w-h1 home f-heading1">

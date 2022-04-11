@@ -287,7 +287,7 @@
     }
 }
 
-// Appartion du menu hamburger
+// Apparition du menu hamburger
 @media (max-width: 680px) {
     header {
         position: fixed;
@@ -626,7 +626,6 @@
 @media (max-width: 1440px) {
     .w-img {
         &.technology {
-            max-width: 475px;
             max-width: 475px;
         }
     }
