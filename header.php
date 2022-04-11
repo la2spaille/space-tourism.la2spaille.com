@@ -1,4 +1,8 @@
-
+<?php
+$json = file_get_contents("data.json") ;
+global $data;
+$data = json_decode($json,true);
+?>
 <html lang="en">
 <head>
   <meta charset="UTF-8">

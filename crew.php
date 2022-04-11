@@ -1,11 +1,9 @@
 <?php
 $title = "Crew";
-require('header.php') ?>
+require('header.php') ;
+$crews = $data['crew'];
+?>
 <div id="app" class="crew">
-  <?php
-  $query = $pdo->query('SELECT * FROM crew');
-  $crews = $query->fetchAll(PDO::FETCH_OBJ);
-  ?>
   <h3 class="w-page-title f-heading5 transformation">
     <span number="02" class="">Meet your crew</span>
   </h3>
@@ -14,17 +12,17 @@ require('header.php') ?>
       <div class="w-text crew">
         <strong class="w-strong crew f-heading4">
           <?php foreach($crews as $crew) { ?>
-            <span class="js-crew-job"><?= $crew->job ?></span>
+            <span class="js-crew-job"><?= $crew['role'] ?></span>
           <?php } ?>
         </strong>
         <h1 class="w-h1 crew f-heading3">
           <?php foreach($crews as $crew) { ?>
-            <span class="js-crew-name"><?= $crew->name ?></span>
+            <span class="js-crew-name"><?= $crew['name'] ?></span>
           <?php } ?>
         </h1>
         <p class="w-paragraph crew f-body-copy">
           <?php foreach($crews as $crew) { ?>
-            <span class="js-crew-description"><?= $crew->description ?></span>
+            <span class="js-crew-description"><?= $crew['bio'] ?></span>
           <?php } ?>
         </p>
       </div>
@@ -35,10 +33,9 @@ require('header.php') ?>
       </div>
     </div>
     <div class="w-img crew">
-      <img class="js-crew-img" src="assets/crew/image-douglas-hurley.png" srcset="assets/crew/image-douglas-hurley.webp" alt="Douglas Hurley">
-      <img class="js-crew-img" src="assets/crew/image-mark-shuttleworth.png" srcset="assets/crew/image-mark-shuttleworth.webp" alt="Mark Shuttleworth">
-      <img class="js-crew-img" src="assets/crew/image-victor-glover.png" srcset="assets/crew/image-victor-glover.webp" alt="Victor Glover">
-      <img class="js-crew-img" src="assets/crew/image-anousheh-ansari.png" srcset="assets/crew/image-anousheh-ansari.webp" alt="Anousheh Ansari">
+        <?php foreach($crews as $crew) { ?>
+            <img class="js-crew-img" src="<?= $crew['images']['png'] ?>" srcset="<?= $crew['images']['webp'] ?>" alt="<?= $crew['name'] ?>">
+        <?php } ?>
     </div>
   </div>
 </div>

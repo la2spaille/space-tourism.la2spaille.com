@@ -88,7 +88,6 @@
   user-select: none;
   color: inherit;
   box-sizing: border-box;
-  color: inherit;
   font-weight: inherit;
   background-repeat: no-repeat;
 }
@@ -101,6 +100,8 @@ main {
   color: #fff;
   font-weight: 400;
   text-transform: none;
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
 }
 
 body, main {
