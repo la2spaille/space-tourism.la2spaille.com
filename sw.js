@@ -3,18 +3,6 @@
     self.skipWaiting()
     event.waitUntil((async () => {
         const cache = await caches.open(PREFIX)
-        cache.add(new Request("assets/home/background-home-desktop.jpg"))
-        cache.add(new Request("assets/home/background-home-tablet.jpg"))
-        cache.add(new Request("assets/home/background-home-mobile.jpg"))
-        cache.add(new Request("assets/destination/background-destination-desktop.jpg"))
-        cache.add(new Request("assets/destination/background-destination-tablet.jpg"))
-        cache.add(new Request("assets/destination/background-destination-mobile.jpg"))
-        cache.add(new Request("assets/crew/background-crew-desktop.jpg"))
-        cache.add(new Request("assets/crew/background-crew-tablet.jpg"))
-        cache.add(new Request("assets/crew/background-crew-mobile.jpg"))
-        cache.add(new Request("assets/technology/background-technology-desktop.jpg"))
-        cache.add(new Request("assets/technology/background-technology-tablet.jpg"))
-        cache.add(new Request("assets/technology/background-technology-mobile.jpg"))
     })())
  })
 self.addEventListener('activate',(event) =>{
