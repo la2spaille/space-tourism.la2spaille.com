@@ -5,7 +5,7 @@ export function technology() {
     let technologiesDescription = document.querySelectorAll('.js-technology-description')
     let technologiesNav = document.querySelectorAll('.js-technology-nav')
     let wParagraph = document.querySelector('.w-paragraph')
-    if (technologiesImg.length != 0) {
+    if (technologiesImg.length !== 0) {
         wParagraph.style.minHeight =`${technologiesDescription[0].offsetHeight}`
         window.addEventListener('resize' ,( ) => {
             wParagraph.style.minHeight =`${technologiesDescription[0].offsetHeight}`
@@ -43,8 +43,8 @@ export function technology() {
                 technologiesNav.forEach((element, index) => {
                     element.style.pointerEvents = "none"
                     for (let i = 0; i < 4; i++) {
-                        if (currentIndex != index) {
-                            if (i != 3) technologies[index][i].classList.remove('active')
+                        if (currentIndex !== index) {
+                            if (i !== 3) technologies[index][i].classList.remove('active')
                             setTimeout(() => {
                                 technologies[index][3].classList.remove('active')
                             }, 600);

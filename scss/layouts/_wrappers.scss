@@ -294,5 +294,8 @@
     transform: translate(-50%,-50%);
     width: 20%;
     height: 20%;
+    min-width: 40px;
+    min-height: 40px;
     z-index: 16;
+    transition: 0.1s;
 }

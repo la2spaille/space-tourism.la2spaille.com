@@ -13,8 +13,8 @@ $technologies = $data['technology'];
       <div class="w-technology-nav transformation">
 
         <?php foreach ($technologies as $i => $technology) { ?>
-          <span class="js-technology-nav" data-parallax="0.25">
-<!--              <span class="w-magnet"></span>-->
+          <span class="js-technology-nav" data-parallax="0.3">
+              <span class="w-magnet"></span>
               <?= $i+1 ?>
           </span>
         <?php } ?>

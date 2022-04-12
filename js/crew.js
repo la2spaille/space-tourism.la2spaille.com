@@ -7,7 +7,7 @@ export function crew() {
     let crewsNav = document.querySelectorAll('.js-crew-nav')
     let wImg = document.querySelector('.w-img')
     let wParagraph = document.querySelector('.w-paragraph')
-    if (crewsImg.length != 0) {
+    if (crewsImg.length !== 0) {
 
         window.addEventListener('resize', () => {
             wImg.style.minHeight = `${crewsImg[1].offsetHeight}`
@@ -29,7 +29,7 @@ export function crew() {
                 }, 2000);
             });
         })
-        let imgLoaded = (currentvalue) => currentvalue.complete == true
+        let imgLoaded = (currentvalue) => currentvalue.complete === true
         crews[0].forEach(element => {
             element.classList.add('transition')
         });
@@ -49,7 +49,7 @@ export function crew() {
                 crewsNav.forEach((element, index) => {
                     element.style.pointerEvents = "none"
                     for (let i = 0; i < 5; i++) {
-                        if (currentIndex != index) {
+                        if (currentIndex !== index) {
                             crews[index][i].classList.remove('active')
                             crews[index][i].classList.add('transition-leave')
                             setTimeout(() => {

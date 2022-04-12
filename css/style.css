@@ -95,16 +95,16 @@
   background: transparent;
 }
 
+html, body {
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
+}
+
 body,
 main {
   color: #fff;
   font-weight: 400;
   text-transform: none;
-  overscroll-behavior: none;
-  scroll-behavior: smooth;
-}
-
-body, main {
   position: relative;
 }
 
@@ -508,7 +508,10 @@ header {
   transform: translate(-50%, -50%);
   width: 20%;
   height: 20%;
+  min-width: 40px;
+  min-height: 40px;
   z-index: 16;
+  transition: 0.1s;
 }
 
 .w-home-cta {
@@ -894,7 +897,7 @@ header {
   height: 100vh;
   z-index: 100;
   width: 100vw;
-  background: var(--dark-blue);
+  background: #0B0D17;
   transition: 0.7s cubic-bezier(0.6, 0.01, 0.43, 0.99);
   clip-path: inset(0 0 0 0);
 }
@@ -905,22 +908,13 @@ header {
 .loader.transition {
   transition: 1s;
 }
-.loader.transition svg {
-  transition: 1s 0.5s ease-in-out;
-  transform: scale(3.75) rotate(0.5turn);
-}
-.loader.transition span {
-  transform: translateY(0) rotate(0);
-  transition: 1s 0.5s ease-out;
+.loader.dom-loaded {
+  clip-path: inset(0 0 100% 0);
 }
 .loader svg {
   transform: scale(3.75);
 }
-.loader.dom-loaded {
-  clip-path: inset(0 0 100% 0);
-}
 .loader strong {
-  overflow-y: hidden;
   position: relative;
   min-width: 100vw;
   display: flex;
@@ -929,7 +923,6 @@ header {
 }
 .loader span {
   display: inline-block;
-  transform: translateY(200%) rotate(15deg);
 }
 
 @media (max-width: 1050px) {

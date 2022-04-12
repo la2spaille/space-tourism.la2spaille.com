@@ -17,15 +17,15 @@
         background: transparent;
     }
 }
+html,body {
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
+}
 body,
 main {
     color: #fff;
     font-weight: 400;
     text-transform: none;
-    overscroll-behavior: none;
-    scroll-behavior: smooth;
-}
-body,main {
     position: relative;
 }
 h1,

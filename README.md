@@ -28,10 +28,13 @@ Users should be able to:
 
 ### Screenshot
 
-Coming soon
-<!-- ![Desktop version](./desktop.jpg) -->
-<!-- ![Tablet version](./tablet.jpg) -->
-<!-- ![Mobile version](./mobile.jpg) -->
+![Desktop version](assets/desktop.png) 
+![Tablet version](assets/tablet.png) 
+![Mobile version](assets/phone.png)
+
+[//]: # ( ![404]&#40;assets/404.png&#41;)
+
+[//]: # ( ![connection]&#40;assets/connection.png&#41;)
 
 ### Links
 
@@ -50,7 +53,7 @@ Coming soon
 - Desktop-first workflow
 
 ### What I learned
-
+(Cette paritie est obselète j'ai améliorer mon code depuis mais la logique reste la même)
 Grace a ce projet j'ai appris de chose vraiment importante à mes yeux :
 - Une propriété css permettant de definir la façon dont le contenu d'un élément doit se mélanger avec le contenu de l'élément parent et avec son arriére plan
 ```css

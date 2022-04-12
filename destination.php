@@ -12,7 +12,7 @@ $destinations = $data['destinations'];
     <div class="w-img destination">
         <span class="w-magnet"></span>
         <?php foreach ($destinations as $destination) : ?>
-            <img data-parallax="0.2" class="js-destination-img" src="<?=$destination['images']['png']?>" srcset="<?= $destination['images']['webp'] ?>" alt="<?= $destination['name'] ?>>">
+            <img data-parallax="0.1" class="js-destination-img" src="<?=$destination['images']['png']?>" srcset="<?= $destination['images']['webp'] ?>" alt="<?= $destination['name'] ?>>">
         <?php endforeach ?>
     </div>
     <div class="w-text destination ">

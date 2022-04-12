@@ -7,7 +7,7 @@ export function destination() {
     let destinationsDistance = document.querySelectorAll('.js-destination-distance')
     let destinationsTravel = document.querySelectorAll('.js-destination-travel')
     let wParagraph = document.querySelector('.w-paragraph')
-    if (destinationsImg.length != 0) {
+    if (destinationsImg.length !== 0) {
         window.addEventListener('resize', () => {
             wParagraph.style.minHeight = `${destinationsDescription[0].offsetHeight}`
         })
@@ -28,7 +28,7 @@ export function destination() {
                 }, 2000);
             });
         })
-        let imgLoaded = (currentvalue) => currentvalue.complete == true
+        let imgLoaded = (currentvalue) => currentvalue.complete === true
         destinations[0].forEach(element => {
             element.classList.add('transition')
         });
@@ -47,7 +47,7 @@ export function destination() {
                     destinationsNav.forEach((element, index) => {
                         element.style.pointerEvents = "none"
                         for (let i = 0; i < 6; i++) {
-                            if (currentIndex != index) {
+                            if (currentIndex !== index) {
                                 destinations[index][i].classList.remove('active')
                                 destinations[index][i].classList.add('transition-leave')
                                 setTimeout(() => {
