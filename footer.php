@@ -4,6 +4,7 @@ if ($title == 'Home') { ?>
     <?= <<<HTML
         <div class="w-bg-img">
             <div class="bg-img home"></div>
+<!--            <img src="/assets/home/background-home-desktop.jpg" alt="" />-->
         </div>
 HTML
     ?>

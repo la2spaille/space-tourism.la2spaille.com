@@ -1,6 +1,7 @@
 import { destination } from "/js/destination.js";
 import { crew } from "/js/crew.js";
 import { technology } from "/js/technology.js";
+
 window.M = {}
 M.Is = {
     def : t => t !== undefined,
@@ -76,11 +77,22 @@ M.Tl =  (arr,attr, timeout, delay ) => {
 M.Carousel = class { // Cooming Soon
     constructor() {
         this.run = this.run.bind(this)
+        this.run()
     }
     run() {
 
     }
 }
+let pageFetched = []
+M.Select('.link.header', true).forEach((link,i) => {
+        (async function () {
+            const reponse = await fetch(link.getAttribute('href'))
+            pageFetched[i] = {
+                page: await reponse.text(),
+                link: link.getAttribute('href')
+            }
+        })()
+})
 
 function pageScript() {
     destination()
@@ -278,7 +290,7 @@ M.Loader = {
 M.Loader.load()
 
 
-// PAJAX
+// AJAX
 let split, select, allImg = Array.from(M.Select('img', true))
 function transitionBefore() {
     M.Loader.loader.classList.remove('dom-loaded')
@@ -292,7 +304,6 @@ function whenLoad (loadEvent) {
     clearInterval(loadEvent)
     setTimeout(() => {
         M.Loader.loader.classList.add('dom-loaded')
-        // Reveal
         M.Tl(M.Select('.transformation',true),'transformation', 800)
         M.Tl([()=>pageScript()],'',800)
     }, 500);
@@ -322,26 +333,24 @@ function pageTransition() {
     let ajaxLinks = M.Select('a', true)
     pageScript()
     main()
-    ajaxLinks.forEach(link => {
+    ajaxLinks.forEach((link, index) => {
         link.style.pointerEvents='auto'
         link.addEventListener('dbClick', e => {
             e.preventDefault()
         })
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', e => {
+            e.preventDefault()
+            e.stopPropagation()
             ajaxLinks.forEach(el => {
                 el.style.pointerEvents='none'
             })
             M.Tl([()=> M.Cursor.removeHover()],'',700)
             transitionBefore()
-            //
-            e.preventDefault()
-            e.stopPropagation()
-            //
-            async function fetchHtml() {
-                const reponse = await fetch(e.target.getAttribute('href'))
-                transitionAfter(await reponse.text())
-            }
-            fetchHtml()
+            pageFetched.forEach(page => {
+                if(e.target.getAttribute('href') === page.link || e.target.getAttribute('data-link') === page.link) {
+                    transitionAfter(page.page)
+                }
+            })
             if (e.target.getAttribute('href') !== window.location) {
                 window.history.pushState({ path: e.target.getAttribute('href') }, '', e.target.getAttribute('href'))
             }
@@ -351,17 +360,17 @@ function pageTransition() {
 }
 pageTransition()
 
-// Transition entre les page avec les bouton
+// Transition entre les page avec les bouton du navigateur
 M.PAJAX = {
     el: window,
     popstate : function () {
         this.el.addEventListener('popstate', () => {
             transitionBefore()
-            async  function fetchHtml() {
-               const reponse = await fetch(window.location.href)
-                transitionAfter(await reponse.text())
-            }
-            fetchHtml()
+            pageFetched.forEach(page => {
+                if(window.location.pathname.split('/')[1] === page.link){
+                    transitionAfter(page.page)
+                }
+            })
         })
     }
 }

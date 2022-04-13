@@ -164,7 +164,7 @@ header {
 
 .w-nav {
   background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(99px);
+  backdrop-filter: blur(35px);
   padding: 0 165px 0 123px;
 }
 .w-nav::after {
@@ -214,7 +214,7 @@ header {
   padding: 38.5px 0;
 }
 .w-nav a::before {
-  content: attr(number);
+  content: attr(data-id);
   font-weight: 700;
   margin: 0 11px 0 0;
 }
@@ -405,6 +405,14 @@ header {
   width: 100%;
   height: 100%;
 }
+.w-bg-img img {
+  object-fit: cover;
+  min-width: 100%;
+  max-width: 100%;
+  height: 100%;
+  animation: space 40s 1 ease-in-out;
+  animation-fill-mode: forwards;
+}
 
 .w-img.technology {
   position: relative;
@@ -510,8 +518,8 @@ header {
   height: 20%;
   min-width: 40px;
   min-height: 40px;
-  z-index: 16;
   transition: 0.1s;
+  z-index: 16;
 }
 
 .w-home-cta {

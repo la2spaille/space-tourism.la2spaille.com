@@ -16,8 +16,8 @@ require('header.php')
             </p>
         </div>
         <div data-parallax="0.2" class="w-home-cta transformation f-heading4">
-            <span class="w-magnet"></span>
             <a  href="destination.php">EXPLORE</a>
+            <span class="w-magnet" data-link="destination.php"></span>
         </div>
     </div>
 </div>

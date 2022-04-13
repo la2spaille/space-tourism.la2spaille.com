@@ -182,6 +182,14 @@
     z-index: -1;
     width: 100%;
     height: 100%;
+    img {
+        object-fit: cover;
+        min-width: 100%;
+        max-width: 100%;
+        height: 100%;
+        animation: space 40s 1 ease-in-out;
+        animation-fill-mode: forwards;
+    }
 }
 .w-img {
     &.technology {
@@ -213,6 +221,7 @@
     }
 }
 .bg-img {
+
     background-size: cover;
     min-width: 100%;
     max-width: 100%;
@@ -221,6 +230,7 @@
     animation-fill-mode: forwards;
     &.home {
         background-image: url("/assets/home/background-home-desktop.jpg");
+        //display: none;
     }
     &.destination {
         background-image: url("/assets/destination/background-destination-desktop.jpg");
@@ -296,6 +306,6 @@
     height: 20%;
     min-width: 40px;
     min-height: 40px;
-    z-index: 16;
     transition: 0.1s;
+    z-index: 16;
 }
