@@ -133,7 +133,7 @@ function main() {
 
         }
     }
-    if(!navigator.userAgent.includes('Safari') ) {
+    if(!navigator.vendor.includes('Apple') ) {
         M.Cursor.move()
         M.Cursor.hover()
     } else  {
