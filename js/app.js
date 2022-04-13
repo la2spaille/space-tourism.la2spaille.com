@@ -1,13 +1,6 @@
 import { destination } from "/js/destination.js";
 import { crew } from "/js/crew.js";
 import { technology } from "/js/technology.js";
-// (async function fetchImg() {
-//     const reponse = await fetch("./assets/home/background-home-desktop.png")
-//     return await reponse.blob()
-// })()
-window.addEventListener('click', e => {
-    console.log(e.target)
-})
 window.M = {}
 M.Is = {
     def : t => t !== undefined,
@@ -18,6 +11,24 @@ M.Is = {
 M.Ease = {
     linear: t => t,
     o2: t => t * (2 - t)
+}
+M.XY =  {
+    accX:0,
+    accY:0,
+    offsetTop:function (element) {
+    this.accY = 0
+    if (element.offsetParent) {
+        this.accY = this.offsetTop(element.offsetParent)
+    }
+    return element.offsetTop + this.accY
+},
+    offsetLeft : function (element) {
+    this.accX = 0
+    if (element.offsetParent) {
+        this.accX = this.offsetLeft(element.offsetParent)
+    }
+    return element.offsetLeft + this.accX
+}
 }
 M.Select = (el,all) => {
     let t
@@ -168,33 +179,34 @@ function main() {
     menuCTA.open(); menuCTA.closeByBtn(); menuCTA.closeByBody()
 
     // Magnet
-    let accY, accX
-    /**
-    * Calcule la position de l'élement par rapport au haut de l'élement document
-    * @param {HTMLElement} element
-    * @return {Number}
-    */
-    function offsetTop(element) {
-        accY = 0
-        if (element.offsetParent) {
-            accY = offsetTop(element.offsetParent)
-        }
-        return element.offsetTop + accY
-    }
-    /**
-     * Calcule la position de l'element par rapport à la gauche de l'élement document
-     * @author la2spaille
-     * @param {HTMLElement} element
-     * @return {Number}
-     * @
-     */
-    function offsetLeft(element) {
-        accX = 0
-        if (element.offsetParent) {
-            accX = offsetLeft(element.offsetParent)
-        }
-        return element.offsetLeft + accX
-    }
+
+    // let accY, accX
+    // /**
+    // * Calcule la position de l'élement par rapport au haut de l'élement document
+    // * @param {HTMLElement} element
+    // * @return {Number}
+    // */
+    // function offsetTop(element) {
+    //     accY = 0
+    //     if (element.offsetParent) {
+    //         accY = offsetTop(element.offsetParent)
+    //     }
+    //     return element.offsetTop + accY
+    // }
+    // /**
+    //  * Calcule la position de l'element par rapport à la gauche de l'élement document
+    //  * @author la2spaille
+    //  * @param {HTMLElement} element
+    //  * @return {Number}
+    //  * @
+    //  */
+    // function offsetLeft(element) {
+    //     accX = 0
+    //     if (element.offsetParent) {
+    //         accX = offsetLeft(element.offsetParent)
+    //     }
+    //     return element.offsetLeft + accX
+    // }
     class Magnet {
         constructor(el,i) {
             this.el = el
@@ -215,8 +227,8 @@ function main() {
                     requestAnimationFrame(() => {
                         let mouseX = e.pageX;
                         let mouseY = e.pageY;
-                        let diffX = mouseX - (offsetLeft(this.el) + (this.el.offsetWidth / 2));
-                        let diffY = mouseY - (offsetTop(this.el) + (this.el.offsetHeight / 2));
+                        let diffX = mouseX - (M.XY.offsetLeft(this.el) + (this.el.offsetWidth / 2));
+                        let diffY = mouseY - (M.XY.offsetTop(this.el) + (this.el.offsetHeight / 2));
                         M.T(this.el,this.paraM * diffX,this.paraM * diffY,'px')
                     })
                 })
