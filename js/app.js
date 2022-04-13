@@ -1,7 +1,9 @@
 import { destination } from "/js/destination.js";
 import { crew } from "/js/crew.js";
 import { technology } from "/js/technology.js";
-
+window.addEventListener('wheel', e => {
+    console.log(e.deltaY)
+})
 window.M = {}
 M.Is = {
     def : t => t !== undefined,
