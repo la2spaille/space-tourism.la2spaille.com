@@ -115,7 +115,6 @@ function main() {
     //VScroll
     M.VScroll = {
         el: M.Select('main', false),
-        scroll: 0,
         scrollSection: M.Select('#app', true),
         vScrolledRestart: function () {
             window.addEventListener('resize', () => {
@@ -194,9 +193,9 @@ function main() {
             let vScrollHeight = this.vScrollHeight()
             window.addEventListener('wheel', (e) => {
                 let vScrolledY = this.vScrolledY('keydown')
-                if (vScrolledY < 100 && e.deltaY < 0 || (vScrolledY + e.deltaY) < 0 && e.deltaY < 0) {
+                if ((vScrolledY + e.deltaY*8) < 0 && e.deltaY < 0) {
                     M.To({
-                        duration: 350,
+                        duration: 100,
                         timing(t) {
                             return M.Ease.o2(t)
                         },
@@ -204,9 +203,9 @@ function main() {
                             M.T(M.Select('main', false), 0, -vScrolledY + vScrolledY * progress, 'px')
                         }
                     })
-                } else if (vScrolledY >= vScrollHeight - 100 && e.deltaY > 0 || (vScrolledY + e.deltaY) > vScrollHeight && e.deltaY > 0) {
+                } else if ((vScrolledY + e.deltaY*8) > vScrollHeight && e.deltaY > 0) {
                     M.To({
-                        duration: 350,
+                        duration: 100,
                         timing(t) {
                             return M.Ease.o2(t)
                         },
@@ -216,15 +215,16 @@ function main() {
                     })
                 } else {
                     M.To({
-                        duration: 75,
+                        duration: 200,
                         timing(t) {
-                            return M.Ease.o2(t)
+                            return M.Ease.linear(t)
                         },
                         draw(progress) {
-                            M.T(M.Select('main', false), 0, -vScrolledY - progress * e.deltaY, 'px')
+                            M.T(M.Select('main', false), 0, -vScrolledY - progress * e.deltaY*8, 'px')
                         }
                     })
                 }
+
             })
         }
     }
