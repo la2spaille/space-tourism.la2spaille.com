@@ -1,9 +1,9 @@
 #app {
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    width: 100%;
     padding: 215px 0 130px;
+    background:#0b0d17;
     &.destination {
         padding: 215px 0 120px;
         gap: 62.5px;

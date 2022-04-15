@@ -2,7 +2,8 @@
 $title = "Home";
 require('header.php')
 ?>
-<div id="app">
+    <div id="app">
+
     <div class="l-wrapper home">
         <div class="w-text home transformation">
             <strong class="w-strong home f-heading5">
@@ -16,10 +17,9 @@ require('header.php')
             </p>
         </div>
         <div data-parallax="0.2" class="w-home-cta transformation f-heading4">
-            <a  href="destination.php">EXPLORE</a>
+            <a  href="destination">EXPLORE</a>
             <span class="w-magnet" data-link="destination.php"></span>
         </div>
     </div>
-</div>
 
 <?php require('footer.php') ?>

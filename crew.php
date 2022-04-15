@@ -38,5 +38,4 @@ $crews = $data['crew'];
         <?php } ?>
     </div>
   </div>
-</div>
 <?php require('footer.php') ?>

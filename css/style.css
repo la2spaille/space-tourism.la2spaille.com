@@ -83,12 +83,12 @@
   vertical-align: baseline;
   text-decoration: none;
   text-transform: inherit;
-  transition: 0.15s;
   list-style: none;
   user-select: none;
+  font-size: inherit;
+  font-weight: inherit;
   color: inherit;
   box-sizing: border-box;
-  font-weight: inherit;
   background-repeat: no-repeat;
 }
 *::selection {
@@ -98,14 +98,19 @@
 html, body {
   overscroll-behavior: none;
   scroll-behavior: smooth;
+  height: 100%;
+  width: 100%;
 }
 
-body,
-main {
+body, main {
   color: #fff;
   font-weight: 400;
   text-transform: none;
   position: relative;
+}
+
+body {
+  overflow: clip;
 }
 
 h1,
@@ -124,11 +129,11 @@ span {
 }
 
 #app {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  width: 100%;
   padding: 215px 0 130px;
+  background: #0b0d17;
 }
 #app.destination {
   padding: 215px 0 120px;
@@ -844,6 +849,7 @@ header {
   pointer-events: none;
   mix-blend-mode: difference;
   will-change: transform;
+  transition: 0.15s;
 }
 .w-site-cursor.site-cursor--link-hover .site-cursor {
   transform: translate(-50%, -50%) scale(3.75);

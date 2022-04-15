@@ -1,15 +1,14 @@
 import { destination } from "/js/destination.js";
 import { crew } from "/js/crew.js";
 import { technology } from "/js/technology.js";
-window.addEventListener('wheel', e => {
-    console.log(e.deltaY)
-})
+
 window.M = {}
 M.Is = {
     def : t => t !== undefined,
     und : t => t === undefined,
     true : t => t === true,
-    imgLoad : t => t.complete === true
+    imgLoad : t => t.complete === true,
+    null : t => t === null
 }
 M.Ease = {
     linear: t => t,
@@ -103,6 +102,116 @@ function pageScript() {
 }
 function main() {
 
+    //VScroll
+    M.VScroll =  {
+        el : M.Select('main',false),
+        scroll :0,
+        scrollSection : M.Select('#app',true),
+        vScrollHeight : function() {
+            let vScrollHeight = 0
+            this.scrollSection.forEach( section => {
+                vScrollHeight += section.offsetHeight
+            })
+            vScrollHeight -= innerHeight
+            vScrollHeight += M.Is.null(M.Select('footer',false)) ? 0  : M.Select('footer',false).offsetHeight
+            return vScrollHeight
+        },
+        vScrollKeyDown : function () {
+            let vScrolled = 0, vScrollHeight = this.vScrollHeight()
+            window.addEventListener('keydown', (e) => {
+                vScrolled = -(M.Select('main',false).getBoundingClientRect().top)
+                if (e.code === 'ArrowUp' ) {
+                    if (vScrolled < 175) {
+                        M.To({
+                            duration:1000,
+                            timing(t) {
+                                return M.Ease.o2(t)
+                            },
+                            draw(progress) {
+                                M.T(M.Select('main',false),0,-vScrolled + vScrolled * progress,'px')
+                            }
+                        })
+                    } else {
+                        M.To({
+                            duration:1000,
+                            timing(t) {
+                                return M.Ease.o2(t)
+                            },
+                            draw(progress) {
+                                M.T(M.Select('main',false),0,-vScrolled + progress * 150,'px')
+                            }
+                        })
+                    }
+
+                }
+                if (e.code === 'ArrowDown' || e.code === 'Space') {
+                    if (vScrolled > this.vScrollHeight() - 175) {
+                        M.To({
+                            duration:2000,
+                            timing(t) {
+                                return M.Ease.o2(t)
+                            },
+                            draw(progress) {
+                                M.T(M.Select('main',false),0,-vScrolled - (vScrollHeight - vScrolled) * progress,'px')
+                            }
+                        })
+                    } else {
+                        M.To({
+                            duration:1000,
+                            timing(t) {
+                                return M.Ease.o2(t)
+                            },
+                            draw(progress) {
+                                M.T(M.Select('main',false),0,-vScrolled - progress * 150,'px')
+                            }
+                        })
+                    }
+                }
+            })
+        },
+        vScrollWheel : function () {
+            let vScrolled = 0, vScrollHeight = this.vScrollHeight()
+            window.addEventListener('wheel', (e) => {
+                vScrolled = -(M.Select('main',false).getBoundingClientRect().top)
+                console.log(vScrolled)
+                if (vScrolled < 200 && e.deltaY < 0) {
+                    M.To({
+                        duration:250,
+                        timing(t) {
+                            return M.Ease.o2(t)
+                        },
+                        draw(progress) {
+                            M.T(M.Select('main',false),0,-vScrolled + vScrolled * progress,'px')
+                        }
+                    })
+                } else if (vScrolled > this.vScrollHeight() - 200 && e.deltaY > 0) {
+                    M.To({
+                        duration:250,
+                        timing(t) {
+                            return M.Ease.o2(t)
+                        },
+                        draw(progress) {
+                            M.T(M.Select('main',false),0,-vScrolled - (vScrollHeight - vScrolled) * progress,'px')
+                        }
+                    })
+                } else {
+                    M.To({
+                        duration:250,
+                        timing(t) {
+                            return M.Ease.o2(t)
+                        },
+                        draw(progress) {
+                            M.T(M.Select('main',false),0,-vScrolled - progress * e.deltaY,'px')
+                        }
+                    })
+                }
+
+            })
+
+        }
+    }
+    M.VScroll.vScrollKeyDown();M.VScroll.vScrollWheel()
+
     // Cursor
     M.Cursor = {
         cursor : M.Select('.w-site-cursor',false),
@@ -164,19 +273,13 @@ function main() {
             this.menuBtn.addEventListener('click', (e) => {
                     this.headerNav.classList.add('is-active')
                     this.menuBtn.classList.add('is-active')
-                    document.body.style.overflowY = "hidden"
                     e.stopPropagation()
-                    this.links.forEach(link => {
-                        link.addEventListener('click', () => {
-                            document.body.style.overflowY = "auto"
-                        })
-                    })
+
         })},
         closeByBtn : function () {
             this.closeBtn.addEventListener('click', (e) => {
                 this.headerNav.classList.remove('is-active')
                 this.menuBtn.classList.remove('is-active')
-                document.body.style.overflowY = "auto"
                 e.stopPropagation()
             })
         },
@@ -185,7 +288,6 @@ function main() {
                 if (event.target !== this.headerNav) {
                     this.headerNav.classList.remove('is-active')
                     this.menuBtn.classList.remove('is-active')
-                    document.body.style.overflowY = "auto"
                 }
             })
         }
@@ -194,33 +296,7 @@ function main() {
 
     // Magnet
 
-    // let accY, accX
-    // /**
-    // * Calcule la position de l'élement par rapport au haut de l'élement document
-    // * @param {HTMLElement} element
-    // * @return {Number}
-    // */
-    // function offsetTop(element) {
-    //     accY = 0
-    //     if (element.offsetParent) {
-    //         accY = offsetTop(element.offsetParent)
-    //     }
-    //     return element.offsetTop + accY
-    // }
-    // /**
-    //  * Calcule la position de l'element par rapport à la gauche de l'élement document
-    //  * @author la2spaille
-    //  * @param {HTMLElement} element
-    //  * @return {Number}
-    //  * @
-    //  */
-    // function offsetLeft(element) {
-    //     accX = 0
-    //     if (element.offsetParent) {
-    //         accX = offsetLeft(element.offsetParent)
-    //     }
-    //     return element.offsetLeft + accX
-    // }
+
     class Magnet {
         constructor(el,i) {
             this.el = el
@@ -233,16 +309,19 @@ function main() {
             this.leave()
         }
         enterCallback() {
+            let vScrolled
             this.transition = "0.2s"
             this.el.style.setProperty('transition', this.transition)
             this.magnet.style.transform="scale(5.5) translate(-10%, -10%)"
             setTimeout(()=> {
                 this.magnet.addEventListener('mousemove', (e) => {
+                    vScrolled = -(M.Select('main',false).getBoundingClientRect().top)
+
                     requestAnimationFrame(() => {
                         let mouseX = e.pageX;
                         let mouseY = e.pageY;
                         let diffX = mouseX - (M.XY.offsetLeft(this.el) + (this.el.offsetWidth / 2));
-                        let diffY = mouseY - (M.XY.offsetTop(this.el) + (this.el.offsetHeight / 2));
+                        let diffY = mouseY + vScrolled - (M.XY.offsetTop(this.el) + (this.el.offsetHeight / 2));
                         M.T(this.el,this.paraM * diffX,this.paraM * diffY,'px')
                     })
                 })
@@ -292,6 +371,7 @@ M.Loader = {
 M.Loader.load()
 
 
+
 // AJAX
 let split, select, allImg = Array.from(M.Select('img', true))
 function transitionBefore() {
@@ -310,7 +390,17 @@ function whenLoad (loadEvent) {
         M.Tl([()=>pageScript()],'',800)
     }, 500);
     M.Tl([M.Loader.loader],'transition',1500)
-    window.scrollTo(0, 0) //On réinitialise le scroll
+    let vScrolled = -(M.Select('main',false).getBoundingClientRect().top)
+    M.To({
+        duration:1000,
+        speed:1,
+        timing(t) {
+            return M.Ease.o2(t)
+        },
+        draw(progress) {
+            M.T(M.Select('main',false),0,`${-(vScrolled - vScrolled * progress)}`,'px')
+        }
+    })//On réinitialise le scroll
     M.Tl([()=> pageTransition()],'',1000)
 }
 function transitionAfter(htmlText) {
@@ -369,7 +459,7 @@ M.PAJAX = {
         this.el.addEventListener('popstate', () => {
             transitionBefore()
             pageFetched.forEach(page => {
-                if(window.location.pathname.split('/')[1] === page.link){
+                if(window.location.pathname.split('/')[1] === page.link || (window.location.pathname.split('/')[1]==='' && page.link==='/')){
                     transitionAfter(page.page)
                 }
             })

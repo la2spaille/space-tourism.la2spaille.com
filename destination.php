@@ -53,6 +53,5 @@ $destinations = $data['destinations'];
       </div>
     </div>
   </div>
-</div>
 
 <?php require('footer.php') ?>

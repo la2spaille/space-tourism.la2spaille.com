@@ -9,6 +9,7 @@
     pointer-events: none;
     mix-blend-mode: difference;
     will-change: transform;
+    transition: 0.15s;
     &.site-cursor--link-hover {
         .site-cursor {
             transform: translate(-50%, -50%) scale(3.75);

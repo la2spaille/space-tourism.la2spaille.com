@@ -6,12 +6,12 @@
     vertical-align: baseline;
     text-decoration: none;
     text-transform: inherit;
-    transition: 0.15s;
     list-style: none;
     user-select: none;
+    font-size:inherit;
+    font-weight: inherit;
     color: inherit;
     box-sizing: border-box;
-    font-weight: inherit;
     background-repeat: no-repeat;
     &::selection {
         background: transparent;
@@ -20,14 +20,23 @@
 html,body {
     overscroll-behavior: none;
     scroll-behavior: smooth;
+    height: 100%;
+    width: 100%;
+
 }
-body,
-main {
+body,main{
     color: #fff;
     font-weight: 400;
     text-transform: none;
     position: relative;
 }
+
+body {
+    overflow: clip;
+}
+//body::-webkit-scrollbar {
+//    display:none
+//}
 h1,
 h3,
 p,
