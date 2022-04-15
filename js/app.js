@@ -1,40 +1,40 @@
-import { destination } from "/js/destination.js";
-import { crew } from "/js/crew.js";
-import { technology } from "/js/technology.js";
+import {destination} from "/js/destination.js";
+import {crew} from "/js/crew.js";
+import {technology} from "/js/technology.js";
 
 window.M = {}
 M.Is = {
-    def : t => t !== undefined,
-    und : t => t === undefined,
-    true : t => t === true,
-    imgLoad : t => t.complete === true,
-    null : t => t === null
+    def: t => t !== undefined,
+    und: t => t === undefined,
+    true: t => t === true,
+    imgLoad: t => t.complete === true,
+    null: t => t === null
 }
 M.Ease = {
     linear: t => t,
     o2: t => t * (2 - t)
 }
-M.XY =  {
-    accX:0,
-    accY:0,
-    offsetTop:function (element) {
-    this.accY = 0
-    if (element.offsetParent) {
-        this.accY = this.offsetTop(element.offsetParent)
+M.XY = {
+    accX: 0,
+    accY: 0,
+    offsetTop: function (element) {
+        this.accY = 0
+        if (element.offsetParent) {
+            this.accY = this.offsetTop(element.offsetParent)
+        }
+        return element.offsetTop + this.accY
+    },
+    offsetLeft: function (element) {
+        this.accX = 0
+        if (element.offsetParent) {
+            this.accX = this.offsetLeft(element.offsetParent)
+        }
+        return element.offsetLeft + this.accX
     }
-    return element.offsetTop + this.accY
-},
-    offsetLeft : function (element) {
-    this.accX = 0
-    if (element.offsetParent) {
-        this.accX = this.offsetLeft(element.offsetParent)
-    }
-    return element.offsetLeft + this.accX
 }
-}
-M.Select = (el,all) => {
+M.Select = (el, all) => {
     let t
-    M.Is.true(all) ? t = document.querySelectorAll(el) : t =  document.querySelector(el)
+    M.Is.true(all) ? t = document.querySelectorAll(el) : t = document.querySelector(el)
     return t
 }
 M.T = (t, x, y, u) => {
@@ -44,9 +44,9 @@ M.T = (t, x, y, u) => {
 M.O = (t, r) => {
     t.style.opacity = r
 }
-M.To = ({ duration, draw, timing }) => {
+M.To = ({duration, draw, timing}) => {
     let start = performance.now()
-    requestAnimationFrame( function To(timestamp)  {
+    requestAnimationFrame(function To(timestamp) {
         let t = (timestamp - start) / duration
         if (t < 0) t = 0
         if (t > 1) t = 1
@@ -58,21 +58,21 @@ M.To = ({ duration, draw, timing }) => {
         return progress
     })
 }
-M.Tl =  (arr,attr, timeout, delay ) => {
-        for(let i = 0; i < arr.length; i++) {
-            if(M.Is.def(delay)) {
-                timeout += typeof delay === 'object' ? delay[i]*1000 : delay*1000
-            }
-            if(attr !== '') {
-                setTimeout(() => {
-                    arr[i].classList.remove(attr)
-                },timeout)
-            } else {
-                setTimeout(() => {
-                    arr[i]()
-                }, timeout)
-            }
+M.Tl = (arr, attr, timeout, delay) => {
+    for (let i = 0; i < arr.length; i++) {
+        if (M.Is.def(delay)) {
+            timeout += typeof delay === 'object' ? delay[i] * 1000 : delay * 1000
         }
+        if (attr !== '') {
+            setTimeout(() => {
+                arr[i].classList.remove(attr)
+            }, timeout)
+        } else {
+            setTimeout(() => {
+                arr[i]()
+            }, timeout)
+        }
+    }
 }
 
 M.Carousel = class { // Cooming Soon
@@ -80,150 +80,170 @@ M.Carousel = class { // Cooming Soon
         this.run = this.run.bind(this)
         this.run()
     }
+
     run() {
 
     }
 }
+
 let pageFetched = []
-M.Select('.link.header', true).forEach((link,i) => {
-        (async function () {
-            const reponse = await fetch(link.getAttribute('href'))
-            pageFetched[i] = {
-                page: await reponse.text(),
-                link: link.getAttribute('href')
-            }
-        })()
+M.Select('.link.header', true).forEach((link, i) => {
+    (async function () {
+        const reponse = await fetch(link.getAttribute('href'))
+        pageFetched[i] = {
+            page: await reponse.text(),
+            link: link.getAttribute('href')
+        }
+    })()
 })
 
-function pageScript() {
-    destination()
-    crew()
-    technology()
+// Loader
+M.Loader = {
+    loader: M.Select('.loader', false),
+    load: function () {
+        window.addEventListener('load', () => {
+            M.Select('.loader', false).classList.add('dom-loaded')
+            M.Tl(M.Select('.transformation', true), 'transformation', 1000)
+        })
+    }
 }
+M.Loader.load()
+
+////////////////////////////////////////////////////////////////////
 function main() {
 
     //VScroll
-    M.VScroll =  {
-        el : M.Select('main',false),
-        scroll :0,
-        scrollSection : M.Select('#app',true),
-        vScrollHeight : function() {
+    M.VScroll = {
+        el: M.Select('main', false),
+        scroll: 0,
+        scrollSection: M.Select('#app', true),
+        vScrolledRestart: function () {
+            window.addEventListener('resize', () => {
+                setTimeout(() => {
+                    this.vScrollWheel()
+                    this.vScrollKeyDown()
+                },500)
+            })
+        },
+        vScrolledY : function () {
+            return -(M.Select('main', false).getBoundingClientRect().top)
+        },
+        vScrollHeight: function () {
             let vScrollHeight = 0
-            this.scrollSection.forEach( section => {
+            this.scrollSection.forEach(section => {
                 vScrollHeight += section.offsetHeight
             })
             vScrollHeight -= innerHeight
-            vScrollHeight += M.Is.null(M.Select('footer',false)) ? 0  : M.Select('footer',false).offsetHeight
+            vScrollHeight += M.Is.null(M.Select('footer', false)) ? 0 : M.Select('footer', false).offsetHeight
             return vScrollHeight
         },
-        vScrollKeyDown : function () {
-            let vScrolled = 0, vScrollHeight = this.vScrollHeight()
+        vScrollKeyDown: function () {
+            let vScrollHeight = this.vScrollHeight()
             window.addEventListener('keydown', (e) => {
-                vScrolled = -(M.Select('main',false).getBoundingClientRect().top)
-                if (e.code === 'ArrowUp' ) {
-                    if (vScrolled < 175) {
+                let vScrolledY = this.vScrolledY()
+                if (e.code === 'ArrowUp') {
+                    if (vScrolledY < 175) {
                         M.To({
-                            duration:1000,
+                            duration: 1000,
                             timing(t) {
                                 return M.Ease.o2(t)
                             },
                             draw(progress) {
-                                M.T(M.Select('main',false),0,-vScrolled + vScrolled * progress,'px')
+                                M.T(M.Select('main', false), 0, -vScrolledY + vScrolledY * progress, 'px')
                             }
                         })
                     } else {
                         M.To({
-                            duration:1000,
+                            duration: 1000,
                             timing(t) {
                                 return M.Ease.o2(t)
                             },
                             draw(progress) {
-                                M.T(M.Select('main',false),0,-vScrolled + progress * 150,'px')
+                                M.T(M.Select('main', false), 0, -vScrolledY + progress * 150, 'px')
                             }
                         })
                     }
 
                 }
                 if (e.code === 'ArrowDown' || e.code === 'Space') {
-                    if (vScrolled > this.vScrollHeight() - 175) {
+                    if (vScrolledY > vScrollHeight - 175) {
                         M.To({
-                            duration:2000,
+                            duration: 2000,
                             timing(t) {
                                 return M.Ease.o2(t)
                             },
                             draw(progress) {
-                                M.T(M.Select('main',false),0,-vScrolled - (vScrollHeight - vScrolled) * progress,'px')
+                                M.T(M.Select('main', false), 0, -vScrolledY - (vScrollHeight - vScrolledY) * progress, 'px')
                             }
                         })
                     } else {
                         M.To({
-                            duration:1000,
+                            duration: 1000,
                             timing(t) {
                                 return M.Ease.o2(t)
                             },
                             draw(progress) {
-                                M.T(M.Select('main',false),0,-vScrolled - progress * 150,'px')
+                                M.T(M.Select('main', false), 0, -vScrolledY - progress * 150, 'px')
                             }
                         })
                     }
                 }
             })
         },
-        vScrollWheel : function () {
-            let vScrolled = 0, vScrollHeight = this.vScrollHeight()
+        vScrollWheel: function () {
+            let vScrollHeight = this.vScrollHeight()
             window.addEventListener('wheel', (e) => {
-                vScrolled = -(M.Select('main',false).getBoundingClientRect().top)
-                console.log(vScrolled)
-                if (vScrolled < 200 && e.deltaY < 0) {
+                let vScrolledY = this.vScrolledY('keydown')
+                if (vScrolledY < 100 && e.deltaY < 0 || (vScrolledY + e.deltaY) < 0 && e.deltaY < 0) {
                     M.To({
-                        duration:250,
+                        duration: 350,
                         timing(t) {
                             return M.Ease.o2(t)
                         },
                         draw(progress) {
-                            M.T(M.Select('main',false),0,-vScrolled + vScrolled * progress,'px')
+                            M.T(M.Select('main', false), 0, -vScrolledY + vScrolledY * progress, 'px')
                         }
                     })
-                } else if (vScrolled > this.vScrollHeight() - 200 && e.deltaY > 0) {
+                } else if (vScrolledY >= vScrollHeight - 100 && e.deltaY > 0 || (vScrolledY + e.deltaY) > vScrollHeight && e.deltaY > 0) {
                     M.To({
-                        duration:250,
+                        duration: 350,
                         timing(t) {
                             return M.Ease.o2(t)
                         },
                         draw(progress) {
-                            M.T(M.Select('main',false),0,-vScrolled - (vScrollHeight - vScrolled) * progress,'px')
+                            M.T(M.Select('main', false), 0, -vScrolledY - (vScrollHeight - vScrolledY) * progress, 'px')
                         }
                     })
                 } else {
                     M.To({
-                        duration:250,
+                        duration: 75,
                         timing(t) {
                             return M.Ease.o2(t)
                         },
                         draw(progress) {
-                            M.T(M.Select('main',false),0,-vScrolled - progress * e.deltaY,'px')
+                            M.T(M.Select('main', false), 0, -vScrolledY - progress * e.deltaY, 'px')
                         }
                     })
                 }
-
             })
-
         }
     }
-    M.VScroll.vScrollKeyDown();M.VScroll.vScrollWheel()
+    M.VScroll.vScrolledRestart()
+    M.VScroll.vScrollKeyDown()
+    M.VScroll.vScrollWheel()
 
     // Cursor
     M.Cursor = {
-        cursor : M.Select('.w-site-cursor',false),
-        homeCTA : M.Select('.w-home-cta',false),
-        techCTA : M.Select('.js-technology-nav',true),
-        links : M.Select('.link-hover', true),
-        move : function() {
+        cursor: M.Select('.w-site-cursor', false),
+        homeCTA: M.Select('.w-home-cta', false),
+        techCTA: M.Select('.js-technology-nav', true),
+        links: M.Select('.link-hover', true),
+        move: function () {
             document.addEventListener('mousemove', (e) => {
-                M.T(this.cursor, `calc(${e.clientX}px - 50%)` ,`calc(${e.clientY}px - 50%)`,`` )
+                M.T(this.cursor, `calc(${e.clientX}px - 50%)`, `calc(${e.clientY}px - 50%)`, ``)
             })
         },
-        hover : function ()  {
+        hover: function () {
             this.links.forEach(link => {
                 link.addEventListener('mouseenter', () => {
                     this.cursor.classList.add('site-cursor--link-hover')
@@ -251,39 +271,40 @@ function main() {
                 })
             }
         },
-        removeHover : function () {
+        removeHover: function () {
             this.cursor.classList.remove('site-cursor--link-hover')
 
         }
     }
-    if(!navigator.vendor.includes('Apple') ) {
+    if (!navigator.vendor.includes('Apple')) {
         M.Cursor.move()
         M.Cursor.hover()
-    } else  {
-        M.Cursor.cursor.style.display= "none"
+    } else {
+        M.Cursor.cursor.style.display = "none"
     }
 
     // Mobile Navigation Apparition
     let menuCTA = {
-        headerNav : M.Select('.w-nav',false),
-        menuBtn : M.Select('.w-menu-btn',false),
-        closeBtn : M.Select('.w-close-btn',false),
-        links : M.Select('a', true),
-        open : function () {
+        headerNav: M.Select('.w-nav', false),
+        menuBtn: M.Select('.w-menu-btn', false),
+        closeBtn: M.Select('.w-close-btn', false),
+        links: M.Select('a', true),
+        open: function () {
             this.menuBtn.addEventListener('click', (e) => {
-                    this.headerNav.classList.add('is-active')
-                    this.menuBtn.classList.add('is-active')
-                    e.stopPropagation()
+                this.headerNav.classList.add('is-active')
+                this.menuBtn.classList.add('is-active')
+                e.stopPropagation()
 
-        })},
-        closeByBtn : function () {
+            })
+        },
+        closeByBtn: function () {
             this.closeBtn.addEventListener('click', (e) => {
                 this.headerNav.classList.remove('is-active')
                 this.menuBtn.classList.remove('is-active')
                 e.stopPropagation()
             })
         },
-        closeByBody : function () {
+        closeByBody: function () {
             window.addEventListener('click', (event) => {
                 if (event.target !== this.headerNav) {
                     this.headerNav.classList.remove('is-active')
@@ -292,85 +313,78 @@ function main() {
             })
         }
     }
-    menuCTA.open(); menuCTA.closeByBtn(); menuCTA.closeByBody()
+    menuCTA.open();
+    menuCTA.closeByBtn();
+    menuCTA.closeByBody()
 
-    // Magnet
-
-
-    class Magnet {
-        constructor(el,i) {
-            this.el = el
-            this.magnet = M.Select('.w-magnet', true)[ M.Select('.w-magnet', true).length === 1 ? 0 : i ]
-            this.paraM = this.el.dataset.parallax
-            this.enter = this.enter.bind(this)
-            this.leave = this.leave.bind(this)
-            this.enterCallback = this.enterCallback.bind(this)
-            this.enter()
-            this.leave()
-        }
-        enterCallback() {
-            let vScrolled
-            this.transition = "0.2s"
-            this.el.style.setProperty('transition', this.transition)
-            this.magnet.style.transform="scale(5.5) translate(-10%, -10%)"
-            setTimeout(()=> {
-                this.magnet.addEventListener('mousemove', (e) => {
-                    vScrolled = -(M.Select('main',false).getBoundingClientRect().top)
-
-                    requestAnimationFrame(() => {
-                        let mouseX = e.pageX;
-                        let mouseY = e.pageY;
-                        let diffX = mouseX - (M.XY.offsetLeft(this.el) + (this.el.offsetWidth / 2));
-                        let diffY = mouseY + vScrolled - (M.XY.offsetTop(this.el) + (this.el.offsetHeight / 2));
-                        M.T(this.el,this.paraM * diffX,this.paraM * diffY,'px')
-                    })
-                })
-            },200)
-        }
-        enter() {
-            this.magnet.addEventListener('mouseenter',this.enterCallback)
-        }
-        leave() {
-            this.magnet.addEventListener('mouseleave', () => {
-                this.magnet.style.transform="scale(1) translate(-50%, -50%)"
-                requestAnimationFrame(() => {
-                    this.transition = "0.5s"
-                    this.el.style.setProperty('transition', this.transition)
-                    M.T(this.el,0,0,'px')
-                })
-            })
-        }
-        /**
-         * @author Grafikart
-         * @returns {Magnet[]}
-         */
-        static bind() {
-            return Array.from(document.querySelectorAll('[data-parallax]')).map(
-                (el,i) => {
-                    return new Magnet(el,i)
-                }
-            )
-        }
-    }
-    if (window.innerWidth > 1024) {
-        Magnet.bind()
-    }
+    // // Magnet
+    // class Magnet {
+    //     constructor(el, i) {
+    //         this.el = el
+    //         this.magnet = M.Select('.w-magnet', true)[M.Select('.w-magnet', true).length === 1 ? 0 : i]
+    //         this.paraM = this.el.dataset.parallax
+    //         this.enter = this.enter.bind(this)
+    //         this.leave = this.leave.bind(this)
+    //         this.enterCallback = this.enterCallback.bind(this)
+    //         this.enter()
+    //         this.leave()
+    //     }
+    //
+    //     enterCallback() {
+    //         let vScrolledY
+    //         this.transition = "0.2s"
+    //         this.el.style.setProperty('transition', this.transition)
+    //         this.magnet.style.transform = "scale(5.5) translate(-10%, -10%)"
+    //         setTimeout(() => {
+    //             this.magnet.addEventListener('mousemove', (e) => {
+    //                 // vScrolledY = -(M.Select('main', false).getBoundingClientRect().top)
+    //                 let mouseX = e.pageX;
+    //                 let mouseY = e.pageY;
+    //                 let diffX = mouseX - (M.XY.offsetLeft(this.el) + (this.el.offsetWidth / 2));
+    //                 let diffY = mouseY   - (M.XY.offsetTop(this.el) + (this.el.offsetHeight / 2));
+    //                 M.T(this.el, this.paraM * diffX, this.paraM * diffY, 'px')
+    //             })
+    //         }, 200)
+    //     }
+    //
+    //     enter() {
+    //         this.magnet.addEventListener('mouseenter', this.enterCallback)
+    //     }
+    //
+    //     leave() {
+    //         this.magnet.addEventListener('mouseleave', () => {
+    //             this.magnet.style.transform = "scale(1) translate(-50%, -50%)"
+    //             this.transition = "0.5s"
+    //             this.el.style.setProperty('transition', this.transition)
+    //             M.T(this.el, 0, 0, 'px')
+    //         })
+    //     }
+    //
+    //     /**
+    //      * @author Grafikart
+    //      * @returns {Magnet[]}
+    //      */
+    //     static bind() {
+    //         return Array.from(document.querySelectorAll('[data-parallax]')).map(
+    //             (el, i) => {
+    //                 return new Magnet(el, i)
+    //             }
+    //         )
+    //     }
+    // }
+    // if (window.innerWidth > 1024) {
+    //     Magnet.bind()
+    // }
 }
-main(); pageScript()
 
-// Loader
-M.Loader = {
-    loader : M.Select('.loader',false),
-    load: function () {
-        window.addEventListener('load', () => {
-            M.Select('.loader',false).classList.add('dom-loaded')
-            M.Tl(M.Select('.transformation',true),'transformation', 1000)
-        })
-    }
+function pageScript() {
+    destination()
+    crew()
+    technology()
 }
-M.Loader.load()
 
-
+main();
+pageScript()
 
 // AJAX
 let split, select, allImg = Array.from(M.Select('img', true))
@@ -382,15 +396,16 @@ function transitionBefore() {
         M.Loader.loader.classList.add('transition')
     }, 700);
 }
-function whenLoad (loadEvent) {
+
+function whenLoad(loadEvent) {
     clearInterval(loadEvent)
     setTimeout(() => {
         M.Loader.loader.classList.add('dom-loaded')
-        M.Tl(M.Select('.transformation',true),'transformation', 800)
-        M.Tl([()=>pageScript()],'',800)
-    }, 500);
-    M.Tl([M.Loader.loader],'transition',1500)
-    let vScrolled = -(M.Select('main',false).getBoundingClientRect().top)
+        M.Tl(M.Select('.transformation', true), 'transformation', 800)
+        M.Tl([() => pageScript()], '', 800)
+    }, 1000);
+    M.Tl([M.Loader.loader], 'transition', 1500)
+    let vScrolledY = M.VScroll.vScrolledY()
     M.To({
         duration:1000,
         speed:1,
@@ -398,11 +413,12 @@ function whenLoad (loadEvent) {
             return M.Ease.o2(t)
         },
         draw(progress) {
-            M.T(M.Select('main',false),0,`${-(vScrolled - vScrolled * progress)}`,'px')
+            M.T(M.Select('main',false),0,`${-(vScrolledY - vScrolledY * progress)}`,'px')
         }
-    })//On réinitialise le scroll
-    M.Tl([()=> pageTransition()],'',1000)
+    })
+    M.Tl([() => pageTransition()], '', 1000)
 }
+
 function transitionAfter(htmlText) {
     split = htmlText.split('<main>') //On récupère le DOM de la page appelé et on le découpe
     split = split[1].split('</main>')
@@ -411,7 +427,7 @@ function transitionAfter(htmlText) {
     setTimeout(() => {
         M.Select("main", false).innerHTML = select // contient le résultat de la page
         let loadEvent = setInterval(() => {
-            if(allImg.length !== 0) {
+            if (allImg.length !== 0) {
                 if (allImg.every(M.Is.imgLoad)) {
                     whenLoad(loadEvent)
                 }
@@ -421,12 +437,13 @@ function transitionAfter(htmlText) {
         }, 100);
     }, 1750);
 }
+
 function pageTransition() {
     let ajaxLinks = M.Select('a', true)
     pageScript()
     main()
-    ajaxLinks.forEach((link, index) => {
-        link.style.pointerEvents='auto'
+    ajaxLinks.forEach((link) => {
+        link.style.pointerEvents = 'auto'
         link.addEventListener('dbClick', e => {
             e.preventDefault()
         })
@@ -434,32 +451,33 @@ function pageTransition() {
             e.preventDefault()
             e.stopPropagation()
             ajaxLinks.forEach(el => {
-                el.style.pointerEvents='none'
+                el.style.pointerEvents = 'none'
             })
-            M.Tl([()=> M.Cursor.removeHover()],'',700)
+            M.Tl([() => M.Cursor.removeHover()], '', 700)
             transitionBefore()
             pageFetched.forEach(page => {
-                if(e.target.getAttribute('href') === page.link || e.target.getAttribute('data-link') === page.link) {
+                if (e.target.getAttribute('href') === page.link || e.target.getAttribute('data-link') === page.link) {
                     transitionAfter(page.page)
                 }
             })
             if (e.target.getAttribute('href') !== window.location) {
-                window.history.pushState({ path: e.target.getAttribute('href') }, '', e.target.getAttribute('href'))
+                window.history.pushState({path: e.target.getAttribute('href')}, '', e.target.getAttribute('href'))
             }
         })
 
     })
 }
+
 pageTransition()
 
 // Transition entre les page avec les bouton du navigateur
 M.PAJAX = {
     el: window,
-    popstate : function () {
+    popstate: function () {
         this.el.addEventListener('popstate', () => {
             transitionBefore()
             pageFetched.forEach(page => {
-                if(window.location.pathname.split('/')[1] === page.link || (window.location.pathname.split('/')[1]==='' && page.link==='/')){
+                if (window.location.pathname.split('/')[1] === page.link || (window.location.pathname.split('/')[1] === '' && page.link === '/')) {
                     transitionAfter(page.page)
                 }
             })

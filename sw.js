@@ -30,7 +30,7 @@ self.addEventListener('fetch', (event) =>{
                     return await fetch(event.request)
                 } catch (e) {
                     const cache = await caches.open(PREFIX) 
-                    return await cache.match("/404-not-found-master-By-La2spaille/index.php")
+                    // return await cache.match("connection.php")
                 }
             })()
         )

@@ -7,15 +7,11 @@
     text-decoration: none;
     text-transform: inherit;
     list-style: none;
-    user-select: none;
     font-size:inherit;
     font-weight: inherit;
     color: inherit;
     box-sizing: border-box;
     background-repeat: no-repeat;
-    &::selection {
-        background: transparent;
-    }
 }
 html,body {
     overscroll-behavior: none;
@@ -32,11 +28,9 @@ body,main{
 }
 
 body {
-    overflow: clip;
+    overflow: hidden;
+    background: #0b0d17;
 }
-//body::-webkit-scrollbar {
-//    display:none
-//}
 h1,
 h3,
 p,

@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-height: 100vh;
     padding: 215px 0 130px;
-    background:#0b0d17;
     &.destination {
         padding: 215px 0 120px;
         gap: 62.5px;

@@ -84,15 +84,11 @@
   text-decoration: none;
   text-transform: inherit;
   list-style: none;
-  user-select: none;
   font-size: inherit;
   font-weight: inherit;
   color: inherit;
   box-sizing: border-box;
   background-repeat: no-repeat;
-}
-*::selection {
-  background: transparent;
 }
 
 html, body {
@@ -110,7 +106,8 @@ body, main {
 }
 
 body {
-  overflow: clip;
+  overflow: hidden;
+  background: #0b0d17;
 }
 
 h1,
@@ -132,8 +129,8 @@ span {
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 100vh;
   padding: 215px 0 130px;
-  background: #0b0d17;
 }
 #app.destination {
   padding: 215px 0 120px;
