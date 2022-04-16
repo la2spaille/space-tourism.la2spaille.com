@@ -129,7 +129,9 @@ function main() {
         links: M.Select('.link-hover', true),
         move: function () {
             document.addEventListener('mousemove', (e) => {
-                M.T(this.cursor, `calc(${e.clientX}px - 50%)`, `calc(${e.clientY}px - 50%)`, ``)
+                requestAnimationFrame(() => {
+                    M.T(this.cursor, `calc(${e.clientX}px - 50%)`, `calc(${e.clientY}px - 50%)`, ``)
+                })
             })
         },
         hover: function () {
@@ -226,7 +228,6 @@ function main() {
             this.transition = "0.2s"
             this.el.style.setProperty('transition', this.transition)
             this.magnet.style.transform = "scale(5.5) translate(-10%, -10%)"
-            this.magnet.style.background = "#000"
             setTimeout(() => {
                 this.magnet.addEventListener('mousemove', (e) => {
                     requestAnimationFrame(() => {
