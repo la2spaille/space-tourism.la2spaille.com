@@ -31,10 +31,8 @@ Users should be able to:
 ![Desktop version](assets/desktop.png) 
 ![Tablet version](assets/tablet.png) 
 ![Mobile version](assets/phone.png)
+![404](assets/404.png)
 
-[//]: # ( ![404]&#40;assets/404.png&#41;)
-
-[//]: # ( ![connection]&#40;assets/connection.png&#41;)
 
 ### Links
 
