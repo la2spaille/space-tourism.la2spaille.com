@@ -37,7 +37,7 @@ Users should be able to:
 ### Links
 
 - Solution URL: [https://github.com/la2spaille/space.tourism](https://github.com/la2spaille/space.tourism)
-- Live Site URL: [https://space-tourism-by-la2spaille.herokuapp.com/](https://space-tourism-by-la2spaille.000webhostapp.com/)
+- Live Site URL: [https://space-tourism-by-la2spaille.herokuapp.com/](https://space-tourism-by-la2spaille.herokuapp.com/)
 
 ## My process
 

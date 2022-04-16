@@ -6,12 +6,23 @@ $data = json_decode($json, true);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <-- OG -->
+    <meta property="og:title" content="Space tourism website" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://space-tourism-by-la2spaille.herokuapp.com/" />
+    <meta property="og:image" content="assets/desktop.png" />
+    <meta name="author" content="DJOSSI Wilfried">
+    <meta property="og:site_name" content="Space tourism website">
+    <meta property="og:description" content="A Frontend Mentor challenge made with a touch of creativity">
+    <-- preload -->
     <link rel="preload" href="assets/home/background-home-desktop.jpg" as="image">
     <link rel="preload" href="assets/home/background-home-tablet.jpg" as="image">
     <link rel="preload" href="assets/home/background-home-mobile.jpg" as="image">
 
     <meta charset="UTF-8">
+    <link rel="apple-touch-icon" href="/assets/512.png">
+    <link rel="icon" sizes="192x192" href="/assets/192.png">
+    <link rel="mask-icon" href="/assets/shared/logo.svg" color="#0b0d17">
     <link rel="shortcut icon" href="/assets/512.png" type="image/x-icon">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
