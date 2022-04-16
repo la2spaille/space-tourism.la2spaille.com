@@ -6,7 +6,6 @@ $data = json_decode($json, true);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <-- OG -->
     <meta property="og:title" content="Space tourism website" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://space-tourism-by-la2spaille.herokuapp.com/" />
@@ -14,7 +13,6 @@ $data = json_decode($json, true);
     <meta name="author" content="DJOSSI Wilfried">
     <meta property="og:site_name" content="Space tourism website">
     <meta property="og:description" content="A Frontend Mentor challenge made with a touch of creativity">
-    <-- preload -->
     <link rel="preload" href="assets/home/background-home-desktop.jpg" as="image">
     <link rel="preload" href="assets/home/background-home-tablet.jpg" as="image">
     <link rel="preload" href="assets/home/background-home-mobile.jpg" as="image">
