@@ -1,80 +1,97 @@
 export function destination() {
-    let destinations = new Array(4)
-    let destinationsImg = Array.from(document.querySelectorAll('.js-destination-img'))
-    let destinationsNav = document.querySelectorAll('.js-destination-nav')
-    let destinationsName = document.querySelectorAll('.js-destination-name')
-    let destinationsDescription = document.querySelectorAll('.js-destination-description')
-    let destinationsDistance = document.querySelectorAll('.js-destination-distance')
-    let destinationsTravel = document.querySelectorAll('.js-destination-travel')
-    let wParagraph = document.querySelector('.w-paragraph')
-    if (destinationsImg.length !== 0) {
-        window.addEventListener('resize', () => {
-            wParagraph.style.minHeight = `${destinationsDescription[0].offsetHeight}`
-        })
-        for (let i = 0; i < destinations.length; i++) {
-            destinations[i] = new Array(6)
-            destinations[i][0] = destinationsImg[i]
-            destinations[i][1] = destinationsNav[i]
-            destinations[i][2] = destinationsName[i]
-            destinations[i][3] = destinationsDescription[i]
-            destinations[i][4] = destinationsDistance[i]
-            destinations[i][5] = destinationsTravel[i]
-        }
-        window.addEventListener('load', () => {
-            destinations[0].forEach(element => {
-                element.classList.add('transition')
-                setTimeout(() => {
-                    element.classList.add('active')
-                }, 2000);
-            });
-        })
-        let imgLoaded = (currentvalue) => currentvalue.complete === true
-        destinations[0].forEach(element => {
-            element.classList.add('transition')
-        });
-        setTimeout(() => {
-            if (destinationsImg.every(imgLoaded)) {
-                destinations[0].forEach(element => {
-                    element.classList.add('active')
-                });
+    M.Destination = {
+        destinations: new Array(4),
+        img: Array.from(M.Select('.js-destination-img', true)),
+        nav: M.Select('.js-destination-nav', true),
+        names: M.Select('.js-destination-name', true),
+        descriptions: M.Select('.js-destination-description', true),
+        distance: M.Select('.js-destination-distance', true),
+        travel: M.Select('.js-destination-travel', true),
+        paragraph: M.Select('.w-paragraph', false),
+        setDestinationTab: function () {
+            for (let i = 0; i < this.destinations.length; i++) {
+                this.destinations[i] = new Array(6)
+                this.destinations[i][0] = this.img[i]
+                this.destinations[i][1] = this.nav[i]
+                this.destinations[i][2] = this.names[i]
+                this.destinations[i][3] = this.descriptions[i]
+                this.destinations[i][4] = this.distance[i]
+                this.destinations[i][5] = this.travel[i]
             }
-        }, 2000);
-
-        let currentIndex = 0
-        destinationsNav.forEach((element, index) => {
-                element.addEventListener('click', (e) => {
+        },
+        setParagraphHeight: function () {
+            let max = 0
+            this.descriptions.forEach((el, index) => {
+                if (el.offsetHeight > max) {
+                    max = el.offsetHeight
+                    this.paragraph.style.minHeight = `${this.descriptions[index].offsetHeight}px`
+                }
+            })
+            max = 0
+            window.addEventListener('resize', () => {
+                this.descriptions.forEach((el, index) => {
+                    if (el.offsetHeight > max) {
+                        max = el.offsetHeight
+                        this.paragraph.style.minHeight = `${this.descriptions[index].offsetHeight}px`
+                    }
+                })
+            })
+        },
+        loaded: function () {
+            this.setDestinationTab()
+            this.destinations[0].forEach(el => {
+                el.classList.add('transition')
+            });
+            let loadEvent = setInterval(() => {
+                if (M.Is.load()) {
+                    setTimeout(() => {
+                        this.destinations[0].forEach(el => {
+                            el.classList.add('active')
+                        })
+                    }, 2000)
+                    clearInterval(loadEvent)
+                }
+            }, 100)
+        },
+        motion: function () {
+            let currentIndex = 0
+            this.nav.forEach((el, index) => {
+                el.addEventListener('click', (e) => {
                     currentIndex = index
-                    destinationsNav.forEach((element, index) => {
-                        element.style.pointerEvents = "none"
+                    this.nav.forEach((el, index) => {
+                        el.style.pointerEvents = "none"
                         for (let i = 0; i < 6; i++) {
                             if (currentIndex !== index) {
-                                destinations[index][i].classList.remove('active')
-                                destinations[index][i].classList.add('transition-leave')
+                                this.destinations[index][i].classList.remove('active')
+                                this.destinations[index][i].classList.add('transition-leave')
                                 setTimeout(() => {
-                                    destinations[index][i].classList.remove('transition')
+                                    this.destinations[index][i].classList.remove('transition')
                                     setTimeout(() => {
-                                        destinations[index][i].classList.remove('transition-leave')
+                                        this.destinations[index][i].classList.remove('transition-leave')
                                     }, 600);
                                 }, 200);
                             } else {
-                                destinations[index][i].classList.remove('transition-leave')
+                                this.destinations[index][i].classList.remove('transition-leave')
                                 setTimeout(() => {
-                                    destinations[index][i].classList.add('transition')
+                                    this.destinations[index][i].classList.add('transition')
                                 }, 200);
                                 setTimeout(() => {
-                                    destinations[index][i].classList.add('active')
+                                    this.destinations[index][i].classList.add('active')
                                 }, 400);
                             }
                         }
                         setTimeout(() => {
-                            element.style.pointerEvents = "auto"
+                            el.style.pointerEvents = "auto"
                         }, 950);
                     });
                     e.stopPropagation()
                 })
-                
-            wParagraph.style.minHeight = `${destinationsDescription[0].offsetHeight}`
-        });
+            });
+        }
     }
-
+    if (M.Destination.img.length !== 0) {
+        M.Destination.loaded()
+        M.Destination.setParagraphHeight()
+        M.Destination.motion()
+    }
 }

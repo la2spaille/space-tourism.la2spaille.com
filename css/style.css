@@ -106,7 +106,6 @@ body, main {
 }
 
 body {
-  overflow: hidden;
   background: #0b0d17;
 }
 
@@ -131,6 +130,7 @@ span {
   width: 100%;
   min-height: 100vh;
   padding: 215px 0 130px;
+  overflow-x: hidden;
 }
 #app.destination {
   padding: 215px 0 120px;
@@ -934,6 +934,7 @@ header {
 }
 .loader span {
   display: inline-block;
+  color: #fff;
 }
 
 @media (max-width: 1050px) {

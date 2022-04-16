@@ -7,6 +7,7 @@ M.Is = {
     def: t => t !== undefined,
     und: t => t === undefined,
     true: t => t === true,
+    load: () => document.readyState === 'complete',
     imgLoad: t => t.complete === true,
     null: t => t === null
 }
@@ -86,6 +87,10 @@ M.Carousel = class { // Cooming Soon
     }
 }
 
+if(!window.navigator.vendor.includes('Google')) {
+    M.Select('.w-nav',false).style.backgroundColor ="rgba(38,39,50, 0.7)"
+}
+
 let pageFetched = []
 M.Select('.link.header', true).forEach((link, i) => {
     (async function () {
@@ -104,6 +109,10 @@ M.Loader = {
         window.addEventListener('load', () => {
             M.Select('.loader', false).classList.add('dom-loaded')
             M.Tl(M.Select('.transformation', true), 'transformation', 1000)
+            setTimeout(()=> {
+                console.clear()
+                console.log('\n %c Made with ❤️ by La2spaille  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;','')
+            },5000)
         })
     }
 }
@@ -111,126 +120,6 @@ M.Loader.load()
 
 ////////////////////////////////////////////////////////////////////
 function main() {
-
-    //VScroll
-    M.VScroll = {
-        el: M.Select('main', false),
-        scrollSection: M.Select('#app', true),
-        vScrolledRestart: function () {
-            window.addEventListener('resize', () => {
-                setTimeout(() => {
-                    this.vScrollWheel()
-                    this.vScrollKeyDown()
-                },500)
-            })
-        },
-        vScrolledY : function () {
-            return -(M.Select('main', false).getBoundingClientRect().top)
-        },
-        vScrollHeight: function () {
-            let vScrollHeight = 0
-            this.scrollSection.forEach(section => {
-                vScrollHeight += section.offsetHeight
-            })
-            vScrollHeight -= innerHeight
-            vScrollHeight += M.Is.null(M.Select('footer', false)) ? 0 : M.Select('footer', false).offsetHeight
-            return vScrollHeight
-        },
-        vScrollKeyDown: function () {
-            let vScrollHeight = this.vScrollHeight()
-            window.addEventListener('keydown', (e) => {
-                let vScrolledY = this.vScrolledY()
-                if (e.code === 'ArrowUp') {
-                    if (vScrolledY < 175) {
-                        M.To({
-                            duration: 1000,
-                            timing(t) {
-                                return M.Ease.o2(t)
-                            },
-                            draw(progress) {
-                                M.T(M.Select('main', false), 0, -vScrolledY + vScrolledY * progress, 'px')
-                            }
-                        })
-                    } else {
-                        M.To({
-                            duration: 1000,
-                            timing(t) {
-                                return M.Ease.o2(t)
-                            },
-                            draw(progress) {
-                                M.T(M.Select('main', false), 0, -vScrolledY + progress * 150, 'px')
-                            }
-                        })
-                    }
-
-                }
-                if (e.code === 'ArrowDown' || e.code === 'Space') {
-                    if (vScrolledY > vScrollHeight - 175) {
-                        M.To({
-                            duration: 2000,
-                            timing(t) {
-                                return M.Ease.o2(t)
-                            },
-                            draw(progress) {
-                                M.T(M.Select('main', false), 0, -vScrolledY - (vScrollHeight - vScrolledY) * progress, 'px')
-                            }
-                        })
-                    } else {
-                        M.To({
-                            duration: 1000,
-                            timing(t) {
-                                return M.Ease.o2(t)
-                            },
-                            draw(progress) {
-                                M.T(M.Select('main', false), 0, -vScrolledY - progress * 150, 'px')
-                            }
-                        })
-                    }
-                }
-            })
-        },
-        vScrollWheel: function () {
-            let vScrollHeight = this.vScrollHeight()
-            window.addEventListener('wheel', (e) => {
-                let vScrolledY = this.vScrolledY('keydown')
-                if ((vScrolledY + e.deltaY*8) < 0 && e.deltaY < 0) {
-                    M.To({
-                        duration: 100,
-                        timing(t) {
-                            return M.Ease.o2(t)
-                        },
-                        draw(progress) {
-                            M.T(M.Select('main', false), 0, -vScrolledY + vScrolledY * progress, 'px')
-                        }
-                    })
-                } else if ((vScrolledY + e.deltaY*8) > vScrollHeight && e.deltaY > 0) {
-                    M.To({
-                        duration: 100,
-                        timing(t) {
-                            return M.Ease.o2(t)
-                        },
-                        draw(progress) {
-                            M.T(M.Select('main', false), 0, -vScrolledY - (vScrollHeight - vScrolledY) * progress, 'px')
-                        }
-                    })
-                } else {
-                    M.To({
-                        duration: 200,
-                        timing(t) {
-                            return M.Ease.linear(t)
-                        },
-                        draw(progress) {
-                            M.T(M.Select('main', false), 0, -vScrolledY - progress * e.deltaY*8, 'px')
-                        }
-                    })
-                }
-
-            })
-        }
-    }
-    M.VScroll.vScrolledRestart()
-    M.VScroll.vScrollKeyDown()
-    M.VScroll.vScrollWheel()
 
     // Cursor
     M.Cursor = {
@@ -291,6 +180,7 @@ function main() {
         links: M.Select('a', true),
         open: function () {
             this.menuBtn.addEventListener('click', (e) => {
+                document.body.style.overflowY = "hidden"
                 this.headerNav.classList.add('is-active')
                 this.menuBtn.classList.add('is-active')
                 e.stopPropagation()
@@ -299,6 +189,8 @@ function main() {
         },
         closeByBtn: function () {
             this.closeBtn.addEventListener('click', (e) => {
+                document.body.style.overflowY = "auto"
+
                 this.headerNav.classList.remove('is-active')
                 this.menuBtn.classList.remove('is-active')
                 e.stopPropagation()
@@ -307,6 +199,7 @@ function main() {
         closeByBody: function () {
             window.addEventListener('click', (event) => {
                 if (event.target !== this.headerNav) {
+                    document.body.style.overflowY = "auto"
                     this.headerNav.classList.remove('is-active')
                     this.menuBtn.classList.remove('is-active')
                 }
@@ -317,64 +210,63 @@ function main() {
     menuCTA.closeByBtn();
     menuCTA.closeByBody()
 
-    // // Magnet
-    // class Magnet {
-    //     constructor(el, i) {
-    //         this.el = el
-    //         this.magnet = M.Select('.w-magnet', true)[M.Select('.w-magnet', true).length === 1 ? 0 : i]
-    //         this.paraM = this.el.dataset.parallax
-    //         this.enter = this.enter.bind(this)
-    //         this.leave = this.leave.bind(this)
-    //         this.enterCallback = this.enterCallback.bind(this)
-    //         this.enter()
-    //         this.leave()
-    //     }
-    //
-    //     enterCallback() {
-    //         let vScrolledY
-    //         this.transition = "0.2s"
-    //         this.el.style.setProperty('transition', this.transition)
-    //         this.magnet.style.transform = "scale(5.5) translate(-10%, -10%)"
-    //         setTimeout(() => {
-    //             this.magnet.addEventListener('mousemove', (e) => {
-    //                 // vScrolledY = -(M.Select('main', false).getBoundingClientRect().top)
-    //                 let mouseX = e.pageX;
-    //                 let mouseY = e.pageY;
-    //                 let diffX = mouseX - (M.XY.offsetLeft(this.el) + (this.el.offsetWidth / 2));
-    //                 let diffY = mouseY   - (M.XY.offsetTop(this.el) + (this.el.offsetHeight / 2));
-    //                 M.T(this.el, this.paraM * diffX, this.paraM * diffY, 'px')
-    //             })
-    //         }, 200)
-    //     }
-    //
-    //     enter() {
-    //         this.magnet.addEventListener('mouseenter', this.enterCallback)
-    //     }
-    //
-    //     leave() {
-    //         this.magnet.addEventListener('mouseleave', () => {
-    //             this.magnet.style.transform = "scale(1) translate(-50%, -50%)"
-    //             this.transition = "0.5s"
-    //             this.el.style.setProperty('transition', this.transition)
-    //             M.T(this.el, 0, 0, 'px')
-    //         })
-    //     }
-    //
-    //     /**
-    //      * @author Grafikart
-    //      * @returns {Magnet[]}
-    //      */
-    //     static bind() {
-    //         return Array.from(document.querySelectorAll('[data-parallax]')).map(
-    //             (el, i) => {
-    //                 return new Magnet(el, i)
-    //             }
-    //         )
-    //     }
-    // }
-    // if (window.innerWidth > 1024) {
-    //     Magnet.bind()
-    // }
+    // Magnet
+    class Magnet {
+        constructor(el, i) {
+            this.el = el
+            this.magnet = M.Select('.w-magnet', true)[M.Select('.w-magnet', true).length === 1 ? 0 : i]
+            this.paraM = this.el.dataset.parallax
+            this.enter = this.enter.bind(this)
+            this.leave = this.leave.bind(this)
+            this.enterCallback = this.enterCallback.bind(this)
+            this.enter()
+            this.leave()
+        }
+
+        enterCallback() {
+            this.transition = "0.2s"
+            this.el.style.setProperty('transition', this.transition)
+            this.magnet.style.transform = "scale(5.5) translate(-10%, -10%)"
+            this.magnet.style.background = "#000"
+            setTimeout(() => {
+                this.magnet.addEventListener('mousemove', (e) => {
+                    let mouseX = e.pageX;
+                    let mouseY = e.pageY;
+                    let diffX = mouseX - (M.XY.offsetLeft(this.el) + (this.el.offsetWidth / 2));
+                    let diffY = mouseY - (M.XY.offsetTop(this.el) + (this.el.offsetHeight / 2));
+                    M.T(this.el, this.paraM * diffX, this.paraM * diffY, 'px')
+                })
+            }, 200)
+        }
+
+        enter() {
+            this.magnet.addEventListener('mouseenter', this.enterCallback)
+        }
+
+        leave() {
+            this.magnet.addEventListener('mouseleave', () => {
+                this.magnet.style.transform = "scale(1) translate(-50%, -50%)"
+                this.transition = "0.5s"
+                this.el.style.setProperty('transition', this.transition)
+                M.T(this.el, 0, 0, 'px')
+            })
+        }
+
+        /**
+         * @author Grafikart
+         * @returns {Magnet[]}
+         */
+        static bind() {
+            return Array.from(document.querySelectorAll('[data-parallax]')).map(
+                (el, i) => {
+                    return new Magnet(el, i)
+                }
+            )
+        }
+    }
+    if (window.innerWidth > 1024) {
+        Magnet.bind()
+    }
 }
 
 function pageScript() {
@@ -387,7 +279,8 @@ main();
 pageScript()
 
 // AJAX
-let split, select, allImg = Array.from(M.Select('img', true))
+let split, select
+
 function transitionBefore() {
     M.Loader.loader.classList.remove('dom-loaded')
     M.Loader.loader.classList.add('init')
@@ -403,20 +296,10 @@ function whenLoad(loadEvent) {
         M.Loader.loader.classList.add('dom-loaded')
         M.Tl(M.Select('.transformation', true), 'transformation', 800)
         M.Tl([() => pageScript()], '', 800)
-    }, 1000);
+    }, 1500);
     M.Tl([M.Loader.loader], 'transition', 1500)
-    let vScrolledY = M.VScroll.vScrolledY()
-    M.To({
-        duration:1000,
-        speed:1,
-        timing(t) {
-            return M.Ease.o2(t)
-        },
-        draw(progress) {
-            M.T(M.Select('main',false),0,`${-(vScrolledY - vScrolledY * progress)}`,'px')
-        }
-    })
-    M.Tl([() => pageTransition()], '', 1000)
+    M.Tl([() => window.scrollTo(0,0)], '', 100)
+    M.Tl([() => pageTransition()], '', 1500)
 }
 
 function transitionAfter(htmlText) {
@@ -424,17 +307,21 @@ function transitionAfter(htmlText) {
     split = split[1].split('</main>')
     select = split[0]
     // On termine la transition
+
     setTimeout(() => {
         M.Select("main", false).innerHTML = select // contient le résultat de la page
-        let loadEvent = setInterval(() => {
-            if (allImg.length !== 0) {
-                if (allImg.every(M.Is.imgLoad)) {
-                    whenLoad(loadEvent)
+        let  allImg = Array.from(M.Select('img', true))
+            let loadEvent = setInterval(() => {
+                if (allImg.length !== 0) {
+                    if (allImg.every(M.Is.imgLoad)) {
+                        whenLoad(loadEvent)
+                    }
+                } else {
+                    setTimeout(() => {
+                        whenLoad(loadEvent)
+                    }, 750)
                 }
-            } else {
-                whenLoad(loadEvent)
-            }
-        }, 100);
+            }, 100);
     }, 1750);
 }
 
@@ -485,3 +372,7 @@ M.PAJAX = {
     }
 }
 M.PAJAX.popstate()
+
+
+// Made with ❤️ by La2spaille
+

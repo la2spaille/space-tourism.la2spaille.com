@@ -1,87 +1,114 @@
 export function crew() {
-    let crews = new Array(4)
-    let crewsImg = Array.from(document.querySelectorAll('.js-crew-img'))
-    let crewsJob = document.querySelectorAll('.js-crew-job')
-    let crewsName = document.querySelectorAll('.js-crew-name')
-    let crewsDescription = document.querySelectorAll('.js-crew-description')
-    let crewsNav = document.querySelectorAll('.js-crew-nav')
-    let wImg = document.querySelector('.w-img')
-    let wParagraph = document.querySelector('.w-paragraph')
-    if (crewsImg.length !== 0) {
-
-        window.addEventListener('resize', () => {
-            wImg.style.minHeight = `${crewsImg[1].offsetHeight}`
-            wParagraph.style.height = `${crewsDescription[2].offsetHeight}px`
-        })
-        for (let i = 0; i < crews.length; i++) {
-            crews[i] = new Array(5)
-            crews[i][0] = crewsImg[i]
-            crews[i][1] = crewsJob[i]
-            crews[i][2] = crewsName[i]
-            crews[i][3] = crewsDescription[i]
-            crews[i][4] = crewsNav[i]
-        }
-        window.addEventListener('load', () => {
-            crews[0].forEach(element => {
-                element.classList.add('transition')
-                setTimeout(() => {
-                    element.classList.add('active')
-                }, 2000);
-            });
-        })
-        let imgLoaded = (currentvalue) => currentvalue.complete === true
-        crews[0].forEach(element => {
-            element.classList.add('transition')
-        });
-        setTimeout(() => {
-            if (crewsImg.every(imgLoaded)) {
-                crews[0].forEach(element => {
-                    element.classList.add('active')
-                });
+    M.Crew = {
+        crews: new Array(4),
+        img: Array.from(M.Select('.js-crew-img', true)),
+        jobs: M.Select('.js-crew-job', true),
+        names: M.Select('.js-crew-name', true),
+        descriptions: M.Select('.js-crew-description', true),
+        nav: M.Select('.js-crew-nav',true),
+        cImg: M.Select('.w-img', false),
+        paragraph: M.Select('.w-paragraph', false),
+        setCrewTab: function () {
+            for (let i = 0; i < this.crews.length; i++) {
+                this.crews[i] = new Array(5)
+                this.crews[i][0] = this.img[i]
+                this.crews[i][1] = this.jobs[i]
+                this.crews[i][2] = this.names[i]
+                this.crews[i][3] = this.descriptions[i]
+                this.crews[i][4] = this.nav[i]
             }
-        }, 3000);
-
-        let currentIndex = 0
-        // let lastindex = 0
-        crewsNav.forEach((element, index) => {
-            element.addEventListener('click', (e) => {
-                currentIndex = index
-                crewsNav.forEach((element, index) => {
-                    element.style.pointerEvents = "none"
-                    for (let i = 0; i < 5; i++) {
-                        if (currentIndex !== index) {
-                            crews[index][i].classList.remove('active')
-                            crews[index][i].classList.add('transition-leave')
-                            setTimeout(() => {
-                                crews[index][i].classList.remove('transition')
-                                setTimeout(() => {
-                                    crews[index][i].classList.remove('transition-leave')
-                                }, 600);
-                            }, 200);
-                        } else {
-                            crews[index][i].classList.remove('transition-leave')
-                            setTimeout(() => {
-                                crews[index][i].classList.add('transition')
-                            }, 200);
-                            setTimeout(() => {
-                                crews[index][i].classList.add('active')
-                            }, 600);
-                        }
-                    }
-                    setTimeout(() => {
-                        element.style.pointerEvents = "auto"
-                    }, 1100);
-                });
-                
-                e.stopPropagation()
+        },
+        setContainersHeightCallback: function () {
+            let max = 0
+            this.descriptions.forEach(el => {
+                if (el.offsetHeight > max) {
+                    max = el.offsetHeight
+                    this.paragraph.style.minHeight = `${el.offsetHeight}px`
+                }
             })
-            
-            wParagraph.style.height = `${crewsDescription[2].offsetHeight}px`
-            wImg.style.minHeight = `${crewsImg[1].offsetHeight}px`
-        });
-    }
+            max = 0
+            let loadEvent = setInterval(() => {
+                if (this.img.every(M.Is.imgLoad)) {
+                    this.img.forEach(el => {
+                        if (el.offsetHeight > max) {
+                            max = el.offsetHeight
+                            this.cImg.style.minHeight = `${el.offsetHeight}px`
+                        }
+                    })
+                    clearInterval(loadEvent)
+                }
+            }, 100)
 
+        },
+        setContainersHeight: function () {
+            this.setContainersHeightCallback()
+            window.addEventListener('resize', () => {
+                this.setContainersHeightCallback()
+            })
+        },
+        loaded: function () {
+            this.setCrewTab()
+            this.crews[0].forEach(el => {
+                el.classList.add('transition')
+            });
+            let loadEvent = setInterval(() => {
+                if (M.Is.load()) {
+                    setTimeout(() => {
+                        this.crews[0].forEach(el => {
+                            el.classList.add('active')
+                        })
+                    }, 2000)
+                    clearInterval(loadEvent)
+                }
+            }, 100)
+        },
+        motion: function () {
+            let currentIndex = 0
+            this.nav.forEach((element, index) => {
+                element.addEventListener('click', (e) => {
+                    currentIndex = index
+                    this.nav.forEach((element, index) => {
+                        element.style.pointerEvents = "none"
+                        for (let i = 0; i < 5; i++) {
+                            if (currentIndex !== index) {
+                                this.crews[index][i].classList.remove('active')
+                                this.crews[index][i].classList.add('transition-leave')
+                                setTimeout(() => {
+                                    this.crews[index][i].classList.remove('transition')
+                                    setTimeout(() => {
+                                        this.crews[index][i].classList.remove('transition-leave')
+                                    }, 600);
+                                }, 200);
+                            } else {
+                                this.crews[index][i].classList.remove('transition-leave')
+                                setTimeout(() => {
+                                    this.crews[index][i].classList.add('transition')
+                                }, 200);
+                                setTimeout(() => {
+                                    this.crews[index][i].classList.add('active')
+                                }, 600);
+                            }
+                        }
+                        setTimeout(() => {
+                            element.style.pointerEvents = "auto"
+                        }, 1100);
+                    });
+                    e.stopPropagation()
+                })
+
+            });
+        }
+
+    }
+    if (M.Crew.img.length !== 0) {
+        M.Crew.loaded()
+        M.Crew.setContainersHeight()
+        M.Crew.motion()
+    }
 }
+
+
+
 
 
 
