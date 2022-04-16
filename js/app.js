@@ -215,14 +215,13 @@ function main() {
         constructor(el, i) {
             this.el = el
             this.magnet = M.Select('.w-magnet', true)[M.Select('.w-magnet', true).length === 1 ? 0 : i]
-            this.paraM = this.el.dataset.parallax
+            this.paraM = this.el.getAttribute('data-parallax')
             this.enter = this.enter.bind(this)
             this.leave = this.leave.bind(this)
             this.enterCallback = this.enterCallback.bind(this)
             this.enter()
             this.leave()
         }
-
         enterCallback() {
             this.transition = "0.2s"
             this.el.style.setProperty('transition', this.transition)
@@ -230,11 +229,13 @@ function main() {
             this.magnet.style.background = "#000"
             setTimeout(() => {
                 this.magnet.addEventListener('mousemove', (e) => {
-                    let mouseX = e.pageX;
-                    let mouseY = e.pageY;
-                    let diffX = mouseX - (M.XY.offsetLeft(this.el) + (this.el.offsetWidth / 2));
-                    let diffY = mouseY - (M.XY.offsetTop(this.el) + (this.el.offsetHeight / 2));
-                    M.T(this.el, this.paraM * diffX, this.paraM * diffY, 'px')
+                    requestAnimationFrame(() => {
+                        let mouseX = e.pageX;
+                        let mouseY = e.pageY;
+                        let diffX = mouseX - (M.XY.offsetLeft(this.el) + (this.el.offsetWidth / 2));
+                        let diffY = mouseY - (M.XY.offsetTop(this.el) + (this.el.offsetHeight / 2));
+                        M.T(this.el, this.paraM * diffX, this.paraM * diffY, 'px')
+                    })
                 })
             }, 200)
         }
@@ -245,10 +246,13 @@ function main() {
 
         leave() {
             this.magnet.addEventListener('mouseleave', () => {
-                this.magnet.style.transform = "scale(1) translate(-50%, -50%)"
-                this.transition = "0.5s"
-                this.el.style.setProperty('transition', this.transition)
-                M.T(this.el, 0, 0, 'px')
+                requestAnimationFrame(() => {
+                    this.magnet.style.transform = "scale(1) translate(-50%, -50%)"
+                    this.transition = "0.5s"
+                    this.el.style.setProperty('transition', this.transition)
+                    M.T(this.el, 0, 0, 'px')
+                })
+
             })
         }
 
