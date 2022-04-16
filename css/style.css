@@ -130,7 +130,7 @@ span {
   width: 100%;
   min-height: 100vh;
   padding: 215px 0 130px;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 #app.destination {
   padding: 215px 0 120px;
