@@ -1,6 +1,6 @@
-import {destination} from "/js/destination.js";
-import {crew} from "/js/crew.js";
-import {technology} from "/js/technology.js";
+// import {destination} from "/js/destination.js";
+// import {crew} from "/js/crew.js";
+// import {technology} from "/js/technology.js";
 
 window.M = {}
 M.Is = {

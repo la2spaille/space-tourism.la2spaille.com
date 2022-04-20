@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "esbuild": "^0.14.36"
+  },
+  "scripts": {
+    "build": "esbuild js/app.js js/destination.js --bundle --=out.js"
+  }
+}
+
