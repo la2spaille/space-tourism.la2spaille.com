@@ -1,15 +1,17 @@
-// import {destination} from "/js/destination.js";
-// import {crew} from "/js/crew.js";
-// import {technology} from "/js/technology.js";
+import {destination} from "/js/destination.js";
+import {crew} from "/js/crew.js";
+import {technology} from "/js/technology.js";
 
 window.M = {}
 M.Is = {
     def: t => t !== undefined,
     und: t => t === undefined,
+    str: t => "string" == typeof t,
+    obj: t => t === Object(t),
+    arr: t => t.constructor === Array,
     true: t => t === true,
-    load: () => document.readyState === 'complete',
     imgLoad: t => t.complete === true,
-    null: t => t === null
+    interval: (t, inf, sup) => t >= inf && t <= sup
 }
 M.Ease = {
     linear: t => t,
@@ -75,7 +77,60 @@ M.Tl = (arr, attr, timeout, delay) => {
         }
     }
 }
+M.Raf = class {
+    constructor(loop) {
+        this.loop = loop
+        this.id = this.s = null
+        this.on = !1
+        M.Bt(this, ['t', 'run', 'stop'])
+    }
 
+    run() {
+        this.on = !0
+        this.s = performance.now()
+        this.id = requestAnimationFrame(this.t)
+    }
+    stop() {
+        this.on = !1
+        cancelAnimationFrame(this.id)
+    }
+
+    t(t) {
+        if (!this.on) return
+        this.loop(t - this.s)
+        this.id = requestAnimationFrame(this.t)
+    }
+}
+M.Ael = (el, e, cb) => {
+    let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
+    for (let i = 0; i < n; i++) {
+        s[i]["addEventListener"](e, cb)
+    }
+}
+M.G = {
+    root: r => M.Is.def(r) ? r : document,
+    s: (r, t, el) => {
+        let l = M.G.root(r)["getElement" + t](el)
+        return t === "ById" ? l : Array.from(l)
+    },
+    id: (el, r) => M.G.s(r, "ById", el),
+    class: (el, r) => M.G.s(r, "sByClassName", el),
+    tag: (el, r) => M.G.s(r, "sByTagName", el),
+}
+M.Bt = (t, f) => {
+    for (let i = 0; i < f.length; i++) {
+        t[f[i]] = t[f[i]].bind(t)
+    }
+}
+M.Qs = el => {
+    if (!M.Is.str(el)) {
+        return el
+    }
+    let s = el.substring(1), c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
+    return c.length === 1 ? c[0] : c
+}
+M.Clamp = (t,inf,sup) => Math.max(inf,Math.min(sup,t))
+M.Lerp = (s, e, a) => s * (1 - a) + a * e
 M.Carousel = class { // Cooming Soon
     constructor(mainArray, allEl, dynamicHeight) {
         this.mainArray = mainArray
@@ -86,7 +141,6 @@ M.Carousel = class { // Cooming Soon
         this.setHeight = this.setHeight.bind(this)
         this.motion = this.motion.bind(this)
         this.setTable = this.setTable.bind(this)
-        this.setTable()
         this.loaded()
         this.setHeight()
         this.motion()
@@ -214,6 +268,7 @@ let Destination = new M.Carousel(
     })
 
 // Loader
+
     M.Loader = {
         loader: M.Select('.loader', false),
         load: function () {
@@ -230,58 +285,76 @@ let Destination = new M.Carousel(
     function main() {
 
         // Cursor
-        M.Cursor = {
-            cursor: M.Select('.w-site-cursor', false),
-            homeCTA: M.Select('.w-home-cta', false),
-            techCTA: M.Select('.js-technology-nav', true),
-            links: M.Select('.link-hover', true),
-            move: function () {
-                document.addEventListener('mousemove', (e) => {
-                    requestAnimationFrame(() => {
-                        M.T(this.cursor, `calc(${e.clientX}px - 50%)`, `calc(${e.clientY}px - 50%)`, ``)
-                    })
-                })
-            },
-            hover: function () {
+
+        class c {
+            constructor(speed) {
+                this.el = M.Qs('.w-site-cursor')
+                this.h = this.el.offsetHeight / 2
+                this.w = this.el.offsetWidth / 2
+                this.speed = speed
+                this.eX = this.eY = this.x = this.y = 0
+                //
+                this.homeCTA = M.Qs('.w-home-cta', false)
+                    this.techCTA= M.Select('.js-technology-nav', true)
+                    this.links= M.Select('.link-hover', true)
+                M.Bt(this, ["on", "loop", "update"])
+                this.r = new M.Raf(this.loop)
+                this.on()
+                new c(0.1)
+
+            }
+
+            loop() {
+                this.x = M.Lerp(this.x, this.eX, this.speed)
+                this.y = M.Lerp(this.y, this.eY, this.speed)
+                M.T(this.el, this.x, this.y, 'px')
+            }
+
+            update(e) {
+                this.eX = e.pageX - this.w
+                this.eY = e.pageY - this.h
+            }
+            hover() {
                 this.links.forEach(link => {
                     link.addEventListener('mouseenter', () => {
-                        this.cursor.classList.add('site-cursor--link-hover')
+                        this.el.classList.add('site-cursor--link-hover')
                     })
                     link.addEventListener('mouseleave', () => {
-                        this.cursor.classList.remove('site-cursor--link-hover')
+                        this.el.classList.remove('site-cursor--link-hover')
                     })
                 })
                 if (this.homeCTA) {
                     this.homeCTA.addEventListener('mouseenter', () => {
-                        this.cursor.classList.add('site-cursor--explore-hover')
+                        this.el.classList.add('site-cursor--explore-hover')
                     })
                     this.homeCTA.addEventListener('mouseleave', () => {
-                        this.cursor.classList.remove('site-cursor--explore-hover')
+                        this.el.classList.remove('site-cursor--explore-hover')
                     })
                 }
                 if (this.techCTA.length !== 0) {
                     this.techCTA.forEach(link => {
                         link.addEventListener('mouseenter', () => {
-                            this.cursor.classList.add('site-cursor--tech-hover')
+                            this.el.classList.add('site-cursor--tech-hover')
                         })
                         link.addEventListener('mouseleave', () => {
-                            this.cursor.classList.remove('site-cursor--tech-hover')
+                            this.el.classList.remove('site-cursor--tech-hover')
                         })
                     })
                 }
-            },
-            removeHover: function () {
-                this.cursor.classList.remove('site-cursor--link-hover')
+            }
+            removeHover() {
+                this.el.classList.remove('site-cursor--link-hover')
 
             }
-        }
-        if (!navigator.vendor.includes('Apple')) {
-            M.Cursor.move()
-            M.Cursor.hover()
-        } else {
-            M.Cursor.cursor.style.display = "none"
-        }
+            on() {
+                M.Ael(document, "mousemove", this.update)
+                this.hover()
+                this.removeHover()
+                this.r.run()
+            }
 
+        }
+        M.Cursor = new c(0.1)
         // Mobile Navigation Apparition
         let menuCTA = {
             headerNav: M.Select('.w-nav', false),
