@@ -1,4 +1,6 @@
-window._M = {}
+window._M = {
+    delay: 500
+}
 window.M = {}
 
 M.Mo = class {
@@ -8,23 +10,23 @@ M.Mo = class {
         this.o = this.init(o)
     }
 
-     init(o) {
+    init(o) {
         let i = {
-                el: M.Select(o.el),
-                d: {
-                    origin: o.d || 0,
-                    curr: 0
-                },
-                delay: o.delay || 0,
-                cb: o.cb || !1,
-                r: o.r || 2,
-                e: {
-                    curve: o.e || "linear"
-                },
-                prog: 0,
-                progE: 0,
-                elapsed: 0
-            }
+            el: M.Select(o.el),
+            d: {
+                origin: o.d || 0,
+                curr: 0
+            },
+            delay: o.delay || 0,
+            cb: o.cb || !1,
+            r: o.r || 2,
+            e: {
+                curve: o.e || "linear"
+            },
+            prog: 0,
+            progE: 0,
+            elapsed: 0
+        }
         i.el = M.Is.arr(i.el) ? i.el : [i.el]
         i.elL = i.el.length
         i.up = M.Has(o, 'update') ? t => o.update(i) : this.uProp
@@ -55,7 +57,7 @@ M.Mo = class {
         return i
     }
 
-     uProp() {
+    uProp() {
         const p = this.o.prop
         let li = this.o.propLi
         let n = this.o.propL
@@ -82,7 +84,7 @@ M.Mo = class {
         }
     }
 
-     run(t) {
+    run(t) {
         if (this.o.prog === 1) {
             this.pause()
             this.o.up()
@@ -95,7 +97,7 @@ M.Mo = class {
         }
     }
 
-     update(o) {
+    update(o) {
         let t = o || {},
             s = M.Has(t, 'reverse') ? "start" : "end"
         if (M.Has(this.o, 'prop')) {
@@ -115,7 +117,7 @@ M.Mo = class {
         this.delay = new M.Delay(this.o.delay, this.rRaf)
     }
 
-     rRaf() {
+    rRaf() {
         this.r.run()
     }
 
@@ -130,7 +132,7 @@ M.Mo = class {
         this.delay && this.delay.stop()
     }
 
-     lerp(s, e) {
+    lerp(s, e) {
         return M.R(M.Lerp(s, e, this.o.progE), this.o.r)
     }
 }
@@ -149,9 +151,9 @@ M.TL = class {
     }
 
     play(t) {
-       this.arr.forEach(el=> {
-           el.play()
-       })
+        this.arr.forEach(el => {
+            el.play()
+        })
     }
 
 }
@@ -176,7 +178,7 @@ M.Raf = class {
         cancelAnimationFrame(this.id)
     }
 
-     t(t) {
+    t(t) {
         if (!this.on) return
         this.loop(t - this.s)
         this.id = requestAnimationFrame(this.t)
@@ -199,7 +201,7 @@ M.Delay = class {
         this.r.stop()
     }
 
-     loop(e) {
+    loop(e) {
         let t = M.Clamp(e, 0, this.d)
         if (t === this.d) {
             this.stop()
@@ -345,9 +347,49 @@ M.De = (fr, to, nev, cev) => {
     }
 }
 M.Gl = {}
+M.Cl = (arr, a, css) => {
+    let action = a === 'a' ? 'add' : 'remove', n = arr.length
 
+    for (let i = 0; i < n; i++) {
+        arr[i].classList[action](css)
+    }
+}
 !function () {
     "use strict"
+
+
+    class c {
+        constructor() {
+            this.el = M.G.id('cursor')
+            this.h = this.el.offsetHeight / 2
+            this.w = this.el.offsetWidth / 2
+            this.speed = 0.1
+            this.eX = this.eY = this.x = this.y = 0
+
+            M.Bt(this, ["loop", "update"])
+            this.r = new M.Raf(this.loop)
+            this.on()
+
+        }
+
+        loop() {
+            this.x = M.Lerp(this.x, this.eX, this.speed)
+            this.y = M.Lerp(this.y, this.eY, this.speed)
+            M.T(this.el, this.x, this.y, 'px')
+        }
+
+        update(e) {
+            this.eX = e.pageX - this.w
+            this.eY = e.pageY - this.h
+        }
+
+        on() {
+            M.Ael(document, "mousemove", this.update)
+            this.r.run()
+        }
+    }
+
+    new c
 
     class s_scroll {
         constructor(o) {
@@ -465,324 +507,28 @@ M.Gl = {}
 
     new s_scroll({speed: 0.5})
 
-    class load {
+
+    class i {
         constructor() {
-            this.els = M.Select('.w-load').children
-            this.txt = M.Select('.load-text').children
-            this.line = M.Select('.load-line')
-            M.Bt(this, ["mo_txt", "mo_div", "tl", "cla"])
-            this.on()
+            this.run()
         }
 
-        cla(el) {
-            el.classList.add('to')
-        }
-
-        clr(el) {
-            el.classList.remove('from')
-        }
-
-        tl() {
-            let tl = new M.Delay(2000, () => {
-                let f0 = new M.Delay(700, this.mo_txt),
-                    f1 = new M.Delay(1100, this.mo_div)
-                f0.run()
-                f1.run()
-            })
-            tl.run()
-        }
-
-        init() {
-            let f0 = new M.Delay(0, () => {
-                    this.clr(this.line)
-                }),
-                f1 = new M.Delay(800, () => {
-                    this.cla(this.line)
-                }),
-                f2 = new M.Delay(1450, () => {
-                    let a_txt = this.txt, n_txt = a_txt.length - 1
-                    for (let i = 0; i < n_txt; i++) {
-                        this.clr(a_txt[i].children[0])
-                    }
+        run() {
+            let t = _M,
+                el = M.Select('.motion'),
+                intro = new M.Mo({
+                    el: '.motion',
+                    cb: () => M.Cl(el, 'r', 'motion'),
+                    d: 100,
+                    delay: t.delay
                 })
-            f0.run()
-            f1.run()
-            f2.run()
-        }
-
-        mo_txt() {
-            let a = this.txt, n = a.length - 1
-            for (let i = 0; i < n; i++) {
-                let f = new M.Delay(0, () => this.cla(a[i].children[0]))
-                f.run()
-            }
-        }
-
-        mo_div() {
-            let a = this.els, n = a.length
-            for (let i = 0; i < n; i++) {
-                let d = i + 1, f = new M.Delay(700 * d / n, () => this.cla(a[i]))
-                f.run()
-            }
-        }
-
-        on() {
-            this.init()
-            M.Ael(window, "load", this.tl)
+            intro.play()
         }
     }
 
-    new load()
-
-    class gl {
-        constructor() {
-            this.c = M.Select('#gl')
-            this.gl = this.c.getContext('webgl')
-            this.w = innerWidth
-            this.h = innerHeight
-            this.clipSpace = this.set_vertices(4, 0, 0, this.w, this.h)
-            this.matrix_loc = {T: {}, R: {}, S: {}, V: {}}
-            M.Bt(this, ['render'])
-            this.r = new M.Raf(this.render)
-            this.init()
-            this.engine()
-        }
-
-        init() {
-            this.c.width = innerWidth
-            this.c.height = innerHeight
-        }
-
-        main() {
-            const gl = this.gl
-            let vertex_s = `
-            attribute vec2 xy;
-            attribute vec2 xyTex;
-            varying vec2 texcoords;
-            
-            uniform float t;
-            
-            uniform mat4 T_matrix;
-            uniform mat4 R_matrix;
-            uniform mat4 S_matrix;
-            uniform mat4 V_matrix;
-            void main(){
-            
-               float T = 1.25;
-               float w = 2.0 * 3.14 / T;
-               float theta = w * (t + (xy.y / 3.5) - xy.x / 1.5 );
-               float a = 0.065 * (0.7320644216691069 - xy.y);
-               float oscillation = a * sin(theta);
-               
-               mat4 matrix = V_matrix * T_matrix * R_matrix * S_matrix;
-               gl_Position = matrix * vec4(xy,oscillation, 1.0);
-               
-               texcoords = xyTex * 0.5 + 0.5;
-            }
-            `,
-                fragment_s = `
-            precision mediump float;
-            varying vec2 texcoords;
-            uniform sampler2D texture;
-            void main(){
-               gl_FragColor = texture2D(texture, texcoords);
-            }
-            `
-            /* ----------- */
-            vertex_s = this.compile_shader(vertex_s, gl.VERTEX_SHADER)
-            fragment_s = this.compile_shader(fragment_s, gl.FRAGMENT_SHADER)
-            /* ----------- */
-            let p = this.create_program(vertex_s, fragment_s),
-                xy_loc = gl.getAttribLocation(p, "xy"),
-                xyTex_loc = gl.getAttribLocation(p, "xyTex"),
-                M = ['T', 'R', 'S', 'V'], n = M.length
-            for (let i = 0; i < n; i++) {
-                this.matrix_loc[M[i]] = gl.getUniformLocation(p, M[i] + "_matrix")
-            }
-            this.time_loc = gl.getUniformLocation(p, "t")
-            /* ----------- */
-            let img = new Image()
-            img.src = `${location}fav/twitter.jpg`
-            img.onload = () => {
-                this.texture(img)
-                /* ----------- */
-                let vertices = this.set_vertices(4, this.w / 2 - 200, this.h / 2 - 250, img.width / 5, img.height / 5)
-                this.COUNT = vertices.length * 0.5
-                /* ----------- */
-                let xy_buffer = gl.createBuffer()
-                gl.bindBuffer(gl.ARRAY_BUFFER, xy_buffer)
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
-                /* ----------- */
-                let xyTex_buffer = gl.createBuffer()
-                gl.bindBuffer(gl.ARRAY_BUFFER, xyTex_buffer)
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.clipSpace), gl.STATIC_DRAW)
-                /* ----------- */
-                gl.useProgram(p)
-                /* ----------- */
-                gl.enableVertexAttribArray(xy_loc)
-                gl.bindBuffer(gl.ARRAY_BUFFER, xy_buffer)
-                gl.vertexAttribPointer(xy_loc, 2, gl.FLOAT, false, 0, 0)
-                /* ----------- */
-                gl.enableVertexAttribArray(xyTex_loc)
-                gl.bindBuffer(gl.ARRAY_BUFFER, xyTex_buffer)
-                gl.vertexAttribPointer(xyTex_loc, 2, gl.FLOAT, false, 0, 0)
-                /* ----------- */
-                this.r.run()
-            }
-
-        }
-
-        render(t) {
-            let gl = this.gl,
-                s = 1
-            /* ----------- */
-            gl.uniform1f(this.time_loc, t * 0.001);
-            /* ----------- */
-            let T_matrix = this._T(0, 0, -Math.tan(Math.PI / 3)),
-                R_matrix = this._R(0, 0),
-                S_matrix = this._S(s, s, 1),
-                V_matrix = this._V(60, 1, 1, 2000)
-            /* ----------- */
-            gl.uniformMatrix4fv(this.matrix_loc.T, false, T_matrix)
-            gl.uniformMatrix4fv(this.matrix_loc.R, false, R_matrix)
-            gl.uniformMatrix4fv(this.matrix_loc.S, false, S_matrix)
-            gl.uniformMatrix4fv(this.matrix_loc.V, false, V_matrix)
-            /* ----------- */
-            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-            gl.clearColor(0, 0, 0, 0)
-            gl.clear(gl.COLOR_BUFFER_BIT)
-            gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.COUNT)
-        }
-
-        texture(img) {
-            const gl = this.gl
-            let texture = gl.createTexture()
-            gl.bindTexture(gl.TEXTURE_2D, texture)
-            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img)
-        }
-
-        set_matrix(gl) {
-            let _2gl = gl * 2
-        }
-
-        engine() {
-            this.main()
-        }
-
-        compile_shader(s_source, s_type) {
-            const gl = this.gl
-            let s = gl.createShader(s_type)
-            gl.shaderSource(s, s_source)
-            gl.compileShader(s)
-            let test = gl.getShaderParameter(s, gl.COMPILE_STATUS)
-            if (!test) {
-                throw "not compile" + gl.getShaderInfoLog(s)
-            }
-            return s
-        }
-
-        create_program(vertex_s, fragment_s) {
-            const gl = this.gl
-            let p = gl.createProgram()
-            gl.attachShader(p, vertex_s)
-            gl.attachShader(p, fragment_s)
-            gl.linkProgram(p)
-            let test = gl.getProgramParameter(p, gl.LINK_STATUS)
-            if (!test) {
-                throw "not link" + gl.getShaderInfoLog(p)
-            }
-            return p
-        }
-
-        set_vertices(n, x, y, w, h) {
-            let vertices = [],
-                _n = 2 ** n,
-                _f = 2 / _n
-            x = -1 + 2 * x / this.w
-            y = 1 - 2 * y / this.h
-            w = w / this.w
-            h = -h / this.h
-            for (let i = _n; i > 0; i--) {
-                for (let j = 0; j <= _n; j++) {
-                    let xy = [
-                        x + j * w * _f, y + i * h * _f,
-                        x + j * w * _f, y + (i - 1) * h * _f,
-                    ]
-                    for (const pts of xy) {
-                        vertices.push(pts)
-                    }
-                }
-                for (let j = _n - 1; j > 0; j--) {
-                    let xy = [
-                        x + j * w * _f, y + (i - 1) * h * _f,
-                        x + j * w * _f, y + (i - 1) * h * _f,
-                    ]
-                    for (const pts of xy) {
-                        vertices.push(pts)
-                    }
-                }
-            }
-            return vertices
-        }
-
-        _T(tx, ty, tz) {
-            return [
-                1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                tx, ty, tz, 1,
-            ]
-        }
-
-        _R(aX, aY) {
-            aX = aX * Math.PI / 180
-            aY = aY * Math.PI / 180
-            let cX = Math.cos(aX),
-                sX = Math.sin(aX),
-                cY = Math.cos(aY),
-                sY = Math.sin(aY)
-
-            return [
-                cY, 0, -sY, 0,
-                sX * sY, cX, sX * cY, 0,
-                cX * sY, -sX, cX * cY, 0,
-                0, 0, 0, 1,
-            ]
-        }
-
-        _S(sx, sy, sz) {
-            return [
-                sx, 0, 0, 0,
-                0, sy, 0, 0,
-                0, 0, sz, 0,
-                0, 0, 0, 1,
-            ]
-        }
-
-        _V(fieldOfView, aspect, near, far) {
-            let f = Math.tan(Math.PI * 0.5 - 0.5 * (fieldOfView * Math.PI / 180));
-            let rangeInv = 1.0 / (near - far);
-            return [
-                f / aspect, 0, 0, 0,
-                0, f, 0, 0,
-                0, 0, (near + far) * rangeInv, -1,
-                0, 0, near * far * rangeInv * 2, 0
-            ];
-        }
-    }
-
-    new gl()
-    let Tl = new M.TL()
-    Tl
-        .add({el: "#test", d: 1500, p: {opacity: [0.5, 1], y: [0, 50]}, delay: 2000, e: 'linear'})
-        .add({el: "#test", d: 1500, p: {opacity: [0.5, 1], y: [0, 150]}, delay: 2000, e: 'linear'})
-
-    Tl.play()
+    M.Ael(window, 'load', () => {
+        new i
+    })
     console.log('\n %c Made with ❤️ by La2spaille  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;', '')
 }()
 

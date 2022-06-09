@@ -2,6 +2,7 @@
 
 namespace Engine\Controller;
 
+use App\Model\Data;
 use JetBrains\PhpStorm\Pure;
 use \stdClass;
 use \App\Config\Head;
@@ -9,6 +10,7 @@ class Controller {
     private $callArgs;
     private $content;
 
+    protected array $src;
     protected array $head;
     protected stdClass $data;
 
@@ -17,6 +19,9 @@ class Controller {
         $this->data = new stdClass;
     }
 
+    public function get_data($viewName) {
+        $this->src = Data::get_data($viewName);
+    }
     public function render ($viewName) {
         // Head
         $this->head += Head::data();

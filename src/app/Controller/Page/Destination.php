@@ -4,24 +4,24 @@ namespace App\Controller\Page;
 
 use \Engine\Controller\Controller;
 
-class Home extends Controller {
-
+class Destination extends Controller
+{
     public function show () {
 
         /*------------------------------------
             MESSAGE
         ------------------------------------*/
 
-        $this->data->msg = 'Home';
+        $this->data->msg = 'Destination';
 
         /*------------------------------------
             HEAD
         ------------------------------------*/
 
         // SEO
-        $this->head['title'] = 'Space Tourism — Home';
+        $this->head['title'] = 'Space Tourism — Destination';
         $this->head['description'] = '';
-        $this->head['opengraph'] = '/og/home.png';
+        $this->head['opengraph'] = '/og/destination.png?';
 
         // Robots
         $this->head['allow-robots'] = true;
@@ -29,8 +29,8 @@ class Home extends Controller {
         /*------------------------------------
             RENDER
         ------------------------------------*/
-
-        $this->render('home');
+        $this->get_data('destination');
+        $this->render('destination');
     }
 
 }

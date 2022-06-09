@@ -26,7 +26,9 @@ class Route {
         $router = new Router();
 
         $router->get('/', 'Home#show');
-        $router->get('/about', 'About#show');
+        $router->get('/destination', 'Destination#show');
+        $router->get('/crew', 'Crew#show');
+        $router->get('/technology', 'Technology#show');
 
         $router->p404('show');
 

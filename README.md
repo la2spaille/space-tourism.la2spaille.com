@@ -28,10 +28,10 @@ Users should be able to:
 
 ### Screenshot
 
-![Desktop version](assets/desktop.png) 
-![Tablet version](assets/tablet.png) 
-![Mobile version](assets/phone.png)
-![404](assets/404.png)
+![Desktop version](scr/public/media/desktop.png) 
+![Tablet version](scr/public/media/tablet.png) 
+![Mobile version](scr/public/media/phone.png)
+![404](scr/public/media/404.png)
 
 
 ### Links

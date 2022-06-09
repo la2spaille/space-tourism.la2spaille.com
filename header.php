@@ -16,9 +16,9 @@ $data = json_decode($json, true);
     <meta property="og:description" content="A Frontend Mentor challenge made with a touch of creativity">
 
     <!-- preload -->
-    <link rel="preload" href="assets/home/background-home-desktop.jpg" as="image">
-    <link rel="preload" href="assets/home/background-home-tablet.jpg" as="image">
-    <link rel="preload" href="assets/home/background-home-mobile.jpg" as="image">
+    <link rel="preload" href="scr/public/media/home/background-home-desktop.jpg" as="image">
+    <link rel="preload" href="scr/public/media/home/background-home-tablet.jpg" as="image">
+    <link rel="preload" href="scr/public/media/home/background-home-mobile.jpg" as="image">
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,10 +26,10 @@ $data = json_decode($json, true);
     <meta name="theme-color" content="#0B0D17"/>
     <meta name="description" content="A Frontend Mentor challenge made with a touch of creativity">
 
-    <link rel="apple-touch-icon" href="/assets/512.png">
-    <link rel="icon" sizes="192x192" href="/assets/192.png">
-    <link rel="mask-icon" href="/assets/shared/logo.svg" color="#0b0d17">
-    <link rel="shortcut icon" href="/assets/512.png" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/scr/public/media/512.png">
+    <link rel="icon" sizes="192x192" href="/scr/public/media/192.png">
+    <link rel="mask-icon" href="/scr/public/media/shared/logo.svg" color="#0b0d17">
+    <link rel="shortcut icon" href="/scr/public/media/512.png" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"

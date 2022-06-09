@@ -23,19 +23,26 @@ html {
     font-family: inherit;
     -webkit-tap-highlight-color: transparent
 }
-body,
-main {
-    color: #000;
+body,main{
+    color: #fff;
+    font-weight: 400;
     text-transform: none;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
     position: relative;
+}
+body {
+    background: #0b0d17;
 }
 svg {
     pointer-events: none;
 }
 span {
     display: inline-block;
+}
+h1,
+h3,
+p,
+strong {
+    overflow-y: hidden;
 }
 
 #app {

@@ -17,22 +17,20 @@
     <?php include ROOT . 'app/View/head/favicon.php'; ?>
     <!-- Static -->
     <?php include ROOT . 'app/View/head/static.php'; ?>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed&family=Barlow:wght@400;700&family=Bellefair&display=swap');
+    </style>
 </head>
 <body>
-<!-- App -->
 <div id="app">
-    <!-- Main -->
+    <?php include ROOT . 'app/View/common/header.php'; ?>
     <main id="main">
         <?= $this->content; ?>
     </main>
-    <!-- GL -->
     <?php include ROOT . 'app/View/gl/gl.php'; ?>
-    <!-- Header -->
-    <?php include ROOT . 'app/View/common/header.php'; ?>
-    <!-- Loader -->
+    <?php include ROOT . 'app/View/common/cursor.php'; ?>
     <?php include ROOT . 'app/View/common/loader.php'; ?>
 </div>
-<!-- Script -->
 <?php include ROOT . 'app/View/script/script.php'; ?>
 </body>
 </html>

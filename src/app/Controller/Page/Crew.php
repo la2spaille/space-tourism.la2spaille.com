@@ -4,18 +4,22 @@ namespace App\Controller\Page;
 
 use \Engine\Controller\Controller;
 
-class About extends Controller {
+class Crew extends Controller {
 
     public function show () {
+        /*------------------------------------
+                   MESSAGE
+         ------------------------------------*/
 
+        $this->data->msg = 'Crew';
         /*------------------------------------
             HEAD
         ------------------------------------*/
 
         // SEO
-        $this->head['title'] = 'la2spaille — About';
-        $this->head['description'] = 'wooooow';
-//        $this->head['opengraph'] = '/og/1200-630.png?' . VERSION;
+        $this->head['title'] = 'Space Tourism — Crew';
+        $this->head['description'] = '';
+        $this->head['opengraph'] = '/og/crew.png';
 
         // Robots
         $this->head['allow-robots'] = true;
@@ -23,8 +27,8 @@ class About extends Controller {
         /*------------------------------------
             RENDER
         ------------------------------------*/
-
-        $this->render('about');
+        $this->get_data('crew');
+        $this->render('crew');
     }
 
 }

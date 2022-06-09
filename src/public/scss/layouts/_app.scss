@@ -1,18 +1,17 @@
-#app {
+.page {
     display: flex;
     flex-direction: column;
     width: 100%;
     min-height: 100vh;
     padding: 215px 0 130px;
-    overflow: hidden;
-    &.destination {
+    &.p-destination {
         padding: 215px 0 120px;
         gap: 62.5px;
     }
-    &.crew {
+    &.p-crew {
         padding: 215px 0 0;
     }
-    &.technology {
+    &.p-technology {
         padding: 215px  0 100px;
         gap: 25px;
     }
