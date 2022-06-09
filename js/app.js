@@ -90,6 +90,7 @@ M.Raf = class {
         this.s = performance.now()
         this.id = requestAnimationFrame(this.t)
     }
+
     stop() {
         this.on = !1
         cancelAnimationFrame(this.id)
@@ -102,7 +103,7 @@ M.Raf = class {
     }
 }
 M.Ael = (el, e, cb) => {
-    let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
+    let a = M.Qs(el), s = M.Is.arr(a) ? a : [a], n = s.length
     for (let i = 0; i < n; i++) {
         s[i]["addEventListener"](e, cb)
     }
@@ -129,7 +130,7 @@ M.Qs = el => {
     let s = el.substring(1), c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
     return c.length === 1 ? c[0] : c
 }
-M.Clamp = (t,inf,sup) => Math.max(inf,Math.min(sup,t))
+M.Clamp = (t, inf, sup) => Math.max(inf, Math.min(sup, t))
 M.Lerp = (s, e, a) => s * (1 - a) + a * e
 M.Carousel = class { // Cooming Soon
     constructor(mainArray, allEl, dynamicHeight) {
@@ -145,17 +146,19 @@ M.Carousel = class { // Cooming Soon
         this.setHeight()
         this.motion()
     }
+
     setTable() {
-        for(let i =0 ; i < this.allEl.length; i++) {
+        for (let i = 0; i < this.allEl.length; i++) {
             this.allEl[i] = Array.from(this.allEl[i])
         }
-        for(let i = 0; i < this.mainArray.length; i++) {
+        for (let i = 0; i < this.mainArray.length; i++) {
             this.carousel[i] = []
-            for(let j =0 ; j < this.allEl.length; j++) {
+            for (let j = 0; j < this.allEl.length; j++) {
                 this.carousel[i][j] = this.allEl[j][i]
             }
         }
     }
+
     loaded() {
         this.setTable()
         this.carousel[0].forEach(el => {
@@ -175,7 +178,7 @@ M.Carousel = class { // Cooming Soon
 
     setHeight() {
 
-        this.dynamicHeightObject.forEach(el=> {
+        this.dynamicHeightObject.forEach(el => {
             let max = 0
             console.log(el)
             el.tab.forEach((els, index) => {
@@ -232,23 +235,23 @@ M.Carousel = class { // Cooming Soon
         });
     }
 }
-let Destination = new M.Carousel(
-    M.Select('.js-destination-nav', true),
-    [
-        M.Select('.js-destination-nav', true),
-        M.Select('.js-destination-img', true),
-        M.Select('.js-destination-name', true),
-        M.Select('.js-destination-description', true),
-        M.Select('.js-destination-distance', true),
-        M.Select('.js-destination-travel', true),
-    ],
-    [
-        {
-            elToSetHeight: M.Select('.w-paragraph', false),
-            tab : M.Select('.js-destination-description', true),
-        }
-    ]
-)
+// let Destination = new M.Carousel(
+//     M.Select('.js-destination-nav', true),
+//     [
+//         M.Select('.js-destination-nav', true),
+//         M.Select('.js-destination-img', true),
+//         M.Select('.js-destination-name', true),
+//         M.Select('.js-destination-description', true),
+//         M.Select('.js-destination-distance', true),
+//         M.Select('.js-destination-travel', true),
+//     ],
+//     [
+//         {
+//             elToSetHeight: M.Select('.w-paragraph', false),
+//             tab : M.Select('.js-destination-description', true),
+//         }
+//     ]
+// )
 !function () {
     "use strict"
 
@@ -294,9 +297,9 @@ let Destination = new M.Carousel(
                 this.speed = speed
                 this.eX = this.eY = this.x = this.y = 0
                 //
-                this.homeCTA = M.Qs('.w-home-cta', false)
-                    this.techCTA= M.Select('.js-technology-nav', true)
-                    this.links= M.Select('.link-hover', true)
+                this.homeCTA = M.Qs('.w-home-cta')
+                this.techCTA = M.Select('.js-technology-nav', true)
+                this.links = M.Select('.link-hover', true)
                 M.Bt(this, ["on", "loop", "update"])
                 this.r = new M.Raf(this.loop)
                 this.on()
@@ -314,6 +317,7 @@ let Destination = new M.Carousel(
                 this.eX = e.pageX - this.w
                 this.eY = e.pageY - this.h
             }
+
             hover() {
                 this.links.forEach(link => {
                     link.addEventListener('mouseenter', () => {
@@ -342,10 +346,12 @@ let Destination = new M.Carousel(
                     })
                 }
             }
+
             removeHover() {
                 this.el.classList.remove('site-cursor--link-hover')
 
             }
+
             on() {
                 M.Ael(document, "mousemove", this.update)
                 this.hover()
@@ -354,6 +360,7 @@ let Destination = new M.Carousel(
             }
 
         }
+
         M.Cursor = new c(0.1)
         // Mobile Navigation Apparition
         let menuCTA = {
@@ -406,6 +413,18 @@ let Destination = new M.Carousel(
                 this.leave()
             }
 
+            /**
+             * @author Grafikart
+             * @returns {Magnet[]}
+             */
+            static bind() {
+                return Array.from(document.querySelectorAll('[data-parallax]')).map(
+                    (el, i) => {
+                        return new Magnet(el, i)
+                    }
+                )
+            }
+
             enterCallback() {
                 this.transition = "0.2s"
                 this.el.style.setProperty('transition', this.transition)
@@ -437,18 +456,6 @@ let Destination = new M.Carousel(
                     })
 
                 })
-            }
-
-            /**
-             * @author Grafikart
-             * @returns {Magnet[]}
-             */
-            static bind() {
-                return Array.from(document.querySelectorAll('[data-parallax]')).map(
-                    (el, i) => {
-                        return new Magnet(el, i)
-                    }
-                )
             }
         }
 

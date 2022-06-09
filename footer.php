@@ -49,7 +49,7 @@ HTML
     <div class="site-cursor"></div>
 </div>
 <noscript><div><div>Please enable JavaScript to view this website.</div></div></noscript>
-<script type="module" src="/js/app.js"></script>
+<script type="module" src="js/app.js"></script>
 </body>
 
 </html>

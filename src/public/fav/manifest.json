@@ -1,0 +1,20 @@
+{
+  "short_name" : "Boilerplate",
+  "name":"La2spaille boilerplate",
+  "icons" : [
+    {
+      "src": "512.png",
+      "type" : "image/png",
+      "sizes" : "512x512"
+    },
+    {
+      "src": "192.png",
+      "type" : "image/png",
+      "sizes" : "192x192"
+    }
+  ],
+  "start_url" : "/?source=pwa",
+  "background_color":"#000",
+  "display" : "fullscreen",
+  "theme_color":"#000"
+}

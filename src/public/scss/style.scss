@@ -1,0 +1,28 @@
+@import "utils/variables";
+@import "utils/fonts";
+@import "base/base";
+@import "components/cta";
+@import "components/img";
+@import "components/text";
+@import "layouts/main";
+@import "layouts/header";
+@import "layouts/footer";
+@import "layouts/wrappers";
+@import "layouts/sections";
+@import "pages/home";
+@import "pages/about";
+
+#gl {
+  position: fixed;
+}
+
+body {
+  //background: #fff;
+  //background: #051139;
+  background-image: url("/fav/bg.webp");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+}
