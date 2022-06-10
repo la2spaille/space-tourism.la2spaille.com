@@ -347,26 +347,43 @@ M.De = (fr, to, nev, cev) => {
     }
 }
 M.Gl = {}
-M.Cl = (arr, a, css) => {
-    let action = a === 'a' ? 'add' : 'remove', n = arr.length
+M.Cl = (el, action, css) => {
+    let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
+    action = action === 'a' ? 'add' : 'remove'
 
     for (let i = 0; i < n; i++) {
-        arr[i].classList[action](css)
+        s[i].classList[action](css)
     }
 }
 !function () {
     "use strict"
 
+    class i {
+        constructor() {
+            this.run()
+        }
+
+        run() {
+            let t = _M,
+                intro = new M.Delay(t.delay, () => M.Cl('.motion', 'r', 'motion'))
+            intro.run()
+        }
+    }
+
 
     class c {
         constructor() {
             this.el = M.G.id('cursor')
+            this.ux = [
+                {el:".w-home-cta",css:"site-cursor--explore-hover"},
+                {el:".link-hover",css:"site-cursor--link-hover"}
+            ]
             this.h = this.el.offsetHeight / 2
             this.w = this.el.offsetWidth / 2
             this.speed = 0.1
             this.eX = this.eY = this.x = this.y = 0
 
-            M.Bt(this, ["loop", "update"])
+            M.Bt(this, ["loop", "update","toggle"])
             this.r = new M.Raf(this.loop)
             this.on()
 
@@ -385,7 +402,28 @@ M.Cl = (arr, a, css) => {
 
         on() {
             M.Ael(document, "mousemove", this.update)
+            this.hover()
             this.r.run()
+        }
+        toggle(a,css) {
+            M.Cl(this.el,a,css)
+        }
+        hover() {
+            let a= this.ux,n = a.length
+            for(let i =0 ;i<n;i++ ) {
+                M.Ael(a[i].el,"mouseenter",()=>this.toggle('a',a[i].css))
+                M.Ael(a[i].el,"mouseleave",()=>this.toggle('r',a[i].css))
+            }
+                // if (this.techCTA.length !== 0) {
+                //     this.techCTA.forEach(link => {
+                //         link.addEventListener('mouseenter', () => {
+                //             this.cursor.classList.add('site-cursor--tech-hover')
+                //         })
+                //         link.addEventListener('mouseleave', () => {
+                //             this.cursor.classList.remove('site-cursor--tech-hover')
+                //         })
+                //     })
+                // }
         }
     }
 
@@ -418,6 +456,7 @@ M.Cl = (arr, a, css) => {
         }
 
         update(e) {
+            this.init()
             const t = _M
             t.scroll.x += t.scroll.deltaX
             t.scroll.y += t.scroll.deltaY
@@ -474,19 +513,15 @@ M.Cl = (arr, a, css) => {
                     t.scroll[key[i].d === "x" ? "deltaX" : "deltaY"] = this.options.kS * key[i].s
                 }
             }
-            if (t.scroll.deltaX !== 0 || t.scroll.deltaY !== 0) {
+            if (t.scroll.deltaX  || t.scroll.deltaY ) {
                 this.update(e)
             }
         }
-
         init() {
-            const t = _M
-            let s = M.Select("#main").children, n = s.length
+            let s = M.Select(".page")
             this.max = 0
-            for (let i = 0; i < n; i++)
-                this.max += s[i].offsetHeight;
+            this.max += s.offsetHeight
             this.max -= innerHeight
-            t.scroll.y = M.Clamp(t.scroll.y, 0, this.max)
         }
 
         on() {
@@ -498,33 +533,12 @@ M.Cl = (arr, a, css) => {
             M.Ael(document, "keydown", this.key)
             M.Ael(document, "touchstart", this.tS)
             M.Ael(document, "touchmove", this.tM)
-            M.Ael(document, "vScroll", () => {
-                if (this.r.on === false) this.r.run()
-            })
+            M.Ael(document, "vScroll", () =>this.r.on || this.r.run())
 
         }
     }
 
     new s_scroll({speed: 0.5})
-
-
-    class i {
-        constructor() {
-            this.run()
-        }
-
-        run() {
-            let t = _M,
-                el = M.Select('.motion'),
-                intro = new M.Mo({
-                    el: '.motion',
-                    cb: () => M.Cl(el, 'r', 'motion'),
-                    d: 100,
-                    delay: t.delay
-                })
-            intro.play()
-        }
-    }
 
     M.Ael(window, 'load', () => {
         new i

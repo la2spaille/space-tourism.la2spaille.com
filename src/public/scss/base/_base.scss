@@ -21,7 +21,7 @@ html {
     -webkit-text-size-adjust: none;
     -webkit-font-smoothing: antialiased;
     font-family: inherit;
-    -webkit-tap-highlight-color: transparent
+    -webkit-tap-highlight-color: transparent;
 }
 body,main{
     color: #fff;
@@ -31,6 +31,7 @@ body,main{
 }
 body {
     background: #0b0d17;
+    overscroll-behavior: none;
 }
 svg {
     pointer-events: none;

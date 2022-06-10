@@ -35,3 +35,6 @@
         </div>
     </div>
 </div>
+<div class="w-bg">
+    <div class="bg crew"></div>
+</div>

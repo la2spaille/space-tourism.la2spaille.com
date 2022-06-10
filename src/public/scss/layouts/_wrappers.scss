@@ -174,23 +174,33 @@
     }
 }
 
-.w-bg-img {
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
+.w-bg {
+    position :fixed;
     z-index: -1;
-    width: 100%;
-    height: 100%;
-    img {
-        object-fit: cover;
-        min-width: 100%;
-        max-width: 100%;
-        height: 100%;
-        animation: space 40s 1 ease-in-out;
-        animation-fill-mode: forwards;
+}
+.bg {
+    background-size: cover;
+    position: fixed;
+    top:0;
+    left:0;
+    right: 0;
+    bottom:0;
+    animation: space 40s 1 ease-in-out;
+    animation-fill-mode: forwards;
+    &.home {
+        background-image: url("/media/home/background-home-desktop.jpg");
+    }
+    &.destination {
+        background-image: url("/media/destination/background-destination-desktop.jpg");
+    }
+    &.crew {
+        background-image: url("/media/crew/background-crew-desktop.jpg");
+    }
+    &.technology {
+        background-image: url("/media/technology/background-technology-desktop.jpg");
     }
 }
+
 .w-img {
     &.technology {
         position: relative;
@@ -220,30 +230,8 @@
         }
     }
 }
-.bg-img {
-
-    background-size: cover;
-    min-width: 100%;
-    max-width: 100%;
-    height: 100%;
-    animation: space 40s 1 ease-in-out;
-    animation-fill-mode: forwards;
-    &.home {
-        background-image: url("/media/home/background-home-desktop.jpg");
-        //display: none;
-    }
-    &.destination {
-        background-image: url("/media/destination/background-destination-desktop.jpg");
-    }
-    &.crew {
-        background-image: url("/media/crew/background-crew-desktop.jpg");
-    }
-    &.technology {
-        background-image: url("/media/technology/background-technology-desktop.jpg");
-    }
-}
 @media (max-width: 1050px) {
-    .bg-img {
+    .bg {
         &.home {
             background-image: url("/media/home/background-home-tablet.jpg");
         }
@@ -272,7 +260,7 @@
     }
 }
 @media (max-width: 480px) {
-    .bg-img {
+    .bg {
         &.home {
             background-image: url("/media/home/background-home-mobile.jpg");
         }
