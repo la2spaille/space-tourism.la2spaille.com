@@ -112,6 +112,7 @@ body, main {
 body {
   background: #0b0d17;
   overscroll-behavior: none;
+  overflow: hidden;
 }
 
 svg {
@@ -950,6 +951,21 @@ header {
 .loader span {
   display: inline-block;
   color: #fff;
+}
+
+#progress {
+  width: 4px;
+  z-index: 739;
+}
+#progress, #progress div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+#progress div {
+  background: #fff;
+  width: 100%;
 }
 
 @media (max-width: 1100px) {

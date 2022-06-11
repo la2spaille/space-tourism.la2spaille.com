@@ -108,3 +108,17 @@
         color: #fff;
     }
 }
+#progress {
+    width: 4px;
+    z-index: 739;
+    &, div {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+    }
+    div {
+        background: #fff;
+        width: 100%;
+    }
+}

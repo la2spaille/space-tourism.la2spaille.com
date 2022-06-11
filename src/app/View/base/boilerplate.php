@@ -28,6 +28,9 @@
         <?= $this->content; ?>
     </main>
     <?php include ROOT . 'app/View/gl/gl.php'; ?>
+    <div id="progress">
+        <div class="progress"></div>
+    </div>
     <?php include ROOT . 'app/View/common/cursor.php'; ?>
     <?php include ROOT . 'app/View/common/loader.php'; ?>
 </div>

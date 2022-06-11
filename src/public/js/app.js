@@ -332,6 +332,7 @@ M.R = (t, r) => {
     return Math.round(t * r) / r
 }
 M.Ael = (el, e, cb) => {
+    if (M.Is.und(el)) return
     let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
     for (let i = 0; i < n; i++) {
         s[i]["addEventListener"](e, cb)
@@ -348,6 +349,7 @@ M.De = (fr, to, nev, cev) => {
 }
 M.Gl = {}
 M.Cl = (el, action, css) => {
+    if (M.Is.und(el)) return
     let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
     action = action === 'a' ? 'add' : 'remove'
 
@@ -375,18 +377,18 @@ M.Cl = (el, action, css) => {
         constructor() {
             this.el = M.G.id('cursor')
             this.ux = [
-                {el:".w-home-cta",css:"site-cursor--explore-hover"},
-                {el:".link-hover",css:"site-cursor--link-hover"}
+                {el: ".w-home-cta", css: "site-cursor--explore-hover"},
+                {el: ".link-hover", css: "site-cursor--link-hover"},
+                {el: ".js-technology-nav", css: "site-cursor--tech-hover"}
             ]
             this.h = this.el.offsetHeight / 2
             this.w = this.el.offsetWidth / 2
             this.speed = 0.1
             this.eX = this.eY = this.x = this.y = 0
 
-            M.Bt(this, ["loop", "update","toggle"])
+            M.Bt(this, ["loop", "update", "toggle"])
             this.r = new M.Raf(this.loop)
             this.on()
-
         }
 
         loop() {
@@ -405,25 +407,17 @@ M.Cl = (el, action, css) => {
             this.hover()
             this.r.run()
         }
-        toggle(a,css) {
-            M.Cl(this.el,a,css)
+
+        toggle(a, css) {
+            M.Cl(this.el, a, css)
         }
+
         hover() {
-            let a= this.ux,n = a.length
-            for(let i =0 ;i<n;i++ ) {
-                M.Ael(a[i].el,"mouseenter",()=>this.toggle('a',a[i].css))
-                M.Ael(a[i].el,"mouseleave",()=>this.toggle('r',a[i].css))
+            let a = this.ux, n = a.length
+            for (let i = 0; i < n; i++) {
+                M.Ael(a[i].el, "mouseenter", () => this.toggle('a', a[i].css))
+                M.Ael(a[i].el, "mouseleave", () => this.toggle('r', a[i].css))
             }
-                // if (this.techCTA.length !== 0) {
-                //     this.techCTA.forEach(link => {
-                //         link.addEventListener('mouseenter', () => {
-                //             this.cursor.classList.add('site-cursor--tech-hover')
-                //         })
-                //         link.addEventListener('mouseleave', () => {
-                //             this.cursor.classList.remove('site-cursor--tech-hover')
-                //         })
-                //     })
-                // }
         }
     }
 
@@ -447,6 +441,7 @@ M.Cl = (el, action, css) => {
                 speed: o.speed || 0.5,
             }
             this.el = M.Select(".page")
+            this.prog = M.Select('.progress')
             this.max = this.scrollV = 0
             this.tsX = this.tsY = null
             M.Bt(this, ["w", "key", "loop", "tS", "tM"])
@@ -456,7 +451,7 @@ M.Cl = (el, action, css) => {
         }
 
         update(e) {
-            this.init()
+            this.setMax()
             const t = _M
             t.scroll.x += t.scroll.deltaX
             t.scroll.y += t.scroll.deltaY
@@ -468,8 +463,9 @@ M.Cl = (el, action, css) => {
             t.scroll.y = M.Clamp(t.scroll.y, 0, this.max)
             let y = t.scroll.y
             this.scrollV = M.Lerp(this.scrollV, y, 0.1)
+            M.T(this.prog, 0, -(1 - this.scrollV / this.max) * 100, '%')
             M.T(this.el, 0, -this.scrollV, 'px')
-            if (this.r.on === true && M.Is.interval(this.scrollV - y, -0.01, 0.01)) {
+            if (this.r.on && M.Is.interval(this.scrollV - y, -0.01, 0.01)) {
                 this.r.stop()
             }
         }
@@ -502,39 +498,46 @@ M.Cl = (el, action, css) => {
         key(e) {
             const t = _M
             t.scroll.deltaX = t.scroll.deltaY = 0
-            let key = [{c: 37, d: 'x', s: -1}, {c: 39, d: 'x', s: 1}, {c: 38, d: 'y', s: -1}, {
-                    c: 40,
-                    d: 'y',
-                    s: 1
-                }, {c: 32, d: 'y', s: 2}],
+            let key = [
+                    {c: 37, d: 'x', s: -1},
+                    {c: 39, d: 'x', s: 1},
+                    {c: 38, d: 'y', s: -1},
+                    {c: 40, d: 'y', s: 1},
+                    {c: 32, d: 'y', s: 2}
+                ],
                 n = key.length
             for (let i = 0; i < n; i++) {
                 if (e.keyCode === key[i].c) {
                     t.scroll[key[i].d === "x" ? "deltaX" : "deltaY"] = this.options.kS * key[i].s
                 }
             }
-            if (t.scroll.deltaX  || t.scroll.deltaY ) {
+            if (t.scroll.deltaX || t.scroll.deltaY) {
                 this.update(e)
             }
         }
-        init() {
+
+        setMax() {
             let s = M.Select(".page")
-            this.max = 0
-            this.max += s.offsetHeight
+            this.max = s.offsetHeight
             this.max -= innerHeight
+        }
+        init() {
+            M.T(this.prog, 0, -100, '%')
         }
 
         on() {
             this.init()
-            M.Ael(window, "resize", this.init)
-            M.Ael(window, "orientationchange", this.init)
+            M.Ael(window, "resize", this.setMax)
+            M.Ael(window, "orientationchange", this.setMax)
             //______________________________________________
-            M.Ael(document, "wheel", this.w)
-            M.Ael(document, "keydown", this.key)
-            M.Ael(document, "touchstart", this.tS)
-            M.Ael(document, "touchmove", this.tM)
-            M.Ael(document, "vScroll", () =>this.r.on || this.r.run())
-
+            let e = [{e:"wheel",f:"w"}, {e:"keydown",f:"key"}, {e:"touchstart",f:"tS"}, {e:"touchmove",f:"tM"}],
+                n = e.length
+            for(let i = 0; i < n;i++) {
+                const a = e[i]
+                M.Ael(document, a.e, this[a.f])
+            }
+            //______________________________________________
+            M.Ael(document, "vScroll", () => this.r.on || this.r.run())
         }
     }
 

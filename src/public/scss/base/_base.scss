@@ -32,6 +32,7 @@ body,main{
 body {
     background: #0b0d17;
     overscroll-behavior: none;
+    overflow: hidden;
 }
 svg {
     pointer-events: none;
