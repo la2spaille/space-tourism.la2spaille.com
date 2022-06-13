@@ -478,6 +478,11 @@ header {
   background-image: url("/media/technology/image-space-capsule-portrait.jpg");
 }
 
+.m--wrapper:not(div) {
+  position: relative;
+  overflow-y: hidden;
+}
+
 @media (max-width: 1050px) {
   .bg.home {
     background-image: url("/media/home/background-home-tablet.jpg");
@@ -524,18 +529,6 @@ header {
     transform: scale(1.25);
   }
 }
-.w-magnet {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20%;
-  height: 20%;
-  min-width: 40px;
-  min-height: 40px;
-  z-index: 16;
-}
-
 .w-home-cta {
   cursor: pointer;
   display: flex;
@@ -548,16 +541,20 @@ header {
   height: 275px;
   transition: 1s 1.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.w-home-cta::after {
+.w-home-cta::before, .w-home-cta::after {
   content: "";
   width: 450px;
   height: 450px;
-  background: #fff;
-  opacity: 0.1;
   position: absolute;
-  border-radius: 50%;
   top: 50%;
   left: 50%;
+  z-index: -1;
+  transform: translate(-50%, -50%);
+}
+.w-home-cta::after {
+  background: #fff;
+  opacity: 0.1;
+  border-radius: 50%;
   z-index: 1;
   transform: translate(-50%, -50%) scale(0.6);
   transition: 1s cubic-bezier(0.23, 1, 0.32, 1);
@@ -617,75 +614,19 @@ header {
   opacity: 1 !important;
 }
 
-.js-destination-nav {
+.m--brain.destination {
   color: var(--blue);
 }
-.js-destination-nav.active {
+.m--brain.destination.active {
   color: var(--white);
 }
 
-.js-destination-name,
-.js-destination-distance,
-.js-destination-travel {
-  display: none;
-  position: relative;
-  transform: translateY(100%);
-  opacity: 0;
-  transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-}
-.js-destination-name.active,
-.js-destination-distance.active,
-.js-destination-travel.active {
-  transform: translateY(0);
-  opacity: 1;
-}
-.js-destination-name.transition,
-.js-destination-distance.transition,
-.js-destination-travel.transition {
-  display: block;
-}
-.js-destination-name.transition-leave,
-.js-destination-distance.transition-leave,
-.js-destination-travel.transition-leave {
-  transform: translateY(-100%);
-  opacity: 0.25;
-}
-
-.js-destination-description {
-  position: absolute;
-  display: block;
-  visibility: hidden;
-  opacity: 0;
-  top: 0;
-  transform: translateY(125%);
-  transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1), visibility 0s, opacity 0.7s;
-}
-.js-destination-description.active {
-  transform: translateY(0);
-  opacity: 1;
-}
-.js-destination-description.transition {
-  visibility: visible;
-}
-.js-destination-description.transition-leave {
-  transform: translateY(-100%);
-}
-
-.js-destination-img {
-  display: none;
-  opacity: 0;
-  transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-  transform: translateY(25%);
-}
-.js-destination-img.transition-leave {
-  transform: translateY(-10%);
-}
-.js-destination-img.transition {
-  display: block;
-}
-.js-destination-img.active {
-  transform: translateY(0);
-  opacity: 1;
+.m-destination-img,
+.m-destination-description,
+.m-destination-name,
+.m-destination-distance,
+.m-destination-travel {
+  position: absolute !important;
 }
 
 .w-crew-nav {
@@ -697,7 +638,7 @@ header {
   opacity: 0;
 }
 
-.js-crew-nav {
+.m--brain.crew {
   background: #fff;
   width: 15px;
   height: 15px;
@@ -705,10 +646,10 @@ header {
   opacity: 0.17;
   cursor: pointer;
 }
-.js-crew-nav:hover {
+.m--brain.crew:hover {
   opacity: 0.5;
 }
-.js-crew-nav.active {
+.m--brain.crew.active {
   opacity: 1 !important;
 }
 
@@ -784,7 +725,7 @@ header {
   opacity: 0;
 }
 
-.js-technology-nav {
+.m--brain.technology {
   position: relative;
   width: 80px;
   height: 80px;
@@ -797,10 +738,10 @@ header {
   background: rgba(255, 255, 255, 0);
   transition: 0.7s;
 }
-.js-technology-nav:hover {
+.m--brain.technology:hover {
   border: 1px solid white;
 }
-.js-technology-nav.active {
+.m--brain.technology.active {
   border: 1px solid white;
   background: white;
   color: var(--dark-blue);
@@ -814,7 +755,6 @@ header {
 }
 
 .js-technology-name, .js-technology-description {
-  display: none;
   position: relative;
   transform: translateY(calc(100% + 1.5em));
   opacity: 1;
@@ -832,7 +772,6 @@ header {
 }
 
 .js-technology-img {
-  display: none;
   transform: translateY(110%);
   opacity: 0;
   transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
@@ -912,45 +851,6 @@ header {
 }
 .w-2-half-wrapper span {
   position: relative;
-}
-
-.loader {
-  position: fixed;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  z-index: 100;
-  width: 100vw;
-  background: #0B0D17;
-  transition: 0.7s cubic-bezier(0.6, 0.01, 0.43, 0.99);
-  clip-path: inset(0 0 0 0);
-}
-.loader.init {
-  transition: 0s;
-  clip-path: inset(100% 0 0 0);
-}
-.loader.transition {
-  transition: 1s;
-}
-.loader.dom-loaded {
-  clip-path: inset(0 0 100% 0);
-}
-.loader svg {
-  transform: scale(3.75);
-}
-.loader strong {
-  position: relative;
-  min-width: 100vw;
-  display: flex;
-  justify-content: center;
-  transform: scale(3.5) translateY(225%);
-}
-.loader span {
-  display: inline-block;
-  color: #fff;
 }
 
 #progress {

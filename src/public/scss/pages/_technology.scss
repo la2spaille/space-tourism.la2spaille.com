@@ -7,7 +7,7 @@
         opacity: 0;
     }
 }
-.js-technology-nav {
+.m--brain.technology {
     position: relative;
     width: 80px;
     height: 80px;
@@ -37,7 +37,6 @@
     top: 0;
 }
 .js-technology-name,.js-technology-description {
-    display: none;
     position: relative;
     transform: translateY(calc(100% + 1.5em));
     opacity: 1;
@@ -54,7 +53,6 @@
     }
 }
 .js-technology-img {
-    display: none;
     transform: translateY(110%);
     opacity: 0;
     transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);

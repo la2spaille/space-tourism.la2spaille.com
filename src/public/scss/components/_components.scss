@@ -1,4 +1,4 @@
-// Cusrsor du site
+// Cursor
 .w-site-cursor {
     width: 60px;
     height: 60px;
@@ -69,45 +69,6 @@
     }
 }
 
-// Loader
-.loader {
-    position: fixed;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    z-index: 100;
-    width: 100vw;
-    background: #0B0D17;
-    transition: .7s cubic-bezier(0.6, 0.01, 0.43, 0.99);
-    clip-path: inset(0 0 0 0);
-    &.init {
-        transition: 0s;
-        clip-path: inset(100% 0 0 0);
-    }
-    &.transition {
-        transition: 1s;
-    }
-    &.dom-loaded {
-        clip-path: inset(0 0 100% 0);
-    }
-    svg {
-        transform: scale(3.75);
-    }
-    strong {
-        position: relative;
-        min-width: 100vw;
-        display: flex;
-        justify-content: center;
-        transform: scale(3.5) translateY(225%);
-    }
-    span {
-        display: inline-block;
-        color: #fff;
-    }
-}
 #progress {
     width: 4px;
     z-index: 739;

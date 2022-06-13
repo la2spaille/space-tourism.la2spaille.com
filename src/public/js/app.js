@@ -136,7 +136,6 @@ M.Mo = class {
         return M.R(M.Lerp(s, e, this.o.progE), this.o.r)
     }
 }
-
 M.TL = class {
     constructor() {
         this.arr = []
@@ -157,8 +156,6 @@ M.TL = class {
     }
 
 }
-
-
 M.Raf = class {
     constructor(loop) {
         this.loop = loop
@@ -184,7 +181,6 @@ M.Raf = class {
         this.id = requestAnimationFrame(this.t)
     }
 }
-
 M.Delay = class {
     constructor(d, cb) {
         this.d = d
@@ -220,7 +216,18 @@ M.Is = {
 }
 M.Ease = {
     linear: t => t,
-    o2: t => t * (2 - t)
+    o1: t => Math.sin(t * (.5 * Math.PI)),
+    io1: t => -.5 * (Math.cos(Math.PI * t) - 1),
+    o2: t => t * (2 - t),
+    io2: t => t < .5 ? 2 * t * t : (4 - 2 * t) * t - 1,
+    o3: t => --t * t * t + 1,
+    io3: t => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+    o4: t => 1 - --t * t * t * t,
+    io4: t => t < .5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t,
+    o5: t => 1 + --t * t * t * t * t,
+    io5: t => t < .5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t,
+    o6: t => 1 === t ? 1 : 1 - 2 ** (-10 * t),
+    io6: t => 0 === t || 1 === t ? t : (t /= .5) < 1 ? .5 * 2 ** (10 * (t - 1)) : .5 * (2 - 2 ** (-10 * --t))
 }
 M.XY = {
     accX: 0, accY: 0, offsetTop: function (el) {
@@ -256,13 +263,20 @@ M.Pe = {
         M.Pe.f(t, "none")
     }
 }
+M.Gl = {}
+
+M.index = (el, arr) => {
+    let n = arr.length;
+    for (let i = 0; i < n; i++)
+        if (el === arr[i])
+            return i;
+    return -1
+}
 M.Clamp = (t, inf, sup) => Math.max(inf, Math.min(sup, t))
 M.Lerp = (s, e, a) => s * (1 - a) + a * e
 M.iLerp = (s, e, a) => s * (1 - a) + a * e // on clamp puis on lerp
 M.Has = (t, r) => t.hasOwnProperty(r)
-M.n = (arr1, arr2) => arr1.filter(val => -1 !== arr2.indexOf(val))
 M.Rand = (a, b) => Math.random() * (b - a) + a
-
 M.Fetch = r => {
 
 }
@@ -271,7 +285,6 @@ M.Bt = (t, f) => {
         t[f[i]] = t[f[i]].bind(t)
     }
 }
-
 M.To = ({delay, duration, timing, draw}) => {
     let start = performance.now()
     requestAnimationFrame(function To(timestamp) {
@@ -301,19 +314,10 @@ M.Tl = (arr, attr, timeout, delay) => {
         }
     }
 }
-
-
 M.Select = el => {
     if (!M.Is.str(el)) return el
     let s = el.substring(1), c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
     return c.length === 1 ? c[0] : c
-}
-M.Qs = el => {
-    let c = el.split('.'), s = new Array(2)
-    for (let i = 1; i < c.length; i++) {
-        s[i - 1] = M.G.class(el[i])
-    }
-    M.n(s[0], s[1])
 }
 M.Ga = (t, r) => t.getAttribute(r)
 M.T = (t, x, y, u) => {
@@ -331,7 +335,7 @@ M.R = (t, r) => {
     r = M.Is.und(r) ? 100 : 10 ** r
     return Math.round(t * r) / r
 }
-M.Ael = (el, e, cb) => {
+M.E = (el, e, cb) => {
     if (M.Is.und(el)) return
     let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
     for (let i = 0; i < n; i++) {
@@ -344,10 +348,9 @@ M.De = (fr, to, nev, cev) => {
         to["dispatchEvent"](cE)
     }
     for (let i = 0; i < n; i++) {
-        M.Ael(fr, s[i], de)
+        M.E(fr, s[i], de)
     }
 }
-M.Gl = {}
 M.Cl = (el, action, css) => {
     if (M.Is.und(el)) return
     let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
@@ -357,6 +360,7 @@ M.Cl = (el, action, css) => {
         s[i].classList[action](css)
     }
 }
+
 !function () {
     "use strict"
 
@@ -372,7 +376,6 @@ M.Cl = (el, action, css) => {
         }
     }
 
-
     class c {
         constructor() {
             this.el = M.G.id('cursor')
@@ -381,9 +384,9 @@ M.Cl = (el, action, css) => {
                 {el: ".link-hover", css: "site-cursor--link-hover"},
                 {el: ".js-technology-nav", css: "site-cursor--tech-hover"}
             ]
-            this.h = this.el.offsetHeight / 2
-            this.w = this.el.offsetWidth / 2
-            this.speed = 0.1
+            this.h = this.el.offsetHeight
+            this.w = this.el.offsetWidth
+            this.s = 0.1
             this.eX = this.eY = this.x = this.y = 0
 
             M.Bt(this, ["loop", "update", "toggle"])
@@ -392,19 +395,23 @@ M.Cl = (el, action, css) => {
         }
 
         loop() {
-            this.x = M.Lerp(this.x, this.eX, this.speed)
-            this.y = M.Lerp(this.y, this.eY, this.speed)
+            this.x = M.Lerp(this.x, this.eX, this.s)
+            this.y = M.Lerp(this.y, this.eY, this.s)
             M.T(this.el, this.x, this.y, 'px')
         }
 
         update(e) {
-            this.eX = e.pageX - this.w
-            this.eY = e.pageY - this.h
+            this.eX = e.pageX - this.w / 2
+            this.eY = e.pageY - this.h / 2
+        }
+
+        e() {
+            M.E(document, "mousemove", this.update)
+            this.hover()
         }
 
         on() {
-            M.Ael(document, "mousemove", this.update)
-            this.hover()
+            this.e()
             this.r.run()
         }
 
@@ -415,13 +422,11 @@ M.Cl = (el, action, css) => {
         hover() {
             let a = this.ux, n = a.length
             for (let i = 0; i < n; i++) {
-                M.Ael(a[i].el, "mouseenter", () => this.toggle('a', a[i].css))
-                M.Ael(a[i].el, "mouseleave", () => this.toggle('r', a[i].css))
+                M.E(a[i].el, "mouseenter", () => this.toggle('a', a[i].css))
+                M.E(a[i].el, "mouseleave", () => this.toggle('r', a[i].css))
             }
         }
     }
-
-    new c
 
     class s_scroll {
         constructor(o) {
@@ -453,21 +458,18 @@ M.Cl = (el, action, css) => {
         update(e) {
             this.setMax()
             const t = _M
-            t.scroll.x += t.scroll.deltaX
             t.scroll.y += t.scroll.deltaY
             t.scroll.originalEvent = e
         }
 
         loop() {
             const t = _M
-            t.scroll.y = M.Clamp(t.scroll.y, 0, this.max)
-            let y = t.scroll.y
+            let y = t.scroll.y = M.Clamp(t.scroll.y, 0, this.max)
             this.scrollV = M.Lerp(this.scrollV, y, 0.1)
             M.T(this.prog, 0, -(1 - this.scrollV / this.max) * 100, '%')
             M.T(this.el, 0, -this.scrollV, 'px')
-            if (this.r.on && M.Is.interval(this.scrollV - y, -0.01, 0.01)) {
-                this.r.stop()
-            }
+            this.r.on && M.Is.interval(this.scrollV - y, -0.01, 0.01) && this.r.stop()
+
         }
 
         tS(e) {
@@ -511,9 +513,8 @@ M.Cl = (el, action, css) => {
                     t.scroll[key[i].d === "x" ? "deltaX" : "deltaY"] = this.options.kS * key[i].s
                 }
             }
-            if (t.scroll.deltaX || t.scroll.deltaY) {
-                this.update(e)
-            }
+            (t.scroll.deltaX || t.scroll.deltaY) && this.update(e)
+
         }
 
         setMax() {
@@ -521,30 +522,263 @@ M.Cl = (el, action, css) => {
             this.max = s.offsetHeight
             this.max -= innerHeight
         }
+
         init() {
             M.T(this.prog, 0, -100, '%')
         }
 
+        e() {
+            let e = [
+                    {e: "wheel", f: "w"},
+                    {e: "keydown", f: "key"},
+                    {e: "touchstart", f: "tS"},
+                    {e: "touchmove", f: "tM"}
+                ],
+                n = e.length
+            for (let i = 0; i < n; i++) {
+                const a = e[i]
+                M.E(document, a.e, this[a.f])
+            }
+        }
+
         on() {
             this.init()
-            M.Ael(window, "resize", this.setMax)
-            M.Ael(window, "orientationchange", this.setMax)
-            //______________________________________________
-            let e = [{e:"wheel",f:"w"}, {e:"keydown",f:"key"}, {e:"touchstart",f:"tS"}, {e:"touchmove",f:"tM"}],
-                n = e.length
-            for(let i = 0; i < n;i++) {
-                const a = e[i]
-                M.Ael(document, a.e, this[a.f])
-            }
-            //______________________________________________
-            M.Ael(document, "vScroll", () => this.r.on || this.r.run())
+            M.E(window, "resize", this.setMax)
+            M.E(window, "orientationchange", this.setMax)
+            /* ────────────────────────────────────────── */
+            this.e()
+            /* ────────────────────────────────────────── */
+            M.E(document, "vScroll", () => this.r.on || this.r.run())
         }
     }
 
-    new s_scroll({speed: 0.5})
+    class m {
+        constructor() {
+            this.headerNav = M.Select('.w-nav')
+            this.menuBtn = M.Select('.w-menu-btn')
+            this.closeBtn = M.Select('.w-close-btn')
+            this.on()
+        }
 
-    M.Ael(window, 'load', () => {
+        on() {
+            M.E(this.menuBtn, 'click', this.open)
+            M.E(this.closeBtn, 'click', this.close)
+        }
+
+        open(e) {
+            document.body.style.overflowY = "hidden"
+            M.Cl(this.headerNav, 'a', 'is-active')
+            M.Cl(this.menuBtn, 'a', 'is-active')
+            e.stopPropagation()
+        }
+
+        close(e) {
+            document.body.style.overflowY = "auto"
+            M.Cl(this.headerNav, 'r', 'is-active')
+            M.Cl(this.menuBtn, 'r', 'is-active')
+            e.stopPropagation()
+        }
+    }
+
+    class mo {
+        constructor(o) {
+            this.b = M.Select('.m--brain')
+            this.w = M.Select('.m--wrapper')
+            this.l = 0
+            this.o = o
+            M.Bt(this, ['_b'])
+            this.on()
+        }
+
+        _w() {
+            let a = this.w, n = a.length
+            for (let i = 0; i < n; i++) {
+                let b = a[i].children, m = b.length,
+                    max = 0
+                for (let j = 0; j < m; j++) {
+                    if (b[j].offsetHeight > max) max = b[j].offsetHeight
+                }
+                a[i].style.height = max + 'px'
+            }
+        }
+
+        init() {
+            this._w()
+            this.i()
+        }
+
+        i() {
+            let a = this.b, n = a.length,
+                I = 0,
+                b = this.o, m = b.length
+            for (let i = 0; i < n; i++) {
+                let css = I === i ? 'a' : 'r'
+                M.Cl(a[i], css, 'active')
+            }
+            for (let i = 0; i < m; i++) {
+                let o = b[i], el = M.Select(o.el), n = el.length
+                for (let j = 0; j < n; j++) {
+                    if (j === I) {
+                        new M.Mo({el: el[I], p: o.active.p, d: o.active.d}).play()
+                    } else {
+                        new M.Mo({
+                            el: el[j],
+                            p: o.ready.p,
+                            d: o.ready.d,
+                            delay: o.inactive.delay || 0
+                        }).play()
+                    }
+                }
+            }
+        }
+
+        _b(e) {
+            let a = this.b, n = a.length,
+                I = M.index(e.target, a),
+                b = this.o, m = b.length
+            for (let i = 0; i < n; i++) {
+                let css = I === i ? 'a' : 'r'
+                M.Cl(a[i], css, 'active')
+            }
+            for (let i = 0; i < m; i++) {
+                let o = b[i], el = M.Select(o.el), n = el.length
+                for (let j = 0; j < n; j++) {
+                    if (j === I) {
+                        new M.Mo({
+                            el: el[I],
+                            p: o.active.p,
+                            e: 'io3',
+                            d: o.active.d,
+                            delay: o.active.delay || 0
+                        }).play()
+                        new M.Mo({
+                            el: el[this.l],
+                            p: o.inactive.p,
+                            e: 'io3',
+                            d: o.inactive.d,
+                            delay: o.inactive.delay || 0
+                        }).play()
+                        new M.Mo({
+                            el: el[this.l],
+                            p: o.ready.p,
+                            e: 'io3',
+                            d: o.ready.d,
+                            delay: o.inactive.d || 0
+                        }).play()
+                    }
+                }
+            }
+            this.l = I
+        }
+
+        e() {
+            M.E(this.b, 'click', this._b)
+        }
+
+        on() {
+            this.init()
+            this.e()
+        }
+    }
+
+    class p {
+        constructor(el) {
+            this.el = M.Select(el)
+            this.y = this.x = this.w = this.h = 0
+            this.eX = this.eY = 0
+            this.s = 0.5
+            this.xy = 0.2
+            M.Bt(this, ['update', 'loop'])
+            this.r = new M.Raf(this.loop)
+            this.on()
+        }
+
+
+        loop() {
+            this.x = M.Lerp(this.x, this.eX, this.s) * this.xy
+            this.y = M.Lerp(this.y, this.eY, this.s) * this.xy
+            M.T(this.el, this.x, this.y, 'px')
+        }
+
+        update(e) {
+            this.eX = e.clientX - this.Ox - this.w / 2
+            this.eY = e.clientY - this.Oy - this.h / 2
+        }
+
+        on() {
+            this.el.style.setProperty('transition', '1s ease')
+
+            this.enter()
+            this.move()
+            this.leave()
+        }
+
+
+        move() {
+            M.E(this.el, 'mousemove', this.update)
+        }
+
+        enter() {
+            M.E(this.el, 'mouseenter', (e) => {
+                this.r.run()
+                let t = _M
+                this.Ox = M.XY.offsetLeft(this.el)
+                this.Oy = M.XY.offsetTop(this.el) - t.scroll.y
+                this.w = this.el.offsetWidth
+                this.h = this.el.offsetHeight
+                this.eX = e.clientX - this.Ox - this.w / 2
+                this.eY = e.clientY - this.Oy - this.h / 2
+            })
+        }
+
+        leave() {
+            M.E(this.el, 'mouseleave', () => {
+                M.T(this.el,0,0,'px')
+                this.r.stop()
+
+            })
+        }
+    }
+
+
+    M.E(window, 'load', () => {
         new i
+        new m
+        new c
+        // new p (M.Select('.m-destination-img')[0])
+        new p ('.w-img')
+        new s_scroll({speed: 0.5})
+        new mo([
+            {
+                el: '.m-destination-name',
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
+                ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+            },
+            {
+                el: '.m-destination-description',
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
+                ready: {p: {y: [125], opacity: [0, 0]}, d: 0}
+            }, {
+                el: '.m-destination-distance',
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 300},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
+                ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+
+            }, {
+                el: '.m-destination-travel',
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 300},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
+                ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+
+            }, {
+                el: '.m-destination-img',
+                active: {p: {opacity: [0, 1]}, d: 1200},
+                inactive: {p: {opacity: [1, 0]}, d: 1200,},
+                ready: {p: {y: [0, 0], opacity: [0, 0]}, d: 0}
+            }
+        ])
     })
     console.log('\n %c Made with ❤️ by La2spaille  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;', '')
 }()

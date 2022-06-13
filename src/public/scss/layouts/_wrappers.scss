@@ -230,6 +230,10 @@
         }
     }
 }
+.m--wrapper:not(div) {
+    position: relative;
+    overflow-y: hidden;
+}
 @media (max-width: 1050px) {
     .bg {
         &.home {
@@ -285,14 +289,3 @@
 }
 
 
-.w-magnet {
-    position: absolute;
-    top: 50%;
-    left:50%;
-    transform: translate(-50%,-50%);
-    width: 20%;
-    height: 20%;
-    min-width: 40px;
-    min-height: 40px;
-    z-index: 16;
-}

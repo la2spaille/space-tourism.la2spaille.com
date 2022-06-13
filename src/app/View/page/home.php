@@ -13,7 +13,6 @@
         </div>
         <div class="w-home-cta motion f-heading4">
             <a  href="/destination">EXPLORE</a>
-            <span class="w-magnet" data-link="destination"></span>
         </div>
     </div>
 </div>

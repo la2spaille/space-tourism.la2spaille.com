@@ -35,67 +35,21 @@
         }
     }
 }
-.js-destination-nav {
+.m--brain.destination {
     color: var(--blue);
     &.active {
         color: var(--white);
     }
 }
 
+.m-destination-img,
+.m-destination-description,
+.m-destination-name,
+.m-destination-distance,
+.m-destination-travel {
+    position: absolute !important;
+    //transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1); reste
+}
+    //transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1) ,visibility 0s ,opacity 0.7s; text
 
-.js-destination-name,
-.js-destination-distance,
-.js-destination-travel {
-    display: none;
-    position: relative;
-    transform: translateY(100%);
-    opacity: 0;
-    transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-    &.active {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    &.transition {
-        display:block;
-    }
-    &.transition-leave {
-        transform: translateY(-100%);
-        opacity: 0.25;
-    }
-}
-.js-destination-description  {
-    position: absolute;
-    display: block;
-    visibility: hidden;
-    opacity: 0;
-    top: 0;
-    transform: translateY(125%);
-    transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1) ,visibility 0s ,opacity 0.7s;
-    &.active {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    &.transition {
-        visibility: visible;
-    }
-    &.transition-leave {
-        transform: translateY(-100%);
-    }
-}
-.js-destination-img {
-    display: none;
-    opacity: 0;
-    transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-    transform: translateY(25%);
-    &.transition-leave {
-        transform: translateY(-10%);
-    }
-    &.transition {
-        display: block;
-    }
-    &.active {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
+    //transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1); img

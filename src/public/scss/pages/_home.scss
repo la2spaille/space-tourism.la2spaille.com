@@ -10,16 +10,20 @@
     width: 275px;
     height: 275px;
     transition: 1s 1.5s cubic-bezier(0.23, 1, 0.32, 1);
-    &::after {
+    &::before,&::after {
         content: "";
         width: 450px;
         height: 450px;
-        background: #fff;
-        opacity: 0.1;
         position: absolute;
-        border-radius: 50%;
         top: 50%;
         left: 50%;
+        z-index: -1;
+        transform: translate(-50%, -50%) ;
+    }
+    &::after {
+        background: #fff;
+        opacity: 0.1;
+        border-radius: 50%;
         z-index: 1;
         transform: translate(-50%, -50%) scale(0.6);
         transition: 1s cubic-bezier(0.23, 1, 0.32, 1);
