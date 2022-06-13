@@ -17,19 +17,19 @@
                 <strong class="w-strong technology f-nav-text motion"><span>THE TERMINOLOGY…</span></strong>
                 <h1 class="w-h1 technology f-heading3 m--wrapper">
                     <?php foreach ($technologies as $technology) { ?>
-                        <span class="js-technology-name"><?= $technology['name'] ?></span>
+                        <span class="m-technology-name"><?= $technology['name'] ?></span>
                     <?php } ?>
                 </h1>
                 <p class="w-paragraph technology f-body-copy m--wrapper">
                     <?php foreach ($technologies as $technology) { ?>
-                        <span class="js-technology-description"><?= $technology['description'] ?></span>
+                        <span class="m-technology-description"><?= $technology['description'] ?></span>
                     <?php } ?>
                 </p>
             </div>
         </div>
         <div class="w-img technology m--wrapper">
             <?php foreach ($technologies as $technology) { ?>
-                <div class="js-technology-img"></div>
+                <div class="m-technology-img"></div>
             <?php } ?>
         </div>
     </div>

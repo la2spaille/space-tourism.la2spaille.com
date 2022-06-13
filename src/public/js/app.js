@@ -543,7 +543,7 @@ M.Cl = (el, action, css) => {
 
         on() {
             this.init()
-            M.E(window, "resize", this.setMax)
+            M.E(window, "resize", ()=> console.log('ok'))
             M.E(window, "orientationchange", this.setMax)
             /* ────────────────────────────────────────── */
             this.e()
@@ -601,37 +601,6 @@ M.Cl = (el, action, css) => {
                 a[i].style.height = max + 'px'
             }
         }
-
-        init() {
-            this._w()
-            this.i()
-        }
-
-        i() {
-            let a = this.b, n = a.length,
-                I = 0,
-                b = this.o, m = b.length
-            for (let i = 0; i < n; i++) {
-                let css = I === i ? 'a' : 'r'
-                M.Cl(a[i], css, 'active')
-            }
-            for (let i = 0; i < m; i++) {
-                let o = b[i], el = M.Select(o.el), n = el.length
-                for (let j = 0; j < n; j++) {
-                    if (j === I) {
-                        new M.Mo({el: el[I], p: o.active.p, d: o.active.d}).play()
-                    } else {
-                        new M.Mo({
-                            el: el[j],
-                            p: o.ready.p,
-                            d: o.ready.d,
-                            delay: o.inactive.delay || 0
-                        }).play()
-                    }
-                }
-            }
-        }
-
         _b(e) {
             let a = this.b, n = a.length,
                 I = M.index(e.target, a),
@@ -670,6 +639,37 @@ M.Cl = (el, action, css) => {
             }
             this.l = I
         }
+
+        init() {
+            this._w()
+            this.i()
+        }
+
+        i() {
+            let a = this.b, n = a.length,
+                I = 0,
+                b = this.o, m = b.length
+            for (let i = 0; i < n; i++) {
+                let css = I === i ? 'a' : 'r'
+                M.Cl(a[i], css, 'active')
+            }
+            for (let i = 0; i < m; i++) {
+                let o = b[i], el = M.Select(o.el), n = el.length
+                for (let j = 0; j < n; j++) {
+                    if (j === I) {
+                        new M.Mo({el: el[I], p: o.active.p, d: o.active.d}).play()
+                    } else {
+                        new M.Mo({
+                            el: el[j],
+                            p: o.ready.p,
+                            d: o.ready.d,
+                            delay: o.inactive.delay || 0
+                        }).play()
+                    }
+                }
+            }
+        }
+
 
         e() {
             M.E(this.b, 'click', this._b)
@@ -740,45 +740,87 @@ M.Cl = (el, action, css) => {
         }
     }
 
+    let _d = [
+        {
+            el: '.m-destination-name',
+            active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
+            inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
+            ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+        },
+        {
+            el: '.m-destination-description',
+            active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
+            inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
+            ready: {p: {y: [125], opacity: [0, 0]}, d: 0}
+        }, {
+            el: '.m-destination-distance',
+            active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 300},
+            inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
+            ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
 
-    M.E(window, 'load', () => {
-        new i
-        new m
-        new c
-        // new p (M.Select('.m-destination-img')[0])
-        new p ('.w-img')
-        new s_scroll({speed: 0.5})
-        new mo([
+        }, {
+            el: '.m-destination-travel',
+            active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 300},
+            inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
+            ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+
+        }, {
+            el: '.m-destination-img',
+            active: {p: {opacity: [0, 1]}, d: 1000},
+            inactive: {p: {opacity: [1, 0]}, d: 1200,},
+            ready: {p: {y: [0, 0], opacity: [0, 0]}, d: 0}
+        }
+    ],
+        _c = [
             {
-                el: '.m-destination-name',
+                el: '.m-crew-job',
                 active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
                 inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
                 ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
             },
             {
-                el: '.m-destination-description',
+                el: '.m-crew-name',
                 active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
                 inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
                 ready: {p: {y: [125], opacity: [0, 0]}, d: 0}
             }, {
-                el: '.m-destination-distance',
+                el: '.m-crew-description',
                 active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 300},
                 inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
                 ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
 
             }, {
-                el: '.m-destination-travel',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 300},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-                ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
-
-            }, {
-                el: '.m-destination-img',
-                active: {p: {opacity: [0, 1]}, d: 1200},
+                el: '.m-crew-img',
+                active: {p: {opacity: [0, 1]}, d: 1000},
                 inactive: {p: {opacity: [1, 0]}, d: 1200,},
                 ready: {p: {y: [0, 0], opacity: [0, 0]}, d: 0}
             }
-        ])
+        ],
+        _t = [
+            {
+                el: '.m-technology-name',
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
+                ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+            },
+            {
+                el: '.m-technology-description',
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
+                ready: {p: {y: [125], opacity: [0, 0]}, d: 0}
+            },  {
+                el: '.m-technology-img',
+                active: {p: {opacity: [0, 1]}, d: 1000},
+                inactive: {p: {opacity: [1, 0]}, d: 1200,},
+                ready: {p: {y: [0, 0], opacity: [0, 0]}, d: 0}
+            }
+        ]
+    M.E(window, 'load', () => {
+        new i
+        new m
+        new c
+        new s_scroll({speed: 0.5})
+        new mo(_d)
     })
     console.log('\n %c Made with ❤️ by La2spaille  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;', '')
 }()

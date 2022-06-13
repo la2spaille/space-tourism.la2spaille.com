@@ -8,17 +8,17 @@
             <div class="w-text crew">
                 <strong class="w-strong crew f-heading4 m--wrapper">
                     <?php foreach($crews as $crew) { ?>
-                        <span class="js-crew-job"><?= $crew['role'] ?></span>
+                        <span class="m-crew-job"><?= $crew['role'] ?></span>
                     <?php } ?>
                 </strong>
                 <h1 class="w-h1 crew f-heading3 m--wrapper">
                     <?php foreach($crews as $crew) { ?>
-                        <span class="js-crew-name"><?= $crew['name'] ?></span>
+                        <span class="m-crew-name"><?= $crew['name'] ?></span>
                     <?php } ?>
                 </h1>
                 <p class="w-paragraph crew f-body-copy m--wrapper">
                     <?php foreach($crews as $crew) { ?>
-                        <span class="js-crew-description"><?= $crew['bio'] ?></span>
+                        <span class="m-crew-description"><?= $crew['bio'] ?></span>
                     <?php } ?>
                 </p>
             </div>
@@ -30,7 +30,7 @@
         </div>
         <div class="w-img crew m--wrapper">
             <?php foreach($crews as $crew) { ?>
-                <img class="js-crew-img" src="<?= $crew['images']['png'] ?>" srcset="<?= $crew['images']['webp'] ?>" alt="<?= $crew['name'] ?>">
+                <img class="m-crew-img" src="<?= $crew['images']['png'] ?>" srcset="<?= $crew['images']['webp'] ?>" alt="<?= $crew['name'] ?>">
             <?php } ?>
         </div>
     </div>

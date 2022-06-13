@@ -747,43 +747,43 @@ header {
   color: var(--dark-blue);
 }
 
-.js-technology-description {
+.m-technology-description {
   position: absolute;
   display: block;
   opacity: 1;
   top: 0;
 }
 
-.js-technology-name, .js-technology-description {
+.m-technology-name, .m-technology-description {
   position: relative;
   transform: translateY(calc(100% + 1.5em));
   opacity: 1;
   transition: 0.7s transform cubic-bezier(0.23, 1, 0.32, 1);
 }
-.js-technology-name.active, .js-technology-description.active {
+.m-technology-name.active, .m-technology-description.active {
   transform: translateY(0);
   opacity: 1;
 }
-.js-technology-name.transition, .js-technology-description.transition {
+.m-technology-name.transition, .m-technology-description.transition {
   display: inline-block;
 }
-.js-technology-name.transition-leave, .js-technology-description.transition-leave {
+.m-technology-name.transition-leave, .m-technology-description.transition-leave {
   transform: translateY(-100%) !important;
 }
 
-.js-technology-img {
+.m-technology-img {
   transform: translateY(110%);
   opacity: 0;
   transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.js-technology-img.active {
+.m-technology-img.active {
   transform: translateY(0);
   opacity: 1;
 }
-.js-technology-img.transition {
+.m-technology-img.transition {
   display: block;
 }
-.js-technology-img.transition-leave {
+.m-technology-img.transition-leave {
   transform: translateY(0);
 }
 
