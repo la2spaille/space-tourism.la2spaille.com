@@ -20,45 +20,16 @@
         opacity: 1 !important;
     }
 }
-.js-crew-job,.js-crew-name{
-    display: none;
+.m-crew-job,.m-crew-name{
     position: relative;
-    transform: translateY(calc(100% + 1.5em));
-    opacity: 1;
     transition: 0.7s  cubic-bezier(0.23, 1, 0.32, 1);
-    &.active {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    &.transition {
-        display: block;
-    }
-    &.transition-leave {
-        transform: translateY(-100%);
-        opacity: 1;
-    }
+
 }
-.js-crew-description  {
+.m-crew-description  {
     position: absolute;
     display: block;
-    visibility: hidden;
-    opacity: 0;
-    top: 0;
-    transform: translateY(100%);
-    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1) ,visibility 0s , opacity 0.7s;
-    &.active {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    &.transition {
-        visibility: visible;
-    }
-    &.transition-leave {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
 }
-.js-crew-img {
+.m-crew-img {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -66,16 +37,4 @@
     opacity: 1;
     visibility: hidden;
     pointer-events: none;
-    transition: transform 0.7s ,visibility 0s ,opacity 0.7s;
-    &.active {
-        transform: translateY(0);
-        opacity: 1 !important;
-    }
-    &.transition {
-        visibility: visible;
-    }
-    &.transition-leave {
-        transform: translateY(0);
-        opacity: 0;
-    }
 }

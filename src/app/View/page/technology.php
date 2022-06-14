@@ -2,7 +2,7 @@
 
 <div id="technology" class="page p-technology">
     <h3 class="w-page-title f-heading5 motion">
-        <span number="03" class="">SPACE LAUNCH 101</span>
+        <span data-number="03" class="">SPACE LAUNCH 101</span>
     </h3>
     <div class="l-wrapper technology">
         <div class="w-navXtext technology">

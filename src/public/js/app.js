@@ -154,7 +154,6 @@ M.TL = class {
             el.play()
         })
     }
-
 }
 M.Raf = class {
     constructor(loop) {
@@ -331,6 +330,11 @@ M.T = (t, x, y, u) => {
 M.O = (t, r) => {
     t.style.opacity = r
 }
+M.D = (t,r) => {
+    r = r === 'n' ? 'none' : 'block'
+    let s = t.style
+    s['display'] = r
+}
 M.R = (t, r) => {
     r = M.Is.und(r) ? 100 : 10 ** r
     return Math.round(t * r) / r
@@ -360,7 +364,9 @@ M.Cl = (el, action, css) => {
         s[i].classList[action](css)
     }
 }
-
+!function () {
+    console.log(this)
+}()
 !function () {
     "use strict"
 
@@ -590,6 +596,33 @@ M.Cl = (el, action, css) => {
             this.on()
         }
 
+        i() {
+            let a = this.b, n = a.length,
+                I = 0,
+                b = this.o, m = b.length
+            for (let i = 0; i < n; i++) {
+                let css = I === i ? 'a' : 'r'
+                M.Cl(a[i], css, 'active')
+            }
+            for (let i = 0; i < m; i++) {
+                let o = b[i], el = M.Select(o.el), n = el.length
+                for (let j = 0; j < n; j++) {
+                    if (j === I) {
+                        M.D(el[I],' ')
+                        new M.Mo({el: el[I], p: o.active.p, d: o.active.d}).play()
+                    } else {
+                        new M.Mo({
+                            el: el[j],
+                            p: o.ready.p,
+                            d: o.ready.d,
+                            delay: o.inactive.delay || 0
+                        }).play()
+                        M.D(el[j],'n')
+                    }
+                }
+            }
+        }
+
         _w() {
             let a = this.w, n = a.length
             for (let i = 0; i < n; i++) {
@@ -613,6 +646,7 @@ M.Cl = (el, action, css) => {
                 let o = b[i], el = M.Select(o.el), n = el.length
                 for (let j = 0; j < n; j++) {
                     if (j === I) {
+                        M.D(el[I],' ')
                         new M.Mo({
                             el: el[I],
                             p: o.active.p,
@@ -634,6 +668,8 @@ M.Cl = (el, action, css) => {
                             d: o.ready.d,
                             delay: o.inactive.d || 0
                         }).play()
+                        new M.Delay(o.inactive.d,()=>M.D(el[this.l],'n'))
+
                     }
                 }
             }
@@ -644,32 +680,6 @@ M.Cl = (el, action, css) => {
             this._w()
             this.i()
         }
-
-        i() {
-            let a = this.b, n = a.length,
-                I = 0,
-                b = this.o, m = b.length
-            for (let i = 0; i < n; i++) {
-                let css = I === i ? 'a' : 'r'
-                M.Cl(a[i], css, 'active')
-            }
-            for (let i = 0; i < m; i++) {
-                let o = b[i], el = M.Select(o.el), n = el.length
-                for (let j = 0; j < n; j++) {
-                    if (j === I) {
-                        new M.Mo({el: el[I], p: o.active.p, d: o.active.d}).play()
-                    } else {
-                        new M.Mo({
-                            el: el[j],
-                            p: o.ready.p,
-                            d: o.ready.d,
-                            delay: o.inactive.delay || 0
-                        }).play()
-                    }
-                }
-            }
-        }
-
 
         e() {
             M.E(this.b, 'click', this._b)
@@ -751,7 +761,7 @@ M.Cl = (el, action, css) => {
             el: '.m-destination-description',
             active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
             inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-            ready: {p: {y: [125], opacity: [0, 0]}, d: 0}
+            ready: {p: {y: [125,125], opacity: [0, 0]}, d: 0}
         }, {
             el: '.m-destination-distance',
             active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 300},
@@ -807,7 +817,7 @@ M.Cl = (el, action, css) => {
                 el: '.m-technology-description',
                 active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
                 inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-                ready: {p: {y: [125], opacity: [0, 0]}, d: 0}
+                ready: {p: {y: [125,125], opacity: [0, 0]}, d: 0}
             },  {
                 el: '.m-technology-img',
                 active: {p: {opacity: [0, 1]}, d: 1000},
@@ -820,7 +830,7 @@ M.Cl = (el, action, css) => {
         new m
         new c
         new s_scroll({speed: 0.5})
-        new mo(_d)
+        new mo(_t)
     })
     console.log('\n %c Made with ❤️ by La2spaille  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;', '')
 }()

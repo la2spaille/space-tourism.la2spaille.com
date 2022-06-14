@@ -7,7 +7,7 @@
     span {
         transition: 1s;
         &::before {
-            content: attr(number);
+            content: attr(data-number);
             font-weight: 700;
             margin: 0 11px 0 0;
             opacity: 0.25;
