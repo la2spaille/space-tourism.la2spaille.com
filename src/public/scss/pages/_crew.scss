@@ -22,8 +22,6 @@
 }
 .m-crew-job,.m-crew-name{
     position: relative;
-    transition: 0.7s  cubic-bezier(0.23, 1, 0.32, 1);
-
 }
 .m-crew-description  {
     position: absolute;
@@ -32,9 +30,5 @@
 .m-crew-img {
     position: absolute;
     bottom: 0;
-    width: 100%;
-    transform: translateY(100%);
-    opacity: 1;
-    visibility: hidden;
     pointer-events: none;
 }

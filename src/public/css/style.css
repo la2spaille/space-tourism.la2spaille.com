@@ -120,7 +120,7 @@ svg {
 }
 
 span {
-  display: block;
+  display: inline-block;
 }
 
 h1,
@@ -310,12 +310,12 @@ header {
 }
 .w-img.crew {
   max-width: 50%;
+  height: 100%;
   margin: -50px 0 0;
 }
 .w-img.crew img {
   width: 90%;
   left: 5%;
-  height: auto;
 }
 .w-img img {
   width: 100%;
@@ -462,7 +462,7 @@ header {
   height: 97%;
   top: 1.5%;
   background-size: cover;
-  transition: 0.5s;
+  transition: 0.5s transform cubic-bezier(0.23, 1, 0.32, 1);
   position: absolute;
 }
 .w-img.technology div:hover {
@@ -621,12 +621,15 @@ header {
   color: var(--white);
 }
 
-.m-destination-img,
 .m-destination-description,
 .m-destination-name,
 .m-destination-distance,
 .m-destination-travel {
-  position: absolute !important;
+  position: relative;
+}
+
+.m-destination-img {
+  position: absolute;
 }
 
 .w-crew-nav {
@@ -655,7 +658,6 @@ header {
 
 .m-crew-job, .m-crew-name {
   position: relative;
-  transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .m-crew-description {
@@ -666,10 +668,6 @@ header {
 .m-crew-img {
   position: absolute;
   bottom: 0;
-  width: 100%;
-  transform: translateY(100%);
-  opacity: 1;
-  visibility: hidden;
   pointer-events: none;
 }
 
@@ -707,8 +705,9 @@ header {
 
 .m-technology-name,
 .m-technology-description {
-  position: absolute;
+  position: relative;
   display: block;
+  z-index: 1;
 }
 
 .w-site-cursor {
@@ -1005,7 +1004,7 @@ header {
     flex-direction: row;
   }
 
-  .js-technology-nav {
+  .m-technology-nav {
     height: 60px;
     width: 60px;
   }
@@ -1248,7 +1247,7 @@ header {
     padding: 0;
   }
 
-  .js-crew-nav:hover {
+  .m--brain.crew:hover {
     opacity: 0.17;
   }
 
@@ -1346,7 +1345,7 @@ header {
     letter-spacing: 1.25px;
   }
 
-  .js-technology-nav {
+  .m-technology-nav {
     height: 40px;
     width: 40px;
   }

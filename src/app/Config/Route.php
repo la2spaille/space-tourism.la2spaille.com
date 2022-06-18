@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Config;
-use \Engine\Router\Router;
-class Route {
 
+use \Engine\Router\Router;
+
+class Route
+{
     /*
      * For the same page, always put the most accurate routes first
      *
@@ -22,7 +24,8 @@ class Route {
      * 5. date|title|type
      */
 
-    public static function init () {
+    public static function init()
+    {
         $router = new Router();
 
         $router->get('/', 'Home#show');
@@ -31,8 +34,38 @@ class Route {
         $router->get('/technology', 'Technology#show');
 
         $router->p404('show');
-
         $router->run();
+
+    }
+
+    public static function get_routes()
+    {
+        return [
+            "/" => [
+                "path" => "/",
+                "title" => "Space Tourism — Home",
+                "view" => "home",
+            ],
+            "/destination" => [
+                "path" => "/destination",
+                "title" => "Space Tourism — Destination",
+                "view" => "destination",
+                "model" => "destination"
+            ],
+            "/crew" => [
+                "path" => "/crew",
+                "title" => "Space Tourism — Crew",
+                "view" => "crew",
+                "model" => "crew"
+            ],
+            "/technology" => [
+                "path" => "/technology",
+                "title" => "Space Tourism — Technology",
+                "view" => "technology",
+                "model" => "technology"
+
+            ]
+        ];
     }
 
 }

@@ -6,23 +6,29 @@ use App\Model\Data;
 use JetBrains\PhpStorm\Pure;
 use \stdClass;
 use \App\Config\Head;
-class Controller {
-    private $callArgs;
-    private $content;
+use App\Config\Route;
 
+class Controller
+{
     protected array $src;
     protected array $head;
     protected stdClass $data;
+    private $callArgs;
+    private $content;
 
-    #[Pure] public function __construct ($callArgs) {
+    #[Pure] public function __construct($callArgs)
+    {
         $this->callArgs = $callArgs;
         $this->data = new stdClass;
     }
 
-    public function get_data($viewName) {
+    public function get_data($viewName)
+    {
         $this->src = Data::get_data($viewName);
     }
-    public function render ($viewName) {
+
+    public function render($viewName)
+    {
         // Head
         $this->head += Head::data();
 
@@ -40,24 +46,32 @@ class Controller {
         // Content
         $this->content = $this->get_content(ROOT . 'app/View/page/' . $viewName . '.php');
         if (isset($_GET['xhr'])) {
-            $xhr['title'] = $this->head['title'];
-            $xhr['html'] = $this->content;
-            print json_encode(array('xhr' => $xhr));
+            $xhr['body'] = $this->content;
+            $routes = Route::get_routes();
+            foreach ($routes as $route) {
+                $xhr['routes'][$route['path']] = $route['view'];
+                $xhr['cache'][$route['path']]['tile'] = $route['title'] ;
+                if(isset($route['model'])) {
+                    $this->get_data($route['model']);
+                }
+                $xhr['cache'][$route['path']]['html'] =  $this->get_content(ROOT . 'app/View/page/' . $route['view'] . '.php');
+            }
+            print json_encode($xhr);
         } else {
             echo $this->get_content(ROOT . 'app/View/base/boilerplate.php');
         }
     }
 
-    public function renderError () {
-        header('HTTP/1.1 404 Not Found', 404, TRUE);
-
-        // Content
-        echo $this->get_content(ROOT . 'app/View/base/p404.php');
+    private function get_content($url): string
+    {
+        ob_start();
+        require $url;
+        return ob_get_clean();
     }
 
-    private function get_content ($fileName) : string {
-        ob_start();
-        require $fileName;
-        return ob_get_clean();
+    public function renderError()
+    {
+        header('HTTP/1.1 404 Not Found', 404, TRUE);
+        echo $this->get_content(ROOT . 'app/View/base/p404.php');
     }
 }

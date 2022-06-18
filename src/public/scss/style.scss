@@ -214,7 +214,7 @@
   .w-technology-nav {
     flex-direction: row;
   }
-  .js-technology-nav {
+  .m-technology-nav {
     height: 60px;
     width: 60px;
   }
@@ -455,7 +455,7 @@
   .w-crew-nav {
     padding: 0;
   }
-  .js-crew-nav {
+  .m--brain.crew {
     &:hover {
       opacity: 0.17;
     }
@@ -547,7 +547,7 @@
       letter-spacing: 1.25px;
     }
   }
-  .js-technology-nav {
+  .m-technology-nav {
     height: 40px;
     width: 40px;
   }

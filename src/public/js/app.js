@@ -1,5 +1,19 @@
 window._M = {
-    delay: 500
+    delay: 500,
+    config: {
+        serviceWorker: true
+    },
+    route: {
+        "new": {
+            "url": false,
+            "page": false
+        },
+        "old": {
+            "url": false,
+            "page": false
+        }
+    },
+    was: []
 }
 window.M = {}
 
@@ -210,23 +224,19 @@ M.Is = {
     str: t => "string" == typeof t,
     obj: t => t === Object(t),
     arr: t => t.constructor === Array,
+    img: t => t.tagName === "IMG",
     imgLoad: t => t.complete === true, // A gérer avec un RAF
     interval: (t, inf, sup) => t >= inf && t <= sup
 }
 M.Ease = {
     linear: t => t,
     o1: t => Math.sin(t * (.5 * Math.PI)),
-    io1: t => -.5 * (Math.cos(Math.PI * t) - 1),
     o2: t => t * (2 - t),
-    io2: t => t < .5 ? 2 * t * t : (4 - 2 * t) * t - 1,
     o3: t => --t * t * t + 1,
-    io3: t => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
     o4: t => 1 - --t * t * t * t,
-    io4: t => t < .5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t,
     o5: t => 1 + --t * t * t * t * t,
-    io5: t => t < .5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t,
     o6: t => 1 === t ? 1 : 1 - 2 ** (-10 * t),
-    io6: t => 0 === t || 1 === t ? t : (t /= .5) < 1 ? .5 * 2 ** (10 * (t - 1)) : .5 * (2 - 2 ** (-10 * --t))
+    cb: t => t ** 3 - 3 * t ** 2 + 3 * t
 }
 M.XY = {
     accX: 0, accY: 0, offsetTop: function (el) {
@@ -276,8 +286,27 @@ M.Lerp = (s, e, a) => s * (1 - a) + a * e
 M.iLerp = (s, e, a) => s * (1 - a) + a * e // on clamp puis on lerp
 M.Has = (t, r) => t.hasOwnProperty(r)
 M.Rand = (a, b) => Math.random() * (b - a) + a
-M.Fetch = r => {
-
+M.Fetch = o => {
+    let t = "json" === o.type;
+    const s = t ? "json" : "text"
+        , p = {
+        method: t ? "POST" : "GET",
+        headers: new Headers({
+            "Content-type": t ? "application/x-www-form-urlencoded" : "text/html"
+        }),
+        mode: "same-origin"
+    }
+    t && (p.body = o.body)
+    fetch(o.url, p)
+        .then(r => {
+            if (r.ok) return r[s]()
+        })
+        .then(r => {
+            o.success(r)
+        })
+}
+M.PD = t => {
+    t.cancelable && t.preventDefault()
 }
 M.Bt = (t, f) => {
     for (let i = 0; i < f.length; i++) {
@@ -315,7 +344,8 @@ M.Tl = (arr, attr, timeout, delay) => {
 }
 M.Select = el => {
     if (!M.Is.str(el)) return el
-    let s = el.substring(1), c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
+    let s = el.substring(1),
+        c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
     return c.length === 1 ? c[0] : c
 }
 M.Ga = (t, r) => t.getAttribute(r)
@@ -330,7 +360,7 @@ M.T = (t, x, y, u) => {
 M.O = (t, r) => {
     t.style.opacity = r
 }
-M.D = (t,r) => {
+M.D = (t, r) => {
     r = r === 'n' ? 'none' : 'block'
     let s = t.style
     s['display'] = r
@@ -339,11 +369,12 @@ M.R = (t, r) => {
     r = M.Is.und(r) ? 100 : 10 ** r
     return Math.round(t * r) / r
 }
-M.E = (el, e, cb) => {
+M.E = (el, e, cb, o) => {
     if (M.Is.und(el)) return
     let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
+    o = o === 'r' ? 'remove' : 'add'
     for (let i = 0; i < n; i++) {
-        s[i]["addEventListener"](e, cb)
+        s[i][o + "EventListener"](e, cb)
     }
 }
 M.De = (fr, to, nev, cev) => {
@@ -365,9 +396,6 @@ M.Cl = (el, action, css) => {
     }
 }
 !function () {
-    console.log(this)
-}()
-!function () {
     "use strict"
 
     class i {
@@ -379,6 +407,88 @@ M.Cl = (el, action, css) => {
             let t = _M,
                 intro = new M.Delay(t.delay, () => M.Cl('.motion', 'r', 'motion'))
             intro.run()
+        }
+    }
+
+    class d {
+        constructor(o) {
+            this.data = o
+        }
+
+        get() {
+            let t = this.data[_M.route.new.url]
+            return M.Is.und(t) ? false : t
+        }
+    }
+
+    class t {
+        constructor() {
+            M.Bt(this, ["update"])
+
+            this.init()
+            this.run()
+        }
+
+        init() {
+            let t = _M
+            M.Fetch({
+                url: location + "?xhr=true",
+                type: "html",
+                success: r => {
+                    r = JSON.parse(r)
+                    const c = t.config
+                    c.routes = r.routes
+                    this.cache = new d(r.cache)
+                    this.layer = M.Select('#main')
+                }
+            })
+        }
+
+        update(e) {
+            let p = e.target.pathname
+            let t = _M,
+                r = t.config.routes
+
+            p !== t.route.new.url && this.out(p)
+            M.PD(e)
+
+        }
+
+        insertNew(o) {
+
+        }
+
+        removeOld() {
+
+        }
+
+        e() {
+            M.E('a', 'click', this.update)
+        }
+
+        in(o) {
+            const t = _M
+            let d = this.cache
+            let i = d.get()
+            console.log(i)
+            // this.add()
+        }
+
+        out() {
+
+        }
+
+        onPopstate() {
+
+        }
+
+        add(el) {
+            this.layer.insertAdjacentHTML("beforeend", el)
+        }
+
+        run() {
+            this.e()
+
         }
     }
 
@@ -394,10 +504,9 @@ M.Cl = (el, action, css) => {
             this.w = this.el.offsetWidth
             this.s = 0.1
             this.eX = this.eY = this.x = this.y = 0
-
-            M.Bt(this, ["loop", "update", "toggle"])
+            M.Bt(this, ["loop", "update", "cl"])
             this.r = new M.Raf(this.loop)
-            this.on()
+            this.run()
         }
 
         loop() {
@@ -413,25 +522,27 @@ M.Cl = (el, action, css) => {
 
         e() {
             M.E(document, "mousemove", this.update)
-            this.hover()
         }
 
-        on() {
+        run() {
             this.e()
+            this.hover()
             this.r.run()
-        }
-
-        toggle(a, css) {
-            M.Cl(this.el, a, css)
         }
 
         hover() {
             let a = this.ux, n = a.length
             for (let i = 0; i < n; i++) {
-                M.E(a[i].el, "mouseenter", () => this.toggle('a', a[i].css))
-                M.E(a[i].el, "mouseleave", () => this.toggle('r', a[i].css))
+                M.E(a[i].el, "mouseenter", () => this.cl('a', a[i].css))
+                M.E(a[i].el, "mouseleave", () => this.cl('r', a[i].css))
             }
         }
+
+        cl(a, css) {
+            M.Cl(this.el, a, css)
+        }
+
+
     }
 
     class s_scroll {
@@ -458,7 +569,7 @@ M.Cl = (el, action, css) => {
             M.Bt(this, ["w", "key", "loop", "tS", "tM"])
             M.De(window, document, ["wheel", "keydown", "touchmove"], "vScroll")
             this.r = new M.Raf(this.loop)
-            this.on()
+            this.run()
         }
 
         update(e) {
@@ -520,7 +631,6 @@ M.Cl = (el, action, css) => {
                 }
             }
             (t.scroll.deltaX || t.scroll.deltaY) && this.update(e)
-
         }
 
         setMax() {
@@ -547,9 +657,9 @@ M.Cl = (el, action, css) => {
             }
         }
 
-        on() {
+        run() {
             this.init()
-            M.E(window, "resize", ()=> console.log('ok'))
+            M.E(window, "resize", this.setMax())
             M.E(window, "orientationchange", this.setMax)
             /* ────────────────────────────────────────── */
             this.e()
@@ -563,12 +673,16 @@ M.Cl = (el, action, css) => {
             this.headerNav = M.Select('.w-nav')
             this.menuBtn = M.Select('.w-menu-btn')
             this.closeBtn = M.Select('.w-close-btn')
-            this.on()
+            this.run()
         }
 
-        on() {
+        e() {
             M.E(this.menuBtn, 'click', this.open)
             M.E(this.closeBtn, 'click', this.close)
+        }
+
+        run() {
+            this.e()
         }
 
         open(e) {
@@ -591,12 +705,14 @@ M.Cl = (el, action, css) => {
             this.b = M.Select('.m--brain')
             this.w = M.Select('.m--wrapper')
             this.l = 0
+            this.d = 1100
             this.o = o
             M.Bt(this, ['_b'])
-            this.on()
+            this.init()
+            this.run()
         }
 
-        i() {
+        intro() {
             let a = this.b, n = a.length,
                 I = 0,
                 b = this.o, m = b.length
@@ -608,16 +724,18 @@ M.Cl = (el, action, css) => {
                 let o = b[i], el = M.Select(o.el), n = el.length
                 for (let j = 0; j < n; j++) {
                     if (j === I) {
-                        M.D(el[I],' ')
-                        new M.Mo({el: el[I], p: o.active.p, d: o.active.d}).play()
+                        M.D(el[I], 'b')
+                        new M.Mo({
+                            el: el[I],
+                            p: o.active.p,
+                            d: o.active.d
+                        }).play()
                     } else {
+                        M.D(el[j], 'n')
                         new M.Mo({
                             el: el[j],
-                            p: o.ready.p,
-                            d: o.ready.d,
-                            delay: o.inactive.delay || 0
+                            p: o.init.p,
                         }).play()
-                        M.D(el[j],'n')
                     }
                 }
             }
@@ -629,64 +747,66 @@ M.Cl = (el, action, css) => {
                 let b = a[i].children, m = b.length,
                     max = 0
                 for (let j = 0; j < m; j++) {
-                    if (b[j].offsetHeight > max) max = b[j].offsetHeight
+                    let h = M.Is.img(b[j]) ? b[j].height : b[j].offsetHeight
+                    if (h > max) max = h
                 }
                 a[i].style.height = max + 'px'
             }
         }
+
         _b(e) {
             let a = this.b, n = a.length,
                 I = M.index(e.target, a),
                 b = this.o, m = b.length
+            if (I === this.l) return
             for (let i = 0; i < n; i++) {
                 let css = I === i ? 'a' : 'r'
                 M.Cl(a[i], css, 'active')
+                M.Pe.none(a[i])
             }
             for (let i = 0; i < m; i++) {
                 let o = b[i], el = M.Select(o.el), n = el.length
                 for (let j = 0; j < n; j++) {
                     if (j === I) {
-                        M.D(el[I],' ')
+                        let l = this.l
                         new M.Mo({
                             el: el[I],
                             p: o.active.p,
-                            e: 'io3',
+                            e: 'cb',
                             d: o.active.d,
                             delay: o.active.delay || 0
                         }).play()
                         new M.Mo({
-                            el: el[this.l],
+                            el: el[l],
                             p: o.inactive.p,
-                            e: 'io3',
+                            e: 'cb',
                             d: o.inactive.d,
-                            delay: o.inactive.delay || 0
                         }).play()
                         new M.Mo({
-                            el: el[this.l],
-                            p: o.ready.p,
-                            e: 'io3',
-                            d: o.ready.d,
-                            delay: o.inactive.d || 0
+                            el: el[l],
+                            p: o.init.p,
+                            e: 'cb',
+                            delay: o.inactive.d
                         }).play()
-                        new M.Delay(o.inactive.d,()=>M.D(el[this.l],'n'))
-
+                        new M.Delay(o.inactive.d || 0, () => M.D(el[l], 'n')).run()
+                        new M.Delay(o.active.delay || 0, () => M.D(el[I], 'b')).run()
                     }
                 }
+                new M.Delay(this.d, () => M.Pe.all(a[i])).run()
             }
             this.l = I
         }
 
         init() {
             this._w()
-            this.i()
+            this.intro()
         }
 
         e() {
             M.E(this.b, 'click', this._b)
         }
 
-        on() {
-            this.init()
+        run() {
             this.e()
         }
     }
@@ -743,7 +863,7 @@ M.Cl = (el, action, css) => {
 
         leave() {
             M.E(this.el, 'mouseleave', () => {
-                M.T(this.el,0,0,'px')
+                M.T(this.el, 0, 0, 'px')
                 this.r.stop()
 
             })
@@ -751,86 +871,88 @@ M.Cl = (el, action, css) => {
     }
 
     let _d = [
-        {
-            el: '.m-destination-name',
-            active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
-            inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-            ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
-        },
-        {
-            el: '.m-destination-description',
-            active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
-            inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-            ready: {p: {y: [125,125], opacity: [0, 0]}, d: 0}
-        }, {
-            el: '.m-destination-distance',
-            active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 300},
-            inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-            ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+            {
+                el: '.m-destination-name',
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                init: {p: {y: [100, 100], opacity: [0, 0]}}
+            },
+            {
+                el: '.m-destination-description',
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                init: {p: {y: [125, 125], opacity: [0, 0]}}
+            }, {
+                el: '.m-destination-distance',
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 500},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                init: {p: {y: [100, 100], opacity: [0, 0]}}
 
-        }, {
-            el: '.m-destination-travel',
-            active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 300},
-            inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-            ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+            }, {
+                el: '.m-destination-travel',
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 500},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                init: {p: {y: [100, 100], opacity: [0, 0]}}
 
-        }, {
-            el: '.m-destination-img',
-            active: {p: {opacity: [0, 1]}, d: 1000},
-            inactive: {p: {opacity: [1, 0]}, d: 1200,},
-            ready: {p: {y: [0, 0], opacity: [0, 0]}, d: 0}
-        }
-    ],
+            }, {
+                el: '.m-destination-img',
+                active: {p: {opacity: [0, 1]}, d: 1000},
+                inactive: {p: {opacity: [1, 0]}, d: 1000},
+                init: {p: {y: [0, 0], opacity: [0, 0]}}
+            }
+        ],
         _c = [
             {
                 el: '.m-crew-job',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-                ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                init: {p: {y: [100, 100], opacity: [0, 0]}}
             },
             {
                 el: '.m-crew-name',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-                ready: {p: {y: [125], opacity: [0, 0]}, d: 0}
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                init: {p: {y: [100, 100], opacity: [0, 0]}}
             }, {
                 el: '.m-crew-description',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 300},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-                ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                init: {p: {y: [100, 100], opacity: [0, 0]}}
 
             }, {
                 el: '.m-crew-img',
                 active: {p: {opacity: [0, 1]}, d: 1000},
-                inactive: {p: {opacity: [1, 0]}, d: 1200,},
-                ready: {p: {y: [0, 0], opacity: [0, 0]}, d: 0}
+                inactive: {p: {opacity: [1, 0]}, d: 900},
+                init: {p: {opacity: [0, 0]}}
             }
         ],
         _t = [
             {
                 el: '.m-technology-name',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-                ready: {p: {y: [100, 100], opacity: [0, 0]}, d: 0}
+                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                init: {p: {y: [100, 100], opacity: [0, 0]}}
             },
             {
                 el: '.m-technology-description',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 200},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 700},
-                ready: {p: {y: [125,125], opacity: [0, 0]}, d: 0}
-            },  {
+                active: {p: {y: [125, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                init: {p: {y: [125, 125], opacity: [0, 0]}}
+            }, {
                 el: '.m-technology-img',
-                active: {p: {opacity: [0, 1]}, d: 1000},
-                inactive: {p: {opacity: [1, 0]}, d: 1200,},
-                ready: {p: {y: [0, 0], opacity: [0, 0]}, d: 0}
+                active: {p: {opacity: [0, 1]}, d: 1100},
+                inactive: {p: {opacity: [1, 0]}, d: 1100},
+                init: {p: {opacity: [0, 0]}}
             }
         ]
     M.E(window, 'load', () => {
+        new t
         new i
         new m
         new c
         new s_scroll({speed: 0.5})
-        new mo(_t)
+        new mo(_d)
+
     })
     console.log('\n %c Made with ❤️ by La2spaille  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;', '')
 }()

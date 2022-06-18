@@ -15,7 +15,7 @@
             </div>
             <div class="w-text technology">
                 <strong class="w-strong technology f-nav-text motion"><span>THE TERMINOLOGY…</span></strong>
-                <h1 class="w-h1 technology f-heading3 m--wrapper">
+                <h1 class="w-h1 technology f-heading3">
                     <?php foreach ($technologies as $technology) { ?>
                         <span class="m-technology-name"><?= $technology['name'] ?></span>
                     <?php } ?>

@@ -31,10 +31,8 @@
 
 .m-technology-name,
 .m-technology-description  {
-    position: absolute;
+    position: relative;
     display: block;
+    z-index: 1;
 }
-
-    //transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-
 
