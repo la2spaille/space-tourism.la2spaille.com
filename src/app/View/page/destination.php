@@ -49,6 +49,3 @@
         </div>
     </div>
 </div>
-<div class="w-bg">
-    <div class="bg destination"></div>
-</div>

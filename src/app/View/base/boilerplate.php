@@ -33,6 +33,7 @@
     </div>
     <?php include ROOT . 'app/View/common/cursor.php'; ?>
     <?php include ROOT . 'app/View/common/loader.php'; ?>
+    <?php include ROOT . 'app/View/common/background.php'; ?>
 </div>
 <?php include ROOT . 'app/View/script/script.php'; ?>
 </body>

@@ -50,7 +50,7 @@ class Controller
             $routes = Route::get_routes();
             foreach ($routes as $route) {
                 $xhr['routes'][$route['path']] = $route['view'];
-                $xhr['cache'][$route['path']]['tile'] = $route['title'] ;
+                $xhr['cache'][$route['path']]['title'] = $route['title'] ;
                 if(isset($route['model'])) {
                     $this->get_data($route['model']);
                 }

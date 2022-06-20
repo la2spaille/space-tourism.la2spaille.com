@@ -390,7 +390,6 @@ M.Cl = (el, action, css) => {
     if (M.Is.und(el)) return
     let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
     action = action === 'a' ? 'add' : 'remove'
-
     for (let i = 0; i < n; i++) {
         s[i].classList[action](css)
     }
@@ -423,8 +422,7 @@ M.Cl = (el, action, css) => {
 
     class t {
         constructor() {
-            M.Bt(this, ["update"])
-
+            M.Bt(this, ["update", "removeOld"])
             this.init()
             this.run()
         }
@@ -445,38 +443,51 @@ M.Cl = (el, action, css) => {
         }
 
         update(e) {
-            let p = e.target.pathname
-            let t = _M,
+            M.PD(e)
+            let p = e.target.pathname,
+                t = _M,
                 r = t.config.routes
 
-            p !== t.route.new.url && this.out(p)
-            M.PD(e)
-
+            p !== t.route.new.url && this.switch(p)
         }
 
-        insertNew(o) {
-
+        insertNew() {
+            let N = this.cache.get()
+            document.title = N.title
+            this.add(N.html)
         }
 
         removeOld() {
+            let O = this.layer.children
 
+            for (let i = 0; i < 2; i++) {
+                O[0].parentNode.removeChild(O[0])
+
+            }
+            new t
+            new i
+            new m
+            new c
+            new s_scroll({speed: 0.5})
+            new mo(_d)
         }
 
         e() {
             M.E('a', 'click', this.update)
         }
 
-        in(o) {
+        switch(u) {
             const t = _M
-            let d = this.cache
-            let i = d.get()
-            console.log(i)
-            // this.add()
+            let e = t.config.routes[u]
+            t.route.old = t.route.new
+            t.route.new = {
+                url: u,
+                page: e
+            }
+            this.insertNew()
+            new M.Delay(5000, this.removeOld).run()
         }
 
-        out() {
-
-        }
 
         onPopstate() {
 
@@ -545,8 +556,8 @@ M.Cl = (el, action, css) => {
 
     }
 
-    class s_scroll {
-        constructor(o) {
+    class s {
+        constructor() {
             const t = _M
             t.scroll = {
                 x: 0,
@@ -556,37 +567,36 @@ M.Cl = (el, action, css) => {
                 origin: null,
             }
             this.options = {
-                mM: o.mM || -1,
-                tM: o.tM || -4.5,
-                fM: o.fM || 15,
-                kS: o.kS || 120,
-                speed: o.speed || 0.5,
+                mM: -1,
+                tM: -4.5,
+                fM: 15,
+                kS: 120,
+                speed: 0.5,
             }
             this.el = M.Select(".page")
             this.prog = M.Select('.progress')
-            this.max = this.scrollV = 0
+            this.max = this.scrollY = 0
             this.tsX = this.tsY = null
-            M.Bt(this, ["w", "key", "loop", "tS", "tM"])
+            M.Bt(this, ["w", "key", "loop", "tS", "tM","resize"])
             M.De(window, document, ["wheel", "keydown", "touchmove"], "vScroll")
             this.r = new M.Raf(this.loop)
+            this.init()
             this.run()
         }
 
         update(e) {
             this.setMax()
-            const t = _M
-            t.scroll.y += t.scroll.deltaY
-            t.scroll.originalEvent = e
+            const t = _M.scroll
+            t.y = M.R(M.Clamp(t.y + t.deltaY, 0, this.max),0)
+            t.originalEvent = e
         }
 
         loop() {
-            const t = _M
-            let y = t.scroll.y = M.Clamp(t.scroll.y, 0, this.max)
-            this.scrollV = M.Lerp(this.scrollV, y, 0.1)
-            M.T(this.prog, 0, -(1 - this.scrollV / this.max) * 100, '%')
-            M.T(this.el, 0, -this.scrollV, 'px')
-            this.r.on && M.Is.interval(this.scrollV - y, -0.01, 0.01) && this.r.stop()
-
+            const t = _M.scroll
+            this.scrollY = M.R(M.Lerp(this.scrollY, t.y, 0.1), 2)
+            this.r.on && M.Is.interval(this.scrollY - t.y, -0.055, 0.055) && this.r.stop()
+            M.T(this.prog, 0, (this.scrollY / this.max - 1) * 100, '%')
+            M.T(this.el, 0, -1 * this.scrollY, 'px')
         }
 
         tS(e) {
@@ -596,27 +606,27 @@ M.Cl = (el, action, css) => {
         }
 
         tM(e) {
-            const t = _M
+            const t = _M.scroll
             let T = (e.targetTouches) ? e.targetTouches[0] : e
-            t.scroll.deltaX = (T.pageX - this.tsX) * this.options.tM
-            t.scroll.deltaY = (T.pageY - this.tsY) * this.options.tM
+            t.deltaX = (T.pageX - this.tsX) * this.options.tM
+            t.deltaY = (T.pageY - this.tsY) * this.options.tM
             this.tsX = T.pageX
             this.tsY = T.pageY
             this.update(e)
         }
 
         w(e) {
-            const t = _M
-            t.scroll.deltaX = e.deltaX * -1 * .556
-            t.scroll.deltaY = e.deltaY * -1 * .556
-            t.scroll.deltaX *= this.options.mM
-            t.scroll.deltaY *= this.options.mM
+            const t = _M.scroll
+            t.deltaX = e.deltaX * -1 * .556
+            t.deltaY = e.deltaY * -1 * .556
+            t.deltaX *= this.options.mM
+            t.deltaY *= this.options.mM
             this.update(e)
         }
 
         key(e) {
-            const t = _M
-            t.scroll.deltaX = t.scroll.deltaY = 0
+            const t = _M.scroll
+            t.deltaX = t.deltaY = 0
             let key = [
                     {c: 37, d: 'x', s: -1},
                     {c: 39, d: 'x', s: 1},
@@ -627,10 +637,10 @@ M.Cl = (el, action, css) => {
                 n = key.length
             for (let i = 0; i < n; i++) {
                 if (e.keyCode === key[i].c) {
-                    t.scroll[key[i].d === "x" ? "deltaX" : "deltaY"] = this.options.kS * key[i].s
+                    t[key[i].d === "x" ? "deltaX" : "deltaY"] = this.options.kS * key[i].s
                 }
             }
-            (t.scroll.deltaX || t.scroll.deltaY) && this.update(e)
+            (t.deltaX || t.deltaY) && this.update(e)
         }
 
         setMax() {
@@ -639,40 +649,40 @@ M.Cl = (el, action, css) => {
             this.max -= innerHeight
         }
 
+        resize(e) {
+            this.setMax()
+            const t = _M.scroll
+            t.y = M.R(M.Clamp(t.y , 0, this.max),0)
+            t.originalEvent = e
+            this.max || this.init()
+            this.max || this.r.on || this.r.run()
+        }
+
         init() {
             M.T(this.prog, 0, -100, '%')
         }
 
         e() {
-            let e = [
-                    {e: "wheel", f: "w"},
-                    {e: "keydown", f: "key"},
-                    {e: "touchstart", f: "tS"},
-                    {e: "touchmove", f: "tM"}
-                ],
-                n = e.length
-            for (let i = 0; i < n; i++) {
-                const a = e[i]
-                M.E(document, a.e, this[a.f])
-            }
+            M.E(document, "wheel", this.w)
+            M.E(document, "keydown", this.key)
+            M.E(document, "touchstart", this.tS)
+            M.E(document, "touchmove", this.tM)
+            M.E(window, "resize", this.resize)
+            M.E(window, "orientationchange", this.resize)
+            M.E(document, "vScroll", () => this.r.on || this.r.run())
         }
 
         run() {
-            this.init()
-            M.E(window, "resize", this.setMax())
-            M.E(window, "orientationchange", this.setMax)
-            /* ────────────────────────────────────────── */
             this.e()
-            /* ────────────────────────────────────────── */
-            M.E(document, "vScroll", () => this.r.on || this.r.run())
         }
     }
 
-    class m {
+    class n {
         constructor() {
             this.headerNav = M.Select('.w-nav')
             this.menuBtn = M.Select('.w-menu-btn')
             this.closeBtn = M.Select('.w-close-btn')
+            M.Bt(this,["open","close"])
             this.run()
         }
 
@@ -686,18 +696,20 @@ M.Cl = (el, action, css) => {
         }
 
         open(e) {
-            document.body.style.overflowY = "hidden"
             M.Cl(this.headerNav, 'a', 'is-active')
             M.Cl(this.menuBtn, 'a', 'is-active')
             e.stopPropagation()
         }
 
         close(e) {
-            document.body.style.overflowY = "auto"
             M.Cl(this.headerNav, 'r', 'is-active')
             M.Cl(this.menuBtn, 'r', 'is-active')
             e.stopPropagation()
         }
+    }
+
+    class b {
+
     }
 
     class mo {
@@ -763,6 +775,8 @@ M.Cl = (el, action, css) => {
                 let css = I === i ? 'a' : 'r'
                 M.Cl(a[i], css, 'active')
                 M.Pe.none(a[i])
+                new M.Delay(this.d, () => M.Pe.all(a[i])).run()
+
             }
             for (let i = 0; i < m; i++) {
                 let o = b[i], el = M.Select(o.el), n = el.length
@@ -791,8 +805,9 @@ M.Cl = (el, action, css) => {
                         new M.Delay(o.inactive.d || 0, () => M.D(el[l], 'n')).run()
                         new M.Delay(o.active.delay || 0, () => M.D(el[I], 'b')).run()
                     }
+
                 }
-                new M.Delay(this.d, () => M.Pe.all(a[i])).run()
+
             }
             this.l = I
         }
@@ -811,7 +826,7 @@ M.Cl = (el, action, css) => {
         }
     }
 
-    class p {
+    class m {
         constructor(el) {
             this.el = M.Select(el)
             this.y = this.x = this.w = this.h = 0
@@ -867,6 +882,59 @@ M.Cl = (el, action, css) => {
                 this.r.stop()
 
             })
+        }
+    }
+
+    class l {
+        constructor() {
+            this.bg = M.Select('.bg')
+            M.Bt(this, ['loop'])
+            this.r = new M.Raf(this.loop)
+            this.c = {
+                l: 0,
+                r: 0
+            }
+
+            this.init()
+            this.intro()
+            // this.run()
+        }
+
+        loop() {
+            let a = this.bg, n = a.length
+            this.c.l = M.Lerp(this.c.l, 0, 0.2)
+            this.c.r = M.Lerp(this.c.r, 0, 0.1)
+            a[1].style.zIndex = '9'
+            this.clip(a[1], this.c.l, this.c.r)
+        }
+
+        init() {
+            let a = this.bg, n = a.length
+            a[1].style.zIndex = '9'
+            for (let i = 0; i < n; i++) {
+                this.clip(a[i], i * 100 / n, (100 / n) * (n - 1 - i))
+            }
+        }
+
+        intro() {
+            let t = _M
+            this.update(1)
+            new M.Delay(3000, this.r.run).run()
+        }
+
+        update(i) {
+            let n = this.bg.length
+            this.c.l = i * 100 / n
+            this.c.r = (100 / n) * (n - 1 - i)
+        }
+
+        run() {
+            this.r.run()
+        }
+
+        clip(el, l, r) {
+
+            el.style.clipPath = `inset(0 ${r}% 0 ${l}%)`
         }
     }
 
@@ -947,13 +1015,12 @@ M.Cl = (el, action, css) => {
         ]
     M.E(window, 'load', () => {
         new t
-        new i
-        new m
+        new n
         new c
-        new s_scroll({speed: 0.5})
-        new mo(_d)
-
+        new s
+        new l
     })
+
     console.log('\n %c Made with ❤️ by La2spaille  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;', '')
 }()
 
