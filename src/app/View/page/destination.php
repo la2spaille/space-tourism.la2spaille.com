@@ -2,7 +2,7 @@
 
 <div id="destination" class="page p-destination">
     <h3 class="w-page-title f-heading5 motion">
-        <span number="01" class="">Pick your destination</span>
+        <span data-number="01" class="">Pick your destination</span>
     </h3>
     <div class="l-wrapper destination">
         <div class="w-img destination m--wrapper">

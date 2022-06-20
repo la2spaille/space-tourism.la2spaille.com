@@ -5,8 +5,8 @@ window._M = {
     },
     route: {
         "new": {
-            "url": false,
-            "page": false
+            "url": location.pathname,
+            "page": null
         },
         "old": {
             "url": false,
@@ -16,7 +16,6 @@ window._M = {
     was: []
 }
 window.M = {}
-
 M.Mo = class {
     constructor(o) {
         M.Bt(this, ['run', 'rRaf', 'uProp'])
@@ -230,12 +229,6 @@ M.Is = {
 }
 M.Ease = {
     linear: t => t,
-    o1: t => Math.sin(t * (.5 * Math.PI)),
-    o2: t => t * (2 - t),
-    o3: t => --t * t * t + 1,
-    o4: t => 1 - --t * t * t * t,
-    o5: t => 1 + --t * t * t * t * t,
-    o6: t => 1 === t ? 1 : 1 - 2 ** (-10 * t),
     cb: t => t ** 3 - 3 * t ** 2 + 3 * t
 }
 M.XY = {
@@ -272,8 +265,6 @@ M.Pe = {
         M.Pe.f(t, "none")
     }
 }
-M.Gl = {}
-
 M.index = (el, arr) => {
     let n = arr.length;
     for (let i = 0; i < n; i++)
@@ -283,7 +274,6 @@ M.index = (el, arr) => {
 }
 M.Clamp = (t, inf, sup) => Math.max(inf, Math.min(sup, t))
 M.Lerp = (s, e, a) => s * (1 - a) + a * e
-M.iLerp = (s, e, a) => s * (1 - a) + a * e // on clamp puis on lerp
 M.Has = (t, r) => t.hasOwnProperty(r)
 M.Rand = (a, b) => Math.random() * (b - a) + a
 M.Fetch = o => {
@@ -311,35 +301,6 @@ M.PD = t => {
 M.Bt = (t, f) => {
     for (let i = 0; i < f.length; i++) {
         t[f[i]] = t[f[i]].bind(t)
-    }
-}
-M.To = ({delay, duration, timing, draw}) => {
-    let start = performance.now()
-    requestAnimationFrame(function To(timestamp) {
-        let t = (timestamp - start) / (duration * 1000)
-        if (t <= delay) t = delay
-        if (t >= 1) t = 1
-        let progress = timing(t)
-        draw(progress)
-        if (t < 1) {
-            requestAnimationFrame(To)
-        }
-    })
-}
-M.Tl = (arr, attr, timeout, delay) => {
-    for (let i = 0; i < arr.length; i++) {
-        if (M.Is.def(delay)) {
-            timeout += typeof delay === 'object' ? delay[i] * 1000 : delay * 1000
-        }
-        if (attr !== '') {
-            setTimeout(() => {
-                arr[i].classList.remove(attr)
-            }, timeout)
-        } else {
-            setTimeout(() => {
-                arr[i]()
-            }, timeout)
-        }
     }
 }
 M.Select = el => {
@@ -399,10 +360,10 @@ M.Cl = (el, action, css) => {
 
     class i {
         constructor() {
-            this.run()
+            this.intro()
         }
 
-        run() {
+        intro() {
             let t = _M,
                 intro = new M.Delay(t.delay, () => M.Cl('.motion', 'r', 'motion'))
             intro.run()
@@ -423,8 +384,6 @@ M.Cl = (el, action, css) => {
     class t {
         constructor() {
             M.Bt(this, ["update", "removeOld"])
-            this.init()
-            this.run()
         }
 
         init() {
@@ -447,7 +406,6 @@ M.Cl = (el, action, css) => {
             let p = e.target.pathname,
                 t = _M,
                 r = t.config.routes
-
             p !== t.route.new.url && this.switch(p)
         }
 
@@ -464,12 +422,6 @@ M.Cl = (el, action, css) => {
                 O[0].parentNode.removeChild(O[0])
 
             }
-            new t
-            new i
-            new m
-            new c
-            new s_scroll({speed: 0.5})
-            new mo(_d)
         }
 
         e() {
@@ -478,19 +430,21 @@ M.Cl = (el, action, css) => {
 
         switch(u) {
             const t = _M
-            let e = t.config.routes[u]
+             let p = t.config.routes[u]
             t.route.old = t.route.new
             t.route.new = {
                 url: u,
-                page: e
+                page: p
             }
-            this.insertNew()
-            new M.Delay(5000, this.removeOld).run()
+            history.pushState({path: u}, '', u)
+            console.log(history)
         }
 
-
         onPopstate() {
-
+            M.E(window,'popstate',(e)=> {
+                M.PD(e)
+                console.log('ok houston')
+            })
         }
 
         add(el) {
@@ -499,61 +453,66 @@ M.Cl = (el, action, css) => {
 
         run() {
             this.e()
-
         }
     }
 
-    class c {
+    class l {
         constructor() {
-            this.el = M.G.id('cursor')
-            this.ux = [
-                {el: ".w-home-cta", css: "site-cursor--explore-hover"},
-                {el: ".link-hover", css: "site-cursor--link-hover"},
-                {el: ".js-technology-nav", css: "site-cursor--tech-hover"}
-            ]
-            this.h = this.el.offsetHeight
-            this.w = this.el.offsetWidth
-            this.s = 0.1
-            this.eX = this.eY = this.x = this.y = 0
-            M.Bt(this, ["loop", "update", "cl"])
+            this.bg = M.Select('.bg')
+            M.Bt(this, ['loop'])
             this.r = new M.Raf(this.loop)
+            this.i = {
+                "/": 0,
+                "/destination": 1,
+                "/crew": 2,
+                "/technology": 3
+            }
+            this.c = {
+                l: 0,
+                r: 0,
+                curr: 0
+            }
+            this.init()
+            this.intro()
             this.run()
         }
 
         loop() {
-            this.x = M.Lerp(this.x, this.eX, this.s)
-            this.y = M.Lerp(this.y, this.eY, this.s)
-            M.T(this.el, this.x, this.y, 'px')
+            let a = this.bg, n = a.length
+            this.c.l = M.Lerp(this.c.l, 0, 0.2)
+            this.c.r = M.Lerp(this.c.r, 0, 0.2)
+            a[this.curr].style.zIndex = '7'
+            this.clip(a[this.curr], this.c.l, this.c.r)
         }
 
-        update(e) {
-            this.eX = e.pageX - this.w / 2
-            this.eY = e.pageY - this.h / 2
-        }
-
-        e() {
-            M.E(document, "mousemove", this.update)
-        }
-
-        run() {
-            this.e()
-            this.hover()
-            this.r.run()
-        }
-
-        hover() {
-            let a = this.ux, n = a.length
+        init() {
+            let a = this.bg, n = a.length
             for (let i = 0; i < n; i++) {
-                M.E(a[i].el, "mouseenter", () => this.cl('a', a[i].css))
-                M.E(a[i].el, "mouseleave", () => this.cl('r', a[i].css))
+                this.clip(a[i], i * 100 / n, (100 / n) * (n - 1 - i))
             }
         }
 
-        cl(a, css) {
-            M.Cl(this.el, a, css)
+        intro() {
+            let t = _M.route.new.url
+            this.update(this.i[t])
+            new M.Delay(3000, this.r.run).run()
         }
 
+        update(i) {
+            let n = this.bg.length
+            this.curr = i
+            this.c.l = i * 100 / n
+            this.c.r = (100 / n) * (n - 1 - i)
+        }
 
+        run() {
+
+
+        }
+
+        clip(el, l, r) {
+            el.style.clipPath = `inset(0 ${r}% 0 ${l}%)`
+        }
     }
 
     class s {
@@ -577,17 +536,15 @@ M.Cl = (el, action, css) => {
             this.prog = M.Select('.progress')
             this.max = this.scrollY = 0
             this.tsX = this.tsY = null
-            M.Bt(this, ["w", "key", "loop", "tS", "tM","resize"])
+            M.Bt(this, ["w", "key", "loop", "tS", "tM", "resize"])
             M.De(window, document, ["wheel", "keydown", "touchmove"], "vScroll")
             this.r = new M.Raf(this.loop)
-            this.init()
-            this.run()
         }
 
         update(e) {
             this.setMax()
             const t = _M.scroll
-            t.y = M.R(M.Clamp(t.y + t.deltaY, 0, this.max),0)
+            t.y = M.R(M.Clamp(t.y + t.deltaY, 0, this.max), 0)
             t.originalEvent = e
         }
 
@@ -652,7 +609,7 @@ M.Cl = (el, action, css) => {
         resize(e) {
             this.setMax()
             const t = _M.scroll
-            t.y = M.R(M.Clamp(t.y , 0, this.max),0)
+            t.y = M.R(M.Clamp(t.y, 0, this.max), 0)
             t.originalEvent = e
             this.max || this.init()
             this.max || this.r.on || this.r.run()
@@ -677,12 +634,62 @@ M.Cl = (el, action, css) => {
         }
     }
 
+    class c {
+        constructor() {
+            this.el = M.G.id('cursor')
+            this.ux = [
+                {el: ".w-home-cta", css: "site-cursor--explore-hover"},
+                {el: ".link-hover", css: "site-cursor--link-hover"},
+                {el: ".js-technology-nav", css: "site-cursor--tech-hover"}
+            ]
+            this.h = this.el.offsetHeight
+            this.w = this.el.offsetWidth
+            this.s = 0.1
+            this.eX = this.eY = this.x = this.y = 0
+            M.Bt(this, ["loop", "update", "cl"])
+            this.r = new M.Raf(this.loop)
+        }
+
+        loop() {
+            this.x = M.Lerp(this.x, this.eX, this.s)
+            this.y = M.Lerp(this.y, this.eY, this.s)
+            M.T(this.el, this.x, this.y, 'px')
+        }
+
+        update(e) {
+            this.eX = e.pageX - this.w / 2
+            this.eY = e.pageY - this.h / 2
+        }
+
+        e() {
+            M.E(document, "mousemove", this.update)
+        }
+
+        run() {
+            this.e()
+            this.hover()
+            this.r.run()
+        }
+
+        hover() {
+            let a = this.ux, n = a.length
+            for (let i = 0; i < n; i++) {
+                M.E(a[i].el, "mouseenter", () => this.cl('a', a[i].css))
+                M.E(a[i].el, "mouseleave", () => this.cl('r', a[i].css))
+            }
+        }
+
+        cl(a, css) {
+            M.Cl(this.el, a, css)
+        }
+    }
+
     class n {
         constructor() {
             this.headerNav = M.Select('.w-nav')
             this.menuBtn = M.Select('.w-menu-btn')
             this.closeBtn = M.Select('.w-close-btn')
-            M.Bt(this,["open","close"])
+            M.Bt(this, ["open", "close"])
             this.run()
         }
 
@@ -708,11 +715,7 @@ M.Cl = (el, action, css) => {
         }
     }
 
-    class b {
-
-    }
-
-    class mo {
+    class m {
         constructor(o) {
             this.b = M.Select('.m--brain')
             this.w = M.Select('.m--wrapper')
@@ -720,8 +723,6 @@ M.Cl = (el, action, css) => {
             this.d = 1100
             this.o = o
             M.Bt(this, ['_b'])
-            this.init()
-            this.run()
         }
 
         intro() {
@@ -776,7 +777,6 @@ M.Cl = (el, action, css) => {
                 M.Cl(a[i], css, 'active')
                 M.Pe.none(a[i])
                 new M.Delay(this.d, () => M.Pe.all(a[i])).run()
-
             }
             for (let i = 0; i < m; i++) {
                 let o = b[i], el = M.Select(o.el), n = el.length
@@ -805,16 +805,13 @@ M.Cl = (el, action, css) => {
                         new M.Delay(o.inactive.d || 0, () => M.D(el[l], 'n')).run()
                         new M.Delay(o.active.delay || 0, () => M.D(el[I], 'b')).run()
                     }
-
                 }
-
             }
             this.l = I
         }
 
         init() {
             this._w()
-            this.intro()
         }
 
         e() {
@@ -826,18 +823,16 @@ M.Cl = (el, action, css) => {
         }
     }
 
-    class m {
+    class g {
         constructor(el) {
             this.el = M.Select(el)
             this.y = this.x = this.w = this.h = 0
             this.eX = this.eY = 0
-            this.s = 0.5
-            this.xy = 0.2
+            this.s = 0.015
+            this.xy = 0.8
             M.Bt(this, ['update', 'loop'])
             this.r = new M.Raf(this.loop)
-            this.on()
         }
-
 
         loop() {
             this.x = M.Lerp(this.x, this.eX, this.s) * this.xy
@@ -850,22 +845,20 @@ M.Cl = (el, action, css) => {
             this.eY = e.clientY - this.Oy - this.h / 2
         }
 
-        on() {
-            this.el.style.setProperty('transition', '1s ease')
-
+        run() {
+            this.el.style.setProperty('transition', '0s ease')
             this.enter()
             this.move()
             this.leave()
         }
-
 
         move() {
             M.E(this.el, 'mousemove', this.update)
         }
 
         enter() {
+            this.r.run()
             M.E(this.el, 'mouseenter', (e) => {
-                this.r.run()
                 let t = _M
                 this.Ox = M.XY.offsetLeft(this.el)
                 this.Oy = M.XY.offsetTop(this.el) - t.scroll.y
@@ -878,149 +871,141 @@ M.Cl = (el, action, css) => {
 
         leave() {
             M.E(this.el, 'mouseleave', () => {
-                M.T(this.el, 0, 0, 'px')
-                this.r.stop()
-
+                this.eX = 0
+                this.eY = 0
             })
         }
     }
 
-    class l {
+    class b {
         constructor() {
-            this.bg = M.Select('.bg')
-            M.Bt(this, ['loop'])
-            this.r = new M.Raf(this.loop)
-            this.c = {
-                l: 0,
-                r: 0
+            let _ = _M
+            this.M = {
+                "/": false,
+                "/destination": [
+                    {
+                        el: '.m-destination-name',
+                        active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                        inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                        init: {p: {y: [100, 100], opacity: [0, 0]}}
+                    },
+                    {
+                        el: '.m-destination-description',
+                        active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                        inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                        init: {p: {y: [125, 125], opacity: [0, 0]}}
+                    }, {
+                        el: '.m-destination-distance',
+                        active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 500},
+                        inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                        init: {p: {y: [100, 100], opacity: [0, 0]}}
+
+                    }, {
+                        el: '.m-destination-travel',
+                        active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 500},
+                        inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                        init: {p: {y: [100, 100], opacity: [0, 0]}}
+
+                    }, {
+                        el: '.m-destination-img',
+                        active: {p: {opacity: [0, 1]}, d: 1000},
+                        inactive: {p: {opacity: [1, 0]}, d: 1000},
+                        init: {p: {y: [0, 0], opacity: [0, 0]}}
+                    }
+                ],
+                "/crew": [
+                    {
+                        el: '.m-crew-job',
+                        active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                        inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                        init: {p: {y: [100, 100], opacity: [0, 0]}}
+                    },
+                    {
+                        el: '.m-crew-name',
+                        active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                        inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                        init: {p: {y: [100, 100], opacity: [0, 0]}}
+                    }, {
+                        el: '.m-crew-description',
+                        active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                        inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                        init: {p: {y: [100, 100], opacity: [0, 0]}}
+
+                    }, {
+                        el: '.m-crew-img',
+                        active: {p: {opacity: [0, 1]}, d: 1000},
+                        inactive: {p: {opacity: [1, 0]}, d: 900},
+                        init: {p: {opacity: [0, 0]}}
+                    }
+                ],
+                "/technology": [
+                    {
+                        el: '.m-technology-name',
+                        active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                        inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                        init: {p: {y: [100, 100], opacity: [0, 0]}}
+                    },
+                    {
+                        el: '.m-technology-description',
+                        active: {p: {y: [125, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                        inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                        init: {p: {y: [125, 125], opacity: [0, 0]}}
+                    }, {
+                        el: '.m-technology-img',
+                        active: {p: {opacity: [0, 1]}, d: 1100},
+                        inactive: {p: {opacity: [1, 0]}, d: 1100},
+                        init: {p: {opacity: [0, 0]}}
+                    }
+                ],
             }
-
-            this.init()
-            this.intro()
-            // this.run()
-        }
-
-        loop() {
-            let a = this.bg, n = a.length
-            this.c.l = M.Lerp(this.c.l, 0, 0.2)
-            this.c.r = M.Lerp(this.c.r, 0, 0.1)
-            a[1].style.zIndex = '9'
-            this.clip(a[1], this.c.l, this.c.r)
+            this.G = {
+                "/": ".w-home-cta"
+            }
+            this.m = new m(this.M[_.route.new.url])
+            this.g = new g(this.G[_.route.new.url])
+            this.s = new s
+            this.n = new n
+            this.c = new c
+            this.l = new l
+            this.t = new t
+            this.i = new i
+            this.on()
         }
 
         init() {
-            let a = this.bg, n = a.length
-            a[1].style.zIndex = '9'
-            for (let i = 0; i < n; i++) {
-                this.clip(a[i], i * 100 / n, (100 / n) * (n - 1 - i))
-            }
+            const _ = _M
+            this.M[_.route.new.url] && this.m.init()
+            this.s.init()
+            this.i.intro()
         }
 
         intro() {
-            let t = _M
-            this.update(1)
-            new M.Delay(3000, this.r.run).run()
-        }
-
-        update(i) {
-            let n = this.bg.length
-            this.c.l = i * 100 / n
-            this.c.r = (100 / n) * (n - 1 - i)
+            const _ = _M
+            this.M[_.route.new.url] && this.m.intro()
         }
 
         run() {
-            this.r.run()
+            const _ = _M
+            this.M[_.route.new.url] && this.m.run()
+            this.G[_.route.new.url] && this.g.run()
+            this.t.run()
+            this.s.run()
+            this.c.run()
+            this.n.run()
+        }
+        on() {
+            this.t.init()
+
+            M.E(window,'load', ()=> {
+                this.init()
+                this.intro()
+                this.run()
+            })
         }
 
-        clip(el, l, r) {
-
-            el.style.clipPath = `inset(0 ${r}% 0 ${l}%)`
-        }
     }
 
-    let _d = [
-            {
-                el: '.m-destination-name',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
-                init: {p: {y: [100, 100], opacity: [0, 0]}}
-            },
-            {
-                el: '.m-destination-description',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
-                init: {p: {y: [125, 125], opacity: [0, 0]}}
-            }, {
-                el: '.m-destination-distance',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 500},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
-                init: {p: {y: [100, 100], opacity: [0, 0]}}
-
-            }, {
-                el: '.m-destination-travel',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 500},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
-                init: {p: {y: [100, 100], opacity: [0, 0]}}
-
-            }, {
-                el: '.m-destination-img',
-                active: {p: {opacity: [0, 1]}, d: 1000},
-                inactive: {p: {opacity: [1, 0]}, d: 1000},
-                init: {p: {y: [0, 0], opacity: [0, 0]}}
-            }
-        ],
-        _c = [
-            {
-                el: '.m-crew-job',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
-                init: {p: {y: [100, 100], opacity: [0, 0]}}
-            },
-            {
-                el: '.m-crew-name',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
-                init: {p: {y: [100, 100], opacity: [0, 0]}}
-            }, {
-                el: '.m-crew-description',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
-                init: {p: {y: [100, 100], opacity: [0, 0]}}
-
-            }, {
-                el: '.m-crew-img',
-                active: {p: {opacity: [0, 1]}, d: 1000},
-                inactive: {p: {opacity: [1, 0]}, d: 900},
-                init: {p: {opacity: [0, 0]}}
-            }
-        ],
-        _t = [
-            {
-                el: '.m-technology-name',
-                active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
-                init: {p: {y: [100, 100], opacity: [0, 0]}}
-            },
-            {
-                el: '.m-technology-description',
-                active: {p: {y: [125, 0], opacity: [0, 1]}, d: 700, delay: 400},
-                inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
-                init: {p: {y: [125, 125], opacity: [0, 0]}}
-            }, {
-                el: '.m-technology-img',
-                active: {p: {opacity: [0, 1]}, d: 1100},
-                inactive: {p: {opacity: [1, 0]}, d: 1100},
-                init: {p: {opacity: [0, 0]}}
-            }
-        ]
-    M.E(window, 'load', () => {
-        new t
-        new n
-        new c
-        new s
-        new l
-    })
-
+    (new b)
     console.log('\n %c Made with ❤️ by La2spaille  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;', '')
 }()
 

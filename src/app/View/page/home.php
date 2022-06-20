@@ -16,6 +16,3 @@
         </div>
     </div>
 </div>
-<div class="w-bg">
-    <div class="bg home"></div>
-</div>

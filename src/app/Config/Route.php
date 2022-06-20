@@ -63,7 +63,6 @@ class Route
                 "title" => "Space Tourism — Technology",
                 "view" => "technology",
                 "model" => "technology"
-
             ]
         ];
     }

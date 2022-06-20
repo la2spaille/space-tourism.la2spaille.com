@@ -13,6 +13,8 @@
     <meta name="description" content="<?= $this->head['description']; ?>">
     <!-- Social -->
     <?php include ROOT . 'app/View/head/social.php'; ?>
+    <!-- Preload -->
+    <?php include ROOT . 'app/View/head/preload.php'; ?>
     <!-- Favicon -->
     <?php include ROOT . 'app/View/head/favicon.php'; ?>
     <!-- Static -->
@@ -32,7 +34,6 @@
         <div class="progress"></div>
     </div>
     <?php include ROOT . 'app/View/common/cursor.php'; ?>
-    <?php include ROOT . 'app/View/common/loader.php'; ?>
     <?php include ROOT . 'app/View/common/background.php'; ?>
 </div>
 <?php include ROOT . 'app/View/script/script.php'; ?>
