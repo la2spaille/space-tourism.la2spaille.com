@@ -359,14 +359,11 @@ M.Cl = (el, action, css) => {
     "use strict"
 
     class i {
-        constructor() {
-            this.intro()
-        }
 
         intro() {
             let t = _M,
-                intro = new M.Delay(t.delay, () => M.Cl('.motion', 'r', 'motion'))
-            intro.run()
+                i = new M.Delay(t.delay, () => M.Cl('.motion', 'r', 'motion'))
+            i.run()
         }
     }
 
@@ -383,11 +380,14 @@ M.Cl = (el, action, css) => {
 
     class t {
         constructor() {
-            M.Bt(this, ["update", "removeOld"])
+            M.Bt(this, ["update", "removeOld", "insertNew"])
+            this.l = new l
+            this.cache = ''
+            this.init()
         }
 
         init() {
-            let t = _M
+            var t = _M
             M.Fetch({
                 url: location + "?xhr=true",
                 type: "html",
@@ -409,6 +409,34 @@ M.Cl = (el, action, css) => {
             p !== t.route.new.url && this.switch(p)
         }
 
+        c() {
+            // l or c (c => CONTROLLER)
+            /*
+            old opacity remove
+            bg let's go
+            remove-old /call new with opacity 0
+            bg choice then page indicator
+            new => opacity 1
+            mew => run intro then motion
+            */
+            let vLoad = new CustomEvent('vLoad')
+            let old = this.layer.children[0]
+            let tl = new M.TL()
+            tl
+                .add({
+                    el: old,
+                    p: {o: [1, 0]},
+                    d: 1000,
+                    delay: 400
+                })
+                .play()
+            new M.Delay(1400, this.l.outro).run()
+            new M.Delay(1400, this.removeOld).run()
+            new M.Delay(1500, this.insertNew).run()
+            new M.Delay(2800, this.l.intro).run()
+            new M.Delay(2800, () => window.dispatchEvent(vLoad)).run()
+        }
+
         insertNew() {
             let N = this.cache.get()
             document.title = N.title
@@ -417,11 +445,7 @@ M.Cl = (el, action, css) => {
 
         removeOld() {
             let O = this.layer.children
-
-            for (let i = 0; i < 2; i++) {
-                O[0].parentNode.removeChild(O[0])
-
-            }
+            O[0].parentNode.removeChild(O[0])
         }
 
         e() {
@@ -430,20 +454,19 @@ M.Cl = (el, action, css) => {
 
         switch(u) {
             const t = _M
-             let p = t.config.routes[u]
+            let p = t.config.routes[u]
             t.route.old = t.route.new
             t.route.new = {
                 url: u,
                 page: p
             }
             history.pushState({path: u}, '', u)
-            console.log(history)
+            this.c()
         }
 
         onPopstate() {
-            M.E(window,'popstate',(e)=> {
+            M.E(window, 'popstate', (e) => {
                 M.PD(e)
-                console.log('ok houston')
             })
         }
 
@@ -459,7 +482,7 @@ M.Cl = (el, action, css) => {
     class l {
         constructor() {
             this.bg = M.Select('.bg')
-            M.Bt(this, ['loop'])
+            M.Bt(this, ['loop', 'intro', 'outro'])
             this.r = new M.Raf(this.loop)
             this.i = {
                 "/": 0,
@@ -472,16 +495,19 @@ M.Cl = (el, action, css) => {
                 r: 0,
                 curr: 0
             }
+            this.f = {
+                l: 0,
+                r: 0,
+            }
             this.init()
             this.intro()
-            this.run()
         }
 
         loop() {
             let a = this.bg, n = a.length
-            this.c.l = M.Lerp(this.c.l, 0, 0.2)
-            this.c.r = M.Lerp(this.c.r, 0, 0.2)
-            a[this.curr].style.zIndex = '7'
+            this.c.l = M.Lerp(this.c.l, this.f.l, 0.2)
+            this.c.r = M.Lerp(this.c.r, this.f.r, 0.2)
+            this.zIndex(this.curr)
             this.clip(a[this.curr], this.c.l, this.c.r)
         }
 
@@ -492,22 +518,40 @@ M.Cl = (el, action, css) => {
             }
         }
 
+        outro() {
+            let t = _M.route.old.url
+            this.update(this.i[t], 'o')
+        }
+
         intro() {
             let t = _M.route.new.url
-            this.update(this.i[t])
-            new M.Delay(3000, this.r.run).run()
+            this.update(this.i[t], 'n')
         }
 
-        update(i) {
+        update(i, v) {
             let n = this.bg.length
             this.curr = i
-            this.c.l = i * 100 / n
-            this.c.r = (100 / n) * (n - 1 - i)
+            if (v == "n") {
+                this.c.l = i * 100 / n
+                this.c.r = (100 / n) * (n - 1 - i)
+                this.f.l = 0
+                this.f.r = 0
+            } else {
+                this.c.l = 0
+                this.c.r = 0
+                this.f.l = i * 100 / n
+                this.f.r = (100 / n) * (n - 1 - i)
+            }
+            new M.Delay(500, this.r.run).run()
+            new M.Delay(3000, this.r.stop).run()
+
         }
 
-        run() {
-
-
+        zIndex(c) {
+            let a = this.bg, n = a.length
+            for (; n--;) {
+                a[n].style.zIndex = (c != n) ? '0' : '7'
+            }
         }
 
         clip(el, l, r) {
@@ -532,7 +576,6 @@ M.Cl = (el, action, css) => {
                 kS: 120,
                 speed: 0.5,
             }
-            this.el = M.Select(".page")
             this.prog = M.Select('.progress')
             this.max = this.scrollY = 0
             this.tsX = this.tsY = null
@@ -616,6 +659,7 @@ M.Cl = (el, action, css) => {
         }
 
         init() {
+            this.el = M.Select(".page")
             M.T(this.prog, 0, -100, '%')
         }
 
@@ -823,63 +867,10 @@ M.Cl = (el, action, css) => {
         }
     }
 
-    class g {
-        constructor(el) {
-            this.el = M.Select(el)
-            this.y = this.x = this.w = this.h = 0
-            this.eX = this.eY = 0
-            this.s = 0.015
-            this.xy = 0.8
-            M.Bt(this, ['update', 'loop'])
-            this.r = new M.Raf(this.loop)
-        }
-
-        loop() {
-            this.x = M.Lerp(this.x, this.eX, this.s) * this.xy
-            this.y = M.Lerp(this.y, this.eY, this.s) * this.xy
-            M.T(this.el, this.x, this.y, 'px')
-        }
-
-        update(e) {
-            this.eX = e.clientX - this.Ox - this.w / 2
-            this.eY = e.clientY - this.Oy - this.h / 2
-        }
-
-        run() {
-            this.el.style.setProperty('transition', '0s ease')
-            this.enter()
-            this.move()
-            this.leave()
-        }
-
-        move() {
-            M.E(this.el, 'mousemove', this.update)
-        }
-
-        enter() {
-            this.r.run()
-            M.E(this.el, 'mouseenter', (e) => {
-                let t = _M
-                this.Ox = M.XY.offsetLeft(this.el)
-                this.Oy = M.XY.offsetTop(this.el) - t.scroll.y
-                this.w = this.el.offsetWidth
-                this.h = this.el.offsetHeight
-                this.eX = e.clientX - this.Ox - this.w / 2
-                this.eY = e.clientY - this.Oy - this.h / 2
-            })
-        }
-
-        leave() {
-            M.E(this.el, 'mouseleave', () => {
-                this.eX = 0
-                this.eY = 0
-            })
-        }
-    }
 
     class b {
         constructor() {
-            let _ = _M
+            M.Bt(this,['tl'])
             this.M = {
                 "/": false,
                 "/destination": [
@@ -958,15 +949,9 @@ M.Cl = (el, action, css) => {
                     }
                 ],
             }
-            this.G = {
-                "/": ".w-home-cta"
-            }
-            this.m = new m(this.M[_.route.new.url])
-            this.g = new g(this.G[_.route.new.url])
             this.s = new s
             this.n = new n
             this.c = new c
-            this.l = new l
             this.t = new t
             this.i = new i
             this.on()
@@ -974,33 +959,38 @@ M.Cl = (el, action, css) => {
 
         init() {
             const _ = _M
+            this.m = new m(this.M[_.route.new.url])
             this.M[_.route.new.url] && this.m.init()
             this.s.init()
-            this.i.intro()
         }
 
         intro() {
             const _ = _M
             this.M[_.route.new.url] && this.m.intro()
+            this.i.intro()
+
         }
 
         run() {
             const _ = _M
             this.M[_.route.new.url] && this.m.run()
-            this.G[_.route.new.url] && this.g.run()
             this.t.run()
             this.s.run()
             this.c.run()
             this.n.run()
         }
-        on() {
-            this.t.init()
 
-            M.E(window,'load', ()=> {
-                this.init()
-                this.intro()
-                this.run()
-            })
+        e() {
+            M.E(window, 'load', this.tl)
+            M.E(window, 'vLoad', this.tl)
+        }
+        tl() {
+            this.init()
+            this.intro()
+            this.run()
+        }
+        on() {
+            this.e()
         }
 
     }
