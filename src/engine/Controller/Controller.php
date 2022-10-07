@@ -3,7 +3,6 @@
 namespace Engine\Controller;
 
 use App\Model\Data;
-use JetBrains\PhpStorm\Pure;
 use \stdClass;
 use \App\Config\Head;
 use App\Config\Route;
