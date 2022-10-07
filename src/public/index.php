@@ -36,7 +36,6 @@ exit();
 const VERSION = 15;
 
 $root = substr($_SERVER['DOCUMENT_ROOT'], 0, -6);
-echo $root;
 
 require $root . 'app/Core/Constant.php';
 App\Core\Constant::init();
