@@ -3,8 +3,8 @@
 namespace Engine\Controller;
 
 use App\Model\Data;
-use \stdClass;
-use \App\Config\Head;
+use stdClass;
+use App\Config\Head;
 use App\Config\Route;
 
 class Controller
@@ -15,7 +15,7 @@ class Controller
     private $callArgs;
     private $content;
 
-    #[Pure] public function __construct($callArgs)
+    public function __construct($callArgs)
     {
         $this->callArgs = $callArgs;
         $this->data = new stdClass;
