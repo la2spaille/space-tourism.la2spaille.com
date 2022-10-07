@@ -40,7 +40,6 @@ echo $root;
 
 require $root . 'app/Core/Constant.php';
 App\Core\Constant::init();
-die();
 
 require ROOT . 'app/Core/App.php';
 App\Core\App::init();
