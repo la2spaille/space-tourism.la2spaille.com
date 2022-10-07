@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <?php
+    echo ROOT;
+    echo '<pre>';
+    var_dump($_SERVER);
+    echo '</pre>';
+    die()?>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="canonical" href="<?= $this->head['url']; ?>">
