@@ -1,10 +1,9 @@
 <?php
 
 namespace Engine\Router;
-use \App\Core\RedirectTo;
 class Router
 {
-    private string|bool $url;
+    private  $url;
     private array $routes = [];
     private $p404ControllerFn;
 
