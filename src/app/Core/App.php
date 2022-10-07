@@ -9,7 +9,7 @@ class App {
 
     public static function init () {
         require ROOT . 'engine/Core/Autoloader.php';
-//        Autoloader::register();
+        Autoloader::register();
 
         Route::init();
     }
