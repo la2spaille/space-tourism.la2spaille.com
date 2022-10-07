@@ -2,7 +2,7 @@
 
 namespace App\Controller\P404;
 
-use \Engine\Controller\Controller;
+use Engine\Controller\Controller;
 
 class P404 extends Controller {
 

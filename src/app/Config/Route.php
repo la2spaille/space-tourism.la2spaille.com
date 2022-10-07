@@ -2,7 +2,7 @@
 
 namespace App\Config;
 
-use \Engine\Router\Router;
+use Engine\Router\Router;
 
 class Route
 {
