@@ -14,7 +14,8 @@ class Autoloader {
         if ($rootFolder === 'Engine' || $rootFolder === 'App') {
             $class = str_replace($rootFolder . '\\', '', $class);
             $class = str_replace('\\', '/', $class);
-            require ROOT . '/' . strtolower($rootFolder) . '/' . $class . '.php';
+            echo  ROOT . '/' . strtolower($rootFolder) . '/' . $class . '.php';
+            include  ROOT . '/' . strtolower($rootFolder) . '/' . $class . '.php';
         }
     }
 
