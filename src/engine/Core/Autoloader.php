@@ -15,7 +15,7 @@ class Autoloader {
             $class = str_replace($rootFolder . '\\', '', $class);
             $class = str_replace('\\', '/', $class);
             echo  ROOT . '/' . strtolower($rootFolder) . '/' . $class . '.php';
-            include  ROOT . '/' . strtolower($rootFolder) . '/' . $class . '.php';
+            include  ROOT  . strtolower($rootFolder) . '/' . $class . '.php';
         }
     }
 
