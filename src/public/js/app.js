@@ -433,8 +433,8 @@ M.Cl = (el, action, css) => {
             new M.Delay(1400, this.l.outro).run()
             new M.Delay(1400, this.removeOld).run()
             new M.Delay(1500, this.insertNew).run()
-            new M.Delay(2800, this.l.intro).run()
-            new M.Delay(2800, () => window.dispatchEvent(vLoad)).run()
+            new M.Delay(3500, this.l.intro).run()
+            new M.Delay(4000, () => window.dispatchEvent(vLoad)).run()
         }
 
         insertNew() {
@@ -505,8 +505,8 @@ M.Cl = (el, action, css) => {
 
         loop() {
             let a = this.bg, n = a.length
-            this.c.l = M.Lerp(this.c.l, this.f.l, 0.2)
-            this.c.r = M.Lerp(this.c.r, this.f.r, 0.2)
+            this.c.l = M.Lerp(this.c.l, this.f.l, 0.1)
+            this.c.r = M.Lerp(this.c.r, this.f.r, 0.1)
             this.zIndex(this.curr)
             this.clip(a[this.curr], this.c.l, this.c.r)
         }
