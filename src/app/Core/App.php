@@ -2,8 +2,8 @@
 
 namespace App\Core;
 
-use \Engine\Core\Autoloader;
-use \App\Config\Route;
+use Engine\Core\Autoloader;
+use App\Config\Route;
 
 class App {
 
