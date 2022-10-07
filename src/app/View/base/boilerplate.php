@@ -1,9 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+</body>
+</html>
+<!doctype html>
+<html lang="en">
+<head>
     <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="canonical" href="<?= $this->head['url']; ?>">
     <!-- Robots -->
