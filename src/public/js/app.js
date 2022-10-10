@@ -14,7 +14,8 @@ window._M = {
 
     },
     e: {
-        s: null
+        s: null,
+        b: null
     },
     route: {
         "new": {
@@ -392,6 +393,8 @@ M.Cl = (el, action, css) => {
     "use strict"
 
     class i {
+        constructor() {
+        }
 
         intro() {
             let t = _M,
@@ -413,16 +416,17 @@ M.Cl = (el, action, css) => {
 
     class t {
         constructor() {
-            M.Bt(this, ["update", "removeOld", "insertNew","vLoad"])
+            M.Bt(this, ["update", "removeOld", "insertNew", "vLoad","onPopstate"])
             this.l = new l
             this.cache = ''
-            this.r  = new M.Raf(this.vLoad)
+            this.nL = M.SelectAll('.nav_link')
+            this.r = new M.Raf(this.vLoad)
             this.init()
         }
 
         vLoad() {
-            if(document.readyState == 'complete') {
-                M.De('',document,'','vLoad', false)
+            if (document.readyState == 'complete') {
+                M.De('', document, '', 'vLoad', false)
                 this.r.stop()
             }
         }
@@ -447,6 +451,11 @@ M.Cl = (el, action, css) => {
             let p = e.target.pathname,
                 t = _M,
                 r = t.config.routes
+            let tg = e.target
+            for (let l of this.nL) {
+                M.Cl(l.parentNode, 'r', 'active')
+            }
+            M.Cl(tg.parentNode, 'a', 'active')
             p !== t.route.new.url && this.switch(p)
         }
 
@@ -460,30 +469,59 @@ M.Cl = (el, action, css) => {
             new => opacity 1
             mew => run intro then motion
             */
-            let old = this.layer.children[0]
+            this.insertNew()
+            let _old = this.layer.children[0],
+                _new = this.layer.children[1],
+                _i = new i,
+                t = _M.e.s
+            t.stop()
             let tl = new M.TL()
             tl
                 .add({
-                    el: old,
+                    el: _old,
                     p: {o: [1, 0]},
-                    d: 1000,
+                    d: 400,
                     delay: 400
                 })
+                .add({
+                    el: _new,
+                    p: {o: [0, 0]},
+                })
+                .add({
+                    el: _old,
+                    cb: () => {
+                        this.l.outro()
+                        this.removeOld()
+                    },
+                    delay: 800
+                })
+                .add({
+                    el: _new,
+                    cb: () => {
+                        this.vLoad()
+                        _M.e.b.tl()
+                        this.l.intro()
+                    },
+                    delay: 2000
+                })
+                .add({
+                    el: _new,
+                    p: {o: [0, 1]},
+                    d: 400,
+                    cb: () => {
+                        t.init()
+                        _i.intro()
+                        t.run()
+                    },
+                    delay: 600
+                })
                 .play()
-            new M.Delay(1400, this.l.outro).run()
-            new M.Delay(1400, this.removeOld).run()
-            new M.Delay(1500, this.insertNew).run()
-            new M.Delay(3500, this.l.intro).run()
-            new M.Delay(4000, () => {
-
-            }).run()
         }
 
         insertNew() {
             let N = this.cache.get()
             document.title = N.title
             this.add(N.html)
-            this.vLoad()
         }
 
         removeOld() {
@@ -493,6 +531,7 @@ M.Cl = (el, action, css) => {
 
         e() {
             M.E('a', 'click', this.update)
+            M.E(window, 'popstate', this.onPopstate)
         }
 
         switch(u) {
@@ -508,9 +547,10 @@ M.Cl = (el, action, css) => {
         }
 
         onPopstate() {
-            M.E(window, 'popstate', (e) => {
-                M.PD(e)
-            })
+            let p = location.pathname,
+                t = _M
+            p !== t.route.new.url && this.switch(p)
+
         }
 
         add(el) {
@@ -816,12 +856,12 @@ M.Cl = (el, action, css) => {
 
     class m {
         constructor(o) {
+            M.Bt(this, ['_b', '_w'])
             this.b = M.SelectAll('.m--brain')
             this.w = M.SelectAll('.m--wrapper')
             this.l = 0
             this.d = 1100
             this.o = o
-            M.Bt(this, ['_b'])
         }
 
         intro() {
@@ -836,18 +876,19 @@ M.Cl = (el, action, css) => {
                 let _o = o[i],
                     el = M.SelectAll(_o.el), n = el.length
                 for (let j = 0; j < n; j++) {
+                    M.D(el[j], 'n')
+                    new M.Mo({
+                        el: el[j],
+                        p: _o.init.p,
+                    }).play()
                     if (j === I) {
                         M.D(el[I], 'b')
                         new M.Mo({
                             el: el[I],
                             p: _o.active.p,
-                            d: _o.active.d
-                        }).play()
-                    } else {
-                        M.D(el[j], 'n')
-                        new M.Mo({
-                            el: el[j],
-                            p: _o.init.p,
+                            d: _o.active.d,
+                            e: 'cb',
+                            delay: 1500
                         }).play()
                     }
                 }
@@ -858,20 +899,12 @@ M.Cl = (el, action, css) => {
             let a = this.w, n = a.length
             for (let i = 0; i < n; i++) {
                 let b = a[i].children, m = b.length,
-                    maxH = 0,
-                    maxW = 0
-                let qwerty = setInterval(() => {
-                    for (let j = 0; j < m; j++) {
-                        let h = M.Is.img(b[j]) ? b[j].height : b[j].offsetHeight,
-                            w = M.Is.img(b[j]) ? b[j].width : b[j].offsetWidth
-                        if (h > maxH) maxH = h
-                        if (h > maxW) maxW = w
-                    }
-                    a[i].style.height = maxH + 'px'
-                    a[i].style.width = maxW + 'px'
-                    if (maxW > 0) clearInterval(qwerty)
-
-                }, 500)
+                    maxH = 0
+                for (let j = 0; j < m; j++) {
+                    let h = M.Is.img(b[j]) ? b[j].offsetHeight : b[j].offsetHeight
+                    if (h > maxH) maxH = h
+                }
+                a[i].style.height = maxH + 'px'
             }
         }
 
@@ -919,7 +952,9 @@ M.Cl = (el, action, css) => {
         }
 
         init() {
-            this._w()
+            M.E(document, 'vLoad', this._w, 'a')
+            M.E(window, 'resize', this._w, 'a')
+            M.E(window, 'orientationchange', this._w, 'a')
         }
 
         e() {
@@ -989,7 +1024,7 @@ M.Cl = (el, action, css) => {
                     }, {
                         el: '.m-crew-img',
                         active: {p: {opacity: [0, 1]}, d: 1000},
-                        inactive: {p: {opacity: [1, 0]}, d: 900},
+                        inactive: {p: {opacity: [1, 0]}, d: 1000},
                         init: {p: {opacity: [0, 0]}}
                     }
                 ],
@@ -1043,8 +1078,6 @@ M.Cl = (el, action, css) => {
 
         e() {
             M.E(window, 'load', this.tl)
-
-            M.E(window, 'vLoad', this.tl)
         }
 
         tl() {
@@ -1054,20 +1087,15 @@ M.Cl = (el, action, css) => {
         }
 
         on() {
-            M.E(window, 'load', ()=> {
-                M.Cl('.loader','a','dom-loaded')
-                new M.Delay(700,()=> {
-                    this.tl()
-                }).run()
+            M.E(window, 'load', () => {
+                M.Cl('.loader', 'a', 'dom-loaded')
+                this.tl()
             })
-            M.E(document,'vLoad',(e)=> {
-                console.log(e)
-            } )
         }
 
     }
 
-    (new b)
+    (_M.e.b = new b)
     console.log('\n %c Made with ❤️ by La2spaille  %c \n ', 'border: 1px solid #000;color: #fff; background: #000; padding:5px 0;', '')
 }()
 

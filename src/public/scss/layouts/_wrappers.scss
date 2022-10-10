@@ -1,290 +1,354 @@
 .w-page-title {
-    padding: 0 165px;
-    position: relative;
-    z-index: 1;
-    overflow-y: hidden;
-    transition: 0.7s;
+  padding: 0 165px;
+  position: relative;
+  z-index: 1;
+  overflow-y: hidden;
+  transition: 0.7s;
+
+  span {
+    transition: 1s;
+
+    &::before {
+      content: attr(data-number);
+      font-weight: 700;
+      margin: 0 11px 0 0;
+      opacity: 0.25;
+    }
+  }
+
+  &.motion {
     span {
-        transition: 1s;
-        &::before {
-            content: attr(data-number);
-            font-weight: 700;
-            margin: 0 11px 0 0;
-            opacity: 0.25;
-        }
+      transform: translateY(125%) rotate(5deg);
     }
-    &.motion {
-        span {
-            transform: translateY(125%) rotate(5deg);
-        }
-    }
+  }
 }
+
 .l-wrapper {
-    color: #fff;
-    display: flex;
-    flex: 1;
+  color: #fff;
+  display: flex;
+  flex: 1;
+  padding: 0 165px;
+  justify-content: space-between;
+
+  &.home {
+    align-items: flex-end;
+  }
+
+  &.destination {
+    gap: 157.5px;
+    justify-content: space-around;
+  }
+
+  &.crew {
+    gap: 80.5px;
     padding: 0 165px;
     justify-content: space-between;
-    &.home {
-        align-items: flex-end;
-    }
-    &.destination {
-        gap: 157.5px;
-        justify-content: space-around;
-    }
-    &.crew {
-        gap: 80.5px;
-        padding: 0  165px;
-        justify-content: space-between;
-    }
-    &.technology {
-        padding: 0 0 0 165px;
-        gap: 100px;
-        align-items: center;
-        position: relative;
-    }
+  }
+
+  &.technology {
+    padding: 0 0 0 165px;
+    gap: 100px;
+    align-items: center;
+    position: relative;
+  }
 }
+
 .w-img {
-    max-width: 50%;
-    display: flex;
-    width: 100%;
-    align-items: flex-end;
-    position: relative;
-    &.destination {
-        cursor: pointer;
-        img {
-            z-index: 0;
-        }
-    }
-    &.crew {
-        max-width: 50%;
-        height: 100%;
-        img {
-            width: 90%;
-            left: 5%;
-        }
-    }
+  max-width: 50%;
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  position: relative;
+
+  &.destination {
+    cursor: pointer;
+
     img {
-        width: 100%;
-        height: auto;
+      z-index: 0;
     }
+  }
+
+  &.crew {
+    max-width: 50%;
+    height: 100%;
+
+    img {
+      width: 90%;
+      left: 5%;
+    }
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
 }
+
 .w-text {
-    display: flex;
-    flex-direction: column;
-    &.home {
-        padding: 175px 0 0;
-        flex: 1;
-        overflow-y: hidden;
-        &.motion {
-            span {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-        }
-    }
-    &.destination {
-        max-width: 445px;
-        width: 100%;
-    }
-    &.crew {
-        width: 100%;
-    }
-    &.technology {
-        width: 100%;
-        justify-self: flex-start;
-    }
-}
-.w-navXtext {
-    display: flex;
-    position: relative;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+
+  &.home {
+    padding: 175px 0 0;
     flex: 1;
-    &.crew {
-        flex: none;
-        justify-content: flex-end;
-        gap: 120px;
-        margin: 0 0 95px;
-        flex: none;
+    overflow-y: hidden;
+
+    &.motion {
+      span {
+        transform: translateY(100%);
+        opacity: 0;
+      }
     }
-    &.technology {
-        flex-direction: row;
-        gap: 80px;
-        align-items: center;
-    }
+  }
+
+  &.destination {
+    max-width: 445px;
+    width: 100%;
+  }
+
+  &.crew {
+    width: 100%;
+  }
+
+  &.technology {
+    width: 100%;
+    justify-self: flex-start;
+  }
+}
+
+.w-navXtext {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  flex: 1;
+
+  &.crew {
+    flex: none;
+    justify-content: flex-end;
+    gap: 120px;
+    margin: 0 0 95px;
+    flex: none;
+  }
+
+  &.technology {
+    flex-direction: row;
+    gap: 80px;
+    align-items: center;
+  }
 }
 
 .w-strong {
-    &.home {
-        overflow: visible;
-        span {
-            transition: 0.7s;
-        }
-    }
-    &.crew {
-        opacity: 0.5;
-    }
-    &.technology {
-        transition: 1s 0.5s;
-        &.motion {
-            opacity: 0;
-        }
-    }
-}
-.w-h1 {
-    &.home {
-        margin: 25px 0 0;
-        overflow: visible;
-        span {
-            transition: 0.7s 0.5s;
-        }
-    }
-    &.destination {
-        margin: 35px 0 0;
-    }
-    &.crew {
-        margin: 15px 0 0;
-    }
-    &.technology {
-        margin: 11px 0 0;
-    }
-}
-.w-paragraph {
-    position: relative;
-    width: 100%;
-    max-width: 444px;
-    &.home {
-        margin: 25px 0 0;
-        overflow: visible;
-        span {
-            transition: 0.7s 0.75s;
-        }
-    }
+  &.home {
+    overflow: visible;
 
-    &.destination {
-        margin: 15px 0 0;
+    span {
+      transition: 0.7s;
     }
-    &.crew {
-        margin: 27px 0 0;
+  }
+
+  &.crew {
+    opacity: 0.5;
+  }
+
+  &.technology {
+    transition: 1s 0.5s;
+
+    &.motion {
+      opacity: 0;
     }
-    &.technology {
-        margin: 17.5px 0 0;
-        max-width: 444px;
+  }
+}
+
+.w-h1 {
+  &.home {
+    margin: 25px 0 0;
+    overflow: visible;
+
+    span {
+      transition: 0.7s 0.5s;
     }
+  }
+
+  &.destination {
+    margin: 35px 0 0;
+  }
+
+  &.crew {
+    margin: 15px 0 0;
+  }
+
+  &.technology {
+    margin: 11px 0 0;
+  }
+}
+
+.w-paragraph {
+  position: relative;
+  width: 100%;
+  max-width: 444px;
+
+  &.home {
+    margin: 25px 0 0;
+    overflow: visible;
+
+    span {
+      transition: 0.7s 0.75s;
+    }
+  }
+
+  &.destination {
+    margin: 15px 0 0;
+  }
+
+  &.crew {
+    margin: 27px 0 0;
+  }
+
+  &.technology {
+    margin: 17.5px 0 0;
+    max-width: 444px;
+  }
 }
 
 .w-bg {
-    position :fixed;
-    z-index: -1;
+  position: fixed;
+  z-index: -1;
 }
+
 .bg {
-    background-size: cover;
-    position: fixed;
-    top:0;
-    left:0;
-    right: 0;
-    bottom:0;
-    //animation: space 40s 1 ease-in-out;
-    animation-fill-mode: forwards;
-    &.home {
-        background-image: url("/media/home/background-home-desktop.jpg");
-    }
-    &.destination {
-        background-image: url("/media/destination/background-destination-desktop.jpg");
-    }
-    &.crew {
-        background-image: url("/media/crew/background-crew-desktop.jpg");
-    }
-    &.technology {
-        background-image: url("/media/technology/background-technology-desktop.jpg");
-    }
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  //animation: space 40s 1 ease-in-out;
+  animation-fill-mode: forwards;
+
+  &.home {
+    background-image: url("/media/home/background-home-desktop.jpg");
+  }
+
+  &.destination {
+    background-image: url("/media/destination/background-destination-desktop.jpg");
+  }
+
+  &.crew {
+    background-image: url("/media/crew/background-crew-desktop.jpg");
+  }
+
+  &.technology {
+    background-image: url("/media/technology/background-technology-desktop.jpg");
+  }
 }
 
 .w-img {
-    &.technology {
-        position: relative;
-        max-width: 515px;
-        flex: 1;
-        padding-bottom: 515px;
-        overflow: hidden;
-        div {
-            width: 100%;
-            height: 97%;
-            top: 1.5%;
-            background-size: cover;
-            transition: 0.5s transform cubic-bezier(0.23,1,0.32,1);
-            position: absolute;
-            &:hover {
-                transform: scale(1.15);
-            }
-        }
-        div:nth-child(1) {
-            background-image: url("/media/technology/image-launch-vehicle-portrait.jpg");
-        }
-        div:nth-child(2) {
-            background-image: url("/media/technology/image-spaceport-portrait.jpg");
-        }
-        div:nth-child(3) {
-            background-image: url("/media/technology/image-space-capsule-portrait.jpg");
-        }
-    }
-}
-.m--wrapper:not(div) {
+  &.technology {
     position: relative;
-    overflow-y: hidden;
+    max-width: 515px;
+    flex: 1;
+    padding-bottom: 515px;
+    overflow: hidden;
+
+    div {
+      width: 100%;
+      height: 97%;
+      top: 1.5%;
+      background-size: cover;
+      transition: 0.5s transform cubic-bezier(0.23, 1, 0.32, 1);
+      position: absolute;
+
+      &:hover {
+        transform: scale(1.15);
+      }
+    }
+
+    div:nth-child(1) {
+      background-image: url("/media/technology/image-launch-vehicle-portrait.jpg");
+    }
+
+    div:nth-child(2) {
+      background-image: url("/media/technology/image-spaceport-portrait.jpg");
+    }
+
+    div:nth-child(3) {
+      background-image: url("/media/technology/image-space-capsule-portrait.jpg");
+    }
+  }
 }
+
+.m--wrapper:not(div) {
+  position: relative;
+  overflow-y: hidden;
+}
+
 @media (max-width: 1050px) {
-    .bg {
-        &.home {
-            background-image: url("/media/home/background-home-tablet.jpg");
-        }
-        &.destination {
-            background-image: url("/media/destination/background-destination-tablet.jpg");
-        }
-        &.crew {
-            background-image: url("/media/crew/background-crew-tablet.jpg");
-        }
-        &.technology {
-            background-image: url("/media/technology/background-technology-tablet.jpg");
-        }
+  .bg {
+    &.home {
+      background-image: url("/media/home/background-home-tablet.jpg");
     }
-    .w-img {
-        &.technology {
-            div:nth-child(1) {
-                background-image: url("/media/technology/image-launch-vehicle-landscape.jpg");
-            }
-            div:nth-child(2) {
-                background-image: url("/media/technology/image-spaceport-landscape.jpg");
-            }
-            div:nth-child(3) {
-                background-image: url("/media/technology/image-space-capsule-landscape.jpg");
-            }
-        }
+
+    &.destination {
+      background-image: url("/media/destination/background-destination-tablet.jpg");
     }
+
+    &.crew {
+      background-image: url("/media/crew/background-crew-tablet.jpg");
+    }
+
+    &.technology {
+      background-image: url("/media/technology/background-technology-tablet.jpg");
+    }
+  }
+  .w-img {
+    &.technology {
+      div:nth-child(1) {
+        background-image: url("/media/technology/image-launch-vehicle-landscape.jpg");
+      }
+
+      div:nth-child(2) {
+        background-image: url("/media/technology/image-spaceport-landscape.jpg");
+      }
+
+      div:nth-child(3) {
+        background-image: url("/media/technology/image-space-capsule-landscape.jpg");
+      }
+    }
+  }
 }
+
 @media (max-width: 480px) {
-    .bg {
-        &.home {
-            background-image: url("/media/home/background-home-mobile.jpg");
-        }
-        &.destination {
-            background-image: url("/media/destination/background-destination-mobile.jpg");
-        }
-        &.crew {
-            background-image: url("/media/crew/background-crew-mobile.jpg");
-        }
-        &.technology {
-            background-image: url("/media/technology/background-technology-mobile.jpg");
-        }
+  .bg {
+    &.home {
+      background-image: url("/media/home/background-home-mobile.jpg");
     }
+
+    &.destination {
+      background-image: url("/media/destination/background-destination-mobile.jpg");
+    }
+
+    &.crew {
+      background-image: url("/media/crew/background-crew-mobile.jpg");
+    }
+
+    &.technology {
+      background-image: url("/media/technology/background-technology-mobile.jpg");
+    }
+  }
 }
+
 @keyframes space {
-    from {
-        transform: scale(1);
-    }
-    to {
-        transform: scale(1.25);
-    }
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.25);
+  }
 }
 
 
+#main {
+  & > div:nth-child(2) {
+    opacity: 0;
+  }
+}

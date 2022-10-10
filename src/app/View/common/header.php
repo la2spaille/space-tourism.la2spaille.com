@@ -5,7 +5,7 @@ function set_nav($id, $link, $url): string
     $class = ($R_url === $url ? "active" : " ");
     return <<<HTML
     <span class='link-hover $class'>
-      <a data-id="$id" href='$url' class="link header close_btn"> $link</a>
+      <a data-id="$id" href='$url' class="link header close_btn nav_link"> $link</a>
     </span>
 HTML;
 
