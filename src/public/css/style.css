@@ -311,7 +311,6 @@ header {
 .w-img.crew {
   max-width: 50%;
   height: 100%;
-  margin: -50px 0 0;
 }
 .w-img.crew img {
   width: 90%;
@@ -434,7 +433,6 @@ header {
   left: 0;
   right: 0;
   bottom: 0;
-  animation: space 40s 1 ease-in-out;
   animation-fill-mode: forwards;
 }
 .bg.home {
@@ -658,15 +656,11 @@ header {
 
 .m-crew-job, .m-crew-name {
   position: relative;
-}
-
-.m-crew-description {
-  position: absolute;
-  display: block;
+  position: relative;
 }
 
 .m-crew-img {
-  position: relative;
+  position: absolute;
   bottom: 0;
   pointer-events: none;
 }
@@ -789,6 +783,38 @@ header {
 #progress div {
   background: #fff;
   width: 100%;
+  transform: translateY(-100%);
+}
+
+#loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  background: #0B0D17;
+  transition: 0.7s cubic-bezier(0.6, 0.01, 0.43, 0.99);
+  clip-path: inset(0 0 0 0);
+}
+#loader.dom-loaded {
+  clip-path: inset(0 0 100% 0);
+}
+#loader svg {
+  transform: scale(3.75);
+}
+#loader strong {
+  position: relative;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  transform: scale(3.5) translateY(225%);
+  font-family: "Bellefair", serif;
+}
+#loader span {
+  display: inline-block;
+  color: #fff;
 }
 
 @media (max-width: 1100px) {

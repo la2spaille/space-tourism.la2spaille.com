@@ -22,13 +22,13 @@
 }
 .m-crew-job,.m-crew-name{
     position: relative;
+    position: relative;
+
 }
 .m-crew-description  {
-    position: absolute;
-    display: block;
 }
 .m-crew-img {
-    position: relative;
+    position: absolute;
     bottom: 0;
     pointer-events: none;
 }

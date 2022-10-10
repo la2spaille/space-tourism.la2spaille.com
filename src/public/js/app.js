@@ -1,7 +1,20 @@
 window._M = {
     delay: 500,
+    isMobile: matchMedia("(hover: none)").matches,
+    scroll: {
+        y: 0,
+        x: 0,
+    },
+    /*
+    * vScroll - "all" | "desktop"
+     */
     config: {
-        serviceWorker: true
+        serviceWorker: true,
+        vScroll: "all"
+
+    },
+    e: {
+        s: null
     },
     route: {
         "new": {
@@ -13,7 +26,7 @@ window._M = {
             "page": false
         }
     },
-    was: []
+    was: [],
 }
 window.M = {}
 M.Mo = class {
@@ -170,10 +183,10 @@ M.TL = class {
 }
 M.Raf = class {
     constructor(loop) {
+        M.Bt(this, ['t', 'run', 'stop'])
         this.loop = loop
         this.id = this.s = null
         this.on = !1
-        M.Bt(this, ['t', 'run', 'stop'])
     }
 
     run() {
@@ -221,6 +234,7 @@ M.Is = {
     def: t => t !== undefined,
     und: t => t === undefined,
     str: t => "string" == typeof t,
+    null: t => t === null,
     obj: t => t === Object(t),
     arr: t => t.constructor === Array,
     img: t => t.tagName === "IMG",
@@ -255,6 +269,7 @@ M.G = {
     id: (el, r) => M.G.s(r, "ById", el),
     class: (el, r) => M.G.s(r, "sByClassName", el),
     tag: (el, r) => M.G.s(r, "sByTagName", el),
+    attr: el => document.querySelector(el)
 }
 M.Pe = {
     f: (t, r) => {
@@ -307,7 +322,16 @@ M.Select = el => {
     if (!M.Is.str(el)) return el
     let s = el.substring(1),
         c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
-    return c.length === 1 ? c[0] : c
+    if (M.Is.null(c)) return
+    c = M.Is.arr(c) ? c : [c]
+    return c[0]
+}
+M.SelectAll = el => {
+    if (!M.Is.str(el)) return [el]
+    let s = el.substring(1),
+        c = el.charAt(0) === "#" ? M.G.id(s) : el.charAt(0) === "." ? M.G.class(s) : M.G.tag(el)
+    if (M.Is.null(c)) return
+    return M.Is.arr(c) ? c : [c]
 }
 M.Ga = (t, r) => t.getAttribute(r)
 M.T = (t, x, y, u) => {
@@ -332,24 +356,33 @@ M.R = (t, r) => {
 }
 M.E = (el, e, cb, o) => {
     if (M.Is.und(el)) return
-    let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
+    let s = M.SelectAll(el),
+        n = s.length
     o = o === 'r' ? 'remove' : 'add'
     for (let i = 0; i < n; i++) {
         s[i][o + "EventListener"](e, cb)
     }
 }
-M.De = (fr, to, nev, cev) => {
-    let a = nev, s = M.Is.arr(a) ? a : [a], n = s.length, cE = new CustomEvent(cev)
-    let de = () => {
-        to["dispatchEvent"](cE)
+M.De = (from, to, nativeEvent, customEvent, fromEvent) => {
+    let a = nativeEvent,
+        s = M.Is.arr(a) ? a : [a],
+        n = s.length,
+        cE = new CustomEvent(customEvent)
+    const dE = () => {
+        to.dispatchEvent(cE)
     }
-    for (let i = 0; i < n; i++) {
-        M.E(fr, s[i], de)
+    if (fromEvent) {
+        for (let i = 0; i < n; i++) {
+            M.E(from, s[i], dE)
+        }
+    } else {
+        dE()
     }
 }
 M.Cl = (el, action, css) => {
     if (M.Is.und(el)) return
-    let a = M.Select(el), s = M.Is.arr(a) ? a : [a], n = s.length
+    let s = M.Is.arr(el) ? el : M.SelectAll(el),
+        n = s.length
     action = action === 'a' ? 'add' : 'remove'
     for (let i = 0; i < n; i++) {
         s[i].classList[action](css)
@@ -380,10 +413,18 @@ M.Cl = (el, action, css) => {
 
     class t {
         constructor() {
-            M.Bt(this, ["update", "removeOld", "insertNew"])
+            M.Bt(this, ["update", "removeOld", "insertNew","vLoad"])
             this.l = new l
             this.cache = ''
+            this.r  = new M.Raf(this.vLoad)
             this.init()
+        }
+
+        vLoad() {
+            if(document.readyState == 'complete') {
+                M.De('',document,'','vLoad', false)
+                this.r.stop()
+            }
         }
 
         init() {
@@ -419,7 +460,6 @@ M.Cl = (el, action, css) => {
             new => opacity 1
             mew => run intro then motion
             */
-            let vLoad = new CustomEvent('vLoad')
             let old = this.layer.children[0]
             let tl = new M.TL()
             tl
@@ -434,13 +474,16 @@ M.Cl = (el, action, css) => {
             new M.Delay(1400, this.removeOld).run()
             new M.Delay(1500, this.insertNew).run()
             new M.Delay(3500, this.l.intro).run()
-            new M.Delay(4000, () => window.dispatchEvent(vLoad)).run()
+            new M.Delay(4000, () => {
+
+            }).run()
         }
 
         insertNew() {
             let N = this.cache.get()
             document.title = N.title
             this.add(N.html)
+            this.vLoad()
         }
 
         removeOld() {
@@ -476,13 +519,14 @@ M.Cl = (el, action, css) => {
 
         run() {
             this.e()
+            this.vLoad()
         }
     }
 
     class l {
         constructor() {
-            this.bg = M.Select('.bg')
             M.Bt(this, ['loop', 'intro', 'outro'])
+            this.bg = M.SelectAll('.bg')
             this.r = new M.Raf(this.loop)
             this.i = {
                 "/": 0,
@@ -562,6 +606,8 @@ M.Cl = (el, action, css) => {
     class s {
         constructor() {
             const t = _M
+            M.Bt(this, ["w", "key", "loop", "tS", "tM", "roc"])
+            M.De(window, document, ["wheel", "keydown", "touchmove"], "vScroll", true)
             t.scroll = {
                 x: 0,
                 y: 0,
@@ -577,26 +623,26 @@ M.Cl = (el, action, css) => {
                 speed: 0.5,
             }
             this.prog = M.Select('.progress')
+            this.el = M.Select('.page')
             this.max = this.scrollY = 0
             this.tsX = this.tsY = null
-            M.Bt(this, ["w", "key", "loop", "tS", "tM", "resize"])
-            M.De(window, document, ["wheel", "keydown", "touchmove"], "vScroll")
             this.r = new M.Raf(this.loop)
+            this.run()
         }
 
         update(e) {
             this.setMax()
             const t = _M.scroll
-            t.y = M.R(M.Clamp(t.y + t.deltaY, 0, this.max), 0)
+            t.y = M.R(M.Clamp(t.y + t.deltaY, 0, this.max), 2)
             t.originalEvent = e
         }
 
         loop() {
             const t = _M.scroll
             this.scrollY = M.R(M.Lerp(this.scrollY, t.y, 0.1), 2)
-            this.r.on && M.Is.interval(this.scrollY - t.y, -0.055, 0.055) && this.r.stop()
-            M.T(this.prog, 0, (this.scrollY / this.max - 1) * 100, '%')
+            this.r.on && M.Is.interval(this.scrollY - t.y, -0.55, 0.55) && this.r.stop()
             M.T(this.el, 0, -1 * this.scrollY, 'px')
+            M.T(this.prog, 0, (this.scrollY / this.max - 1) * 100, '%')
         }
 
         tS(e) {
@@ -649,7 +695,7 @@ M.Cl = (el, action, css) => {
             this.max -= innerHeight
         }
 
-        resize(e) {
+        roc(e) {
             this.setMax()
             const t = _M.scroll
             t.y = M.R(M.Clamp(t.y, 0, this.max), 0)
@@ -663,23 +709,30 @@ M.Cl = (el, action, css) => {
             M.T(this.prog, 0, -100, '%')
         }
 
-        e() {
-            M.E(document, "wheel", this.w)
-            M.E(document, "keydown", this.key)
-            M.E(document, "touchstart", this.tS)
-            M.E(document, "touchmove", this.tM)
-            M.E(window, "resize", this.resize)
-            M.E(window, "orientationchange", this.resize)
-            M.E(document, "vScroll", () => this.r.on || this.r.run())
+        e(o) {
+            M.E(document, "wheel", this.w, o)
+            M.E(document, "keydown", this.key, o)
+            M.E(document, "touchstart", this.tS, o)
+            M.E(document, "touchmove", this.tM, o)
+            M.E(window, "resize", this.roc, o)
+            M.E(window, "orientationchange", this.roc, o)
+            M.E(document, "vScroll", () => this.r.on || this.r.run(), o)
+            M.E(document, "scroll", () => this.r.on || this.r.run(), o)
         }
 
         run() {
-            this.e()
+            this.setMax()
+            this.e('a')
+        }
+
+        stop() {
+            this.e('r')
         }
     }
 
     class c {
         constructor() {
+            M.Bt(this, ["loop", "update", "cl"])
             this.el = M.G.id('cursor')
             this.ux = [
                 {el: ".w-home-cta", css: "site-cursor--explore-hover"},
@@ -690,7 +743,6 @@ M.Cl = (el, action, css) => {
             this.w = this.el.offsetWidth
             this.s = 0.1
             this.eX = this.eY = this.x = this.y = 0
-            M.Bt(this, ["loop", "update", "cl"])
             this.r = new M.Raf(this.loop)
         }
 
@@ -730,16 +782,15 @@ M.Cl = (el, action, css) => {
 
     class n {
         constructor() {
+            M.Bt(this, ["open", "close"])
             this.headerNav = M.Select('.w-nav')
             this.menuBtn = M.Select('.w-menu-btn')
-            this.closeBtn = M.Select('.w-close-btn')
-            M.Bt(this, ["open", "close"])
             this.run()
         }
 
         e() {
             M.E(this.menuBtn, 'click', this.open)
-            M.E(this.closeBtn, 'click', this.close)
+            M.E('.close_btn', 'click', this.close)
         }
 
         run() {
@@ -747,22 +798,26 @@ M.Cl = (el, action, css) => {
         }
 
         open(e) {
+            const t = _M
             M.Cl(this.headerNav, 'a', 'is-active')
             M.Cl(this.menuBtn, 'a', 'is-active')
+            t.e.s.stop()
             e.stopPropagation()
         }
 
         close(e) {
+            const t = _M
             M.Cl(this.headerNav, 'r', 'is-active')
             M.Cl(this.menuBtn, 'r', 'is-active')
+            t.e.s.run()
             e.stopPropagation()
         }
     }
 
     class m {
         constructor(o) {
-            this.b = M.Select('.m--brain')
-            this.w = M.Select('.m--wrapper')
+            this.b = M.SelectAll('.m--brain')
+            this.w = M.SelectAll('.m--wrapper')
             this.l = 0
             this.d = 1100
             this.o = o
@@ -770,28 +825,29 @@ M.Cl = (el, action, css) => {
         }
 
         intro() {
-            let a = this.b, n = a.length,
+            let b = this.b, n = b.length,
                 I = 0,
-                b = this.o, m = b.length
+                o = this.o, m = o.length
             for (let i = 0; i < n; i++) {
                 let css = I === i ? 'a' : 'r'
-                M.Cl(a[i], css, 'active')
+                M.Cl(b[i], css, 'active')
             }
             for (let i = 0; i < m; i++) {
-                let o = b[i], el = M.Select(o.el), n = el.length
+                let _o = o[i],
+                    el = M.SelectAll(_o.el), n = el.length
                 for (let j = 0; j < n; j++) {
                     if (j === I) {
                         M.D(el[I], 'b')
                         new M.Mo({
                             el: el[I],
-                            p: o.active.p,
-                            d: o.active.d
+                            p: _o.active.p,
+                            d: _o.active.d
                         }).play()
                     } else {
                         M.D(el[j], 'n')
                         new M.Mo({
                             el: el[j],
-                            p: o.init.p,
+                            p: _o.init.p,
                         }).play()
                     }
                 }
@@ -802,12 +858,20 @@ M.Cl = (el, action, css) => {
             let a = this.w, n = a.length
             for (let i = 0; i < n; i++) {
                 let b = a[i].children, m = b.length,
-                    max = 0
-                for (let j = 0; j < m; j++) {
-                    let h = M.Is.img(b[j]) ? b[j].height : b[j].offsetHeight
-                    if (h > max) max = h
-                }
-                a[i].style.height = max + 'px'
+                    maxH = 0,
+                    maxW = 0
+                let qwerty = setInterval(() => {
+                    for (let j = 0; j < m; j++) {
+                        let h = M.Is.img(b[j]) ? b[j].height : b[j].offsetHeight,
+                            w = M.Is.img(b[j]) ? b[j].width : b[j].offsetWidth
+                        if (h > maxH) maxH = h
+                        if (h > maxW) maxW = w
+                    }
+                    a[i].style.height = maxH + 'px'
+                    a[i].style.width = maxW + 'px'
+                    if (maxW > 0) clearInterval(qwerty)
+
+                }, 500)
             }
         }
 
@@ -823,7 +887,7 @@ M.Cl = (el, action, css) => {
                 new M.Delay(this.d, () => M.Pe.all(a[i])).run()
             }
             for (let i = 0; i < m; i++) {
-                let o = b[i], el = M.Select(o.el), n = el.length
+                let o = b[i], el = M.SelectAll(o.el), n = el.length
                 for (let j = 0; j < n; j++) {
                     if (j === I) {
                         let l = this.l
@@ -859,7 +923,7 @@ M.Cl = (el, action, css) => {
         }
 
         e() {
-            M.E(this.b, 'click', this._b)
+            M.E('.m--brain', 'click', this._b)
         }
 
         run() {
@@ -870,7 +934,7 @@ M.Cl = (el, action, css) => {
 
     class b {
         constructor() {
-            M.Bt(this,['tl'])
+            M.Bt(this, ['tl'])
             this.M = {
                 "/": false,
                 "/destination": [
@@ -949,7 +1013,6 @@ M.Cl = (el, action, css) => {
                     }
                 ],
             }
-            this.s = new s
             this.n = new n
             this.c = new c
             this.t = new t
@@ -961,36 +1024,45 @@ M.Cl = (el, action, css) => {
             const _ = _M
             this.m = new m(this.M[_.route.new.url])
             this.M[_.route.new.url] && this.m.init()
-            this.s.init()
         }
 
         intro() {
             const _ = _M
             this.M[_.route.new.url] && this.m.intro()
             this.i.intro()
-
         }
 
         run() {
             const _ = _M
+            _.e.s = new s
             this.M[_.route.new.url] && this.m.run()
             this.t.run()
-            this.s.run()
             this.c.run()
             this.n.run()
         }
 
         e() {
             M.E(window, 'load', this.tl)
+
             M.E(window, 'vLoad', this.tl)
         }
+
         tl() {
             this.init()
             this.intro()
             this.run()
         }
+
         on() {
-            this.e()
+            M.E(window, 'load', ()=> {
+                M.Cl('.loader','a','dom-loaded')
+                new M.Delay(700,()=> {
+                    this.tl()
+                }).run()
+            })
+            M.E(document,'vLoad',(e)=> {
+                console.log(e)
+            } )
         }
 
     }

@@ -1,18 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-
-</body>
-</html>
-<!doctype html>
-<html lang="en">
-<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -43,9 +31,8 @@
         <?= $this->content; ?>
     </main>
     <?php include ROOT . 'app/View/gl/gl.php'; ?>
-    <div id="progress">
-        <div class="progress"></div>
-    </div>
+    <?php include ROOT . 'app/View/common/progress.php'; ?>
+    <?php include ROOT . 'app/View/common/loader.php'; ?>
     <?php include ROOT . 'app/View/common/cursor.php'; ?>
     <?php include ROOT . 'app/View/common/background.php'; ?>
 </div>

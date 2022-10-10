@@ -28,9 +28,14 @@
                 <?php endforeach; ?>
             </div>
         </div>
-        <div class="w-img crew">
+        <div class="w-img crew m--wrapper">
             <?php foreach($crews as $crew) : ?>
-                <img class="m-crew-img" src="<?= $crew['images']['png'] ?>" srcset="<?= $crew['images']['webp'] ?>" alt="<?= $crew['name'] ?>">
+                <img class="m-crew-img"
+                     src="<?= $crew['images']['png'] ?>"
+                     srcset="<?= $crew['images']['webp'] ?>"
+                     alt="<?= $crew['name'] . ' picture'  ?>"
+                     width="<?= $crew['images']['width']?>"
+                     height="<?= $crew['images']['height']?>">
             <?php endforeach; ?>
         </div>
     </div>

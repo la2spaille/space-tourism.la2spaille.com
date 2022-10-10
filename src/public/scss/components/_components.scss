@@ -79,5 +79,37 @@
     div {
         background: #fff;
         width: 100%;
+        transform: translateY(-100%);
+
+    }
+}
+#loader {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    background: #0B0D17;
+    transition: .7s cubic-bezier(0.6, 0.01, 0.43, 0.99);
+    clip-path: inset(0 0 0 0);
+    &.dom-loaded {
+        clip-path: inset(0 0 100% 0);
+    }
+    svg {
+        transform: scale(3.75);
+    }
+    strong {
+        position: relative;
+        min-width: 100vw;
+        display: flex;
+        justify-content: center;
+        transform: scale(3.5) translateY(225%);
+        font-family: "Bellefair", serif;
+    }
+    span {
+        display: inline-block;
+        color: #fff;
     }
 }
