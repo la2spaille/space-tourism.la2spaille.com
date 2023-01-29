@@ -457,11 +457,12 @@ header {
 }
 .w-img.technology div {
   width: 100%;
-  height: 97%;
-  top: 1.5%;
+  top: 0;
+  aspect-ratio: 1;
   background-size: cover;
   transition: 0.5s transform cubic-bezier(0.23, 1, 0.32, 1);
   position: absolute;
+  transform: scale(1.025);
 }
 .w-img.technology div:hover {
   transform: scale(1.15);

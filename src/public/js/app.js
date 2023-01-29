@@ -1,34 +1,3 @@
-window._M = {
-    delay: 500,
-    isMobile: matchMedia("(hover: none)").matches,
-    scroll: {
-        y: 0,
-        x: 0,
-    },
-    /*
-    * vScroll - "all" | "desktop"
-     */
-    config: {
-        serviceWorker: true,
-        vScroll: "all"
-
-    },
-    e: {
-        s: null,
-        b: null
-    },
-    route: {
-        "new": {
-            "url": location.pathname,
-            "page": null
-        },
-        "old": {
-            "url": false,
-            "page": false
-        }
-    },
-    was: [],
-}
 window.M = {}
 M.Mo = class {
     constructor(o) {
