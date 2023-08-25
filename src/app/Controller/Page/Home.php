@@ -9,11 +9,11 @@ class Home extends Controller {
     public function show () {
 
         /*------------------------------------
-            MESSAGE
+            DATA
         ------------------------------------*/
 
         $this->data->msg = 'Home';
-
+        
         /*------------------------------------
             HEAD
         ------------------------------------*/
@@ -21,7 +21,7 @@ class Home extends Controller {
         // SEO
         $this->head['title'] = 'Space Tourism — Home';
         $this->head['description'] = '';
-        $this->head['opengraph'] = '/og/home.png';
+        $this->head['opengraph'] = '/og/home.jpg';
 
         // Robots
         $this->head['allow-robots'] = true;
@@ -30,7 +30,7 @@ class Home extends Controller {
             RENDER
         ------------------------------------*/
 
-        $this->render('home');
+        return $this->render('home');
     }
 
 }

@@ -7,13 +7,15 @@ class Route
 {
     private $path;
     private $controller;
+    private $page;
     private $callArgs = [];
     private $params = [];
 
-    public function __construct($path, $controller)
+    public function __construct($path, $controller, $page)
     {
         $this->path = trim($path, '/');
         $this->controller = $controller;
+        $this->page = $page;
     }
 
     public function with($param, $regex)
@@ -25,7 +27,7 @@ class Route
     public function match($url)
     {
         $url = trim($url, '/');
-        $path = preg_replace_callback('#:([\w]+)#', [$this, 'param_match'], $this->path);
+        $path = preg_replace_callback('#:([\w]+)#', [$this, 'paramMatch'], $this->path);
         $path = str_replace('/', '\/', $path);
         $regex = '#^' . $path . '$#';
         if (!preg_match($regex, $url, $matches)) {
@@ -36,7 +38,12 @@ class Route
         return true;
     }
 
-    public function get_controller()
+    public function getPage()
+    {
+        return $this->page;
+    }
+
+    public function getController()
     {
         $params = explode('#', $this->controller);
         $controller = 'App\\Controller\\Page\\' . $params[0];
@@ -45,12 +52,18 @@ class Route
 
     }
 
-    private function param_match($match)
+    public function getPath()
+    {
+        return "/" . $this->path;
+    }
+
+    private function paramMatch($match)
     {
         if (isset($this->params[$match[1]])) {
-            return '(' . $this->params[$match][1] . ')';
+            return '(' . $this->params[$match[1]] . ')';
         }
         return '([^/]+)';
 
     }
+
 }

@@ -39,7 +39,8 @@ header {
         display: flex;
         gap: 45px;
     }
-    span {
+    .w-nav_link {
+        display: inline-block;
         color: #fff;
         position: relative;
         text-transform: uppercase;
@@ -59,7 +60,7 @@ header {
                 opacity: 0.5
             }
         }
-        &.active {
+        &.is-active {
             &::after {
                 opacity: 1;
             }

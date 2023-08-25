@@ -1,3 +1,8 @@
+// function
+@function rem($value) {
+    $result: $value / 16px;
+    @return $result * 1rem;
+}
 .f-heading1 {
     font-family: "Bellefair";
     font-size: 150px;
@@ -59,4 +64,31 @@
 }
 .f-blue {
     color: var(--blue);
+}
+.f-underline {
+    text-decoration:underline;
+}
+// align
+.f-center {
+    text-align: center;
+}
+
+// hidden
+.f-hidden {
+    overflow: hidden;
+    display: block;
+
+}
+
+// text-transform
+.f-upper {
+    text-transform: uppercase;
+}
+
+.f-lower {
+    text-transform: lowercase;
+}
+
+.f-capitalize {
+    text-transform: capitalize;
 }

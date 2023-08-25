@@ -1,10 +1,7 @@
 .w-crew-nav {
     display: flex;
     gap:24px ;
-    transition: 1s 1s; 
-    &.motion {
-        opacity: 0
-    }
+
 }
 .m--brain.crew {
     background: #fff;

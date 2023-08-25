@@ -6,9 +6,9 @@ use \Engine\Model\Json;
 
 class Data
 {
-    public static function get_data($viewName)
+    public static function get($viewName)
     {
-        $data = Json::fetch_local("data.json");
+        $data = Json::fetchLocal("data.json");
         return $data[$viewName];
     }
 }

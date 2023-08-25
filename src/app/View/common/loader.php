@@ -5,7 +5,4 @@
             <path fill="#0B0D17" d="M24 0c0 16-8 24-24 24 15.718.114 23.718 8.114 24 24 0-16 8-24 24-24-16 0-24-8-24-24z"></path>
         </g>
     </svg>
-    <strong>
-        <span>Space Tourism</span>
-    </strong>
 </div>

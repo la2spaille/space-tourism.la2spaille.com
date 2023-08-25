@@ -75,6 +75,31 @@
   color: var(--blue);
 }
 
+.f-underline {
+  text-decoration: underline;
+}
+
+.f-center {
+  text-align: center;
+}
+
+.f-hidden {
+  overflow: hidden;
+  display: block;
+}
+
+.f-upper {
+  text-transform: uppercase;
+}
+
+.f-lower {
+  text-transform: lowercase;
+}
+
+.f-capitalize {
+  text-transform: capitalize;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -210,12 +235,13 @@ header {
   display: flex;
   gap: 45px;
 }
-.w-nav span {
+.w-nav .w-nav_link {
+  display: inline-block;
   color: #fff;
   position: relative;
   text-transform: uppercase;
 }
-.w-nav span::after {
+.w-nav .w-nav_link::after {
   content: "";
   width: 100%;
   height: 3px;
@@ -226,10 +252,10 @@ header {
   position: absolute;
   transition: 0.7s;
 }
-.w-nav span:hover::after {
+.w-nav .w-nav_link:hover::after {
   opacity: 0.5;
 }
-.w-nav span.active::after {
+.w-nav .w-nav_link.is-active::after {
   opacity: 1;
 }
 .w-nav a {
@@ -254,10 +280,6 @@ header {
   position: relative;
   z-index: 1;
   overflow-y: hidden;
-  transition: 0.7s;
-}
-.w-page-title span {
-  transition: 1s;
 }
 .w-page-title span::before {
   content: attr(data-number);
@@ -330,10 +352,6 @@ header {
   flex: 1;
   overflow-y: hidden;
 }
-.w-text.home.motion span {
-  transform: translateY(100%);
-  opacity: 0;
-}
 .w-text.destination {
   max-width: 445px;
   width: 100%;
@@ -365,28 +383,11 @@ header {
   align-items: center;
 }
 
-.w-strong.home {
-  overflow: visible;
-}
-.w-strong.home span {
-  transition: 0.7s;
-}
 .w-strong.crew {
   opacity: 0.5;
 }
-.w-strong.technology {
-  transition: 1s 0.5s;
-}
-.w-strong.technology.motion {
-  opacity: 0;
-}
-
 .w-h1.home {
   margin: 25px 0 0;
-  overflow: visible;
-}
-.w-h1.home span {
-  transition: 0.7s 0.5s;
 }
 .w-h1.destination {
   margin: 35px 0 0;
@@ -405,10 +406,6 @@ header {
 }
 .w-paragraph.home {
   margin: 25px 0 0;
-  overflow: visible;
-}
-.w-paragraph.home span {
-  transition: 0.7s 0.75s;
 }
 .w-paragraph.destination {
   margin: 15px 0 0;
@@ -433,7 +430,7 @@ header {
   left: 0;
   right: 0;
   bottom: 0;
-  animation-fill-mode: forwards;
+  background-position: center;
 }
 .bg.home {
   background-image: url("/media/home/background-home-desktop.jpg");
@@ -542,7 +539,6 @@ header {
   border-radius: 50%;
   width: 275px;
   height: 275px;
-  transition: 1s 1.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .w-home-cta::before, .w-home-cta::after {
   content: "";
@@ -574,13 +570,9 @@ header {
   justify-content: center;
   width: 100%;
   height: 100%;
-  font-size: 32px;
+  font-size: 2rem;
   line-height: 37px;
   letter-spacing: 2px;
-}
-.w-home-cta.motion {
-  opacity: 0;
-  transform: scale(0.7);
 }
 
 .w-destination-nav {
@@ -638,10 +630,6 @@ header {
 .w-crew-nav {
   display: flex;
   gap: 24px;
-  transition: 1s 1s;
-}
-.w-crew-nav.motion {
-  opacity: 0;
 }
 
 .m--brain.crew {
@@ -674,10 +662,6 @@ header {
   display: flex;
   flex-direction: column;
   gap: 23px;
-  transition: 1s 0.7s;
-}
-.w-technology-nav.motion {
-  opacity: 0;
 }
 
 .m--brain.technology {
@@ -719,6 +703,7 @@ header {
   pointer-events: none;
   mix-blend-mode: difference;
   will-change: transform;
+  transform: translate(-100%, -100%);
 }
 .w-site-cursor.site-cursor--link-hover .site-cursor {
   transform: translate(-50%, -50%) scale(3.75);
@@ -760,7 +745,7 @@ header {
 .w-2-half-wrapper.transformation {
   opacity: 0;
 }
-.w-2-half-wrapper div {
+.w-2-half-wrapper > div {
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -798,31 +783,24 @@ header {
   right: 0;
   bottom: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 100;
-  background: #0B0D17;
-  transition: 0.7s cubic-bezier(0.6, 0.01, 0.43, 0.99);
+  background: #fff;
+  transition: 900ms cubic-bezier(0.17, 0.84, 0.44, 1);
   clip-path: inset(0 0 0 0);
 }
 #loader.dom-loaded {
+  pointer-events: none;
   clip-path: inset(0 0 100% 0);
 }
 #loader svg {
+  mix-blend-mode: difference;
   transform: scale(3.75);
 }
-#loader strong {
-  position: relative;
-  min-width: 100vw;
-  display: flex;
-  justify-content: center;
-  transform: scale(3.5) translateY(225%);
-  font-family: "Bellefair", serif;
-}
-#loader span {
-  display: inline-block;
-  color: #fff;
+
+.m-line {
+  transform: translateY(100%);
 }
 
 @media (max-width: 1100px) {

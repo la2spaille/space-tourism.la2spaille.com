@@ -1,4 +1,4 @@
-<?php $crews = $this->src; ?>
+<?php $crews = $this->data; ?>
 <div id="crew" class="page p-crew">
     <h3 class="w-page-title f-heading5 motion">
         <span data-number="02" class="">Meet your crew</span>

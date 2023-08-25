@@ -33,7 +33,9 @@ exit();
 
 */
 
-const VERSION = 15;
+$IS_PROD =  true;
+define('IS_PROD',$IS_PROD);
+const VERSION = 1.0;
 
 $root = substr($_SERVER['DOCUMENT_ROOT'], 0, -6);
 
@@ -42,3 +44,10 @@ App\Core\Constant::init();
 
 require ROOT . 'app/Core/App.php';
 App\Core\App::init();
+
+function betterVarDump( $var) {
+    echo '<pre>';
+    var_dump($var);
+    echo '</pre>';
+    die();
+}

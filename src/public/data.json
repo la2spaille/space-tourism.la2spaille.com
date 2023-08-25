@@ -3,8 +3,8 @@
     {
       "name": "Moon",
       "images": {
-        "png": "./media/destination/image-moon.png",
-        "webp": "./media/destination/image-moon.webp"
+        "png": "/media/destination/image-moon.png",
+        "webp": "/media/destination/image-moon.webp"
       },
       "description": "See our planet as you’ve never seen it before. A perfect relaxing trip away to help regain perspective and come back refreshed. While you’re there, take in some history by visiting the Luna 2 and Apollo 11 landing sites.",
       "distance": "384,400 km",
@@ -13,8 +13,8 @@
     {
       "name": "Mars",
       "images": {
-        "png": "./media/destination/image-mars.png",
-        "webp": "./media/destination/image-mars.webp"
+        "png": "/media/destination/image-mars.png",
+        "webp": "/media/destination/image-mars.webp"
       },
       "description": "Don’t forget to pack your hiking boots. You’ll need them to tackle Olympus Mons, the tallest planetary mountain in our solar system. It’s two and a half times the size of Everest!",
       "distance": "225 mil. km",
@@ -23,8 +23,8 @@
     {
       "name": "Europa",
       "images": {
-        "png": "./media/destination/image-europa.png",
-        "webp": "./media/destination/image-europa.webp"
+        "png": "/media/destination/image-europa.png",
+        "webp": "/media/destination/image-europa.webp"
       },
       "description": "The smallest of the four Galilean moons orbiting Jupiter, Europa is a winter lover’s dream. With an icy surface, it’s perfect for a bit of ice skating, curling, hockey, or simple relaxation in your snug wintery cabin.",
       "distance": "628 mil. km",
@@ -33,8 +33,8 @@
     {
       "name": "Titan",
       "images": {
-        "png": "./media/destination/image-titan.png",
-        "webp": "./media/destination/image-titan.webp"
+        "png": "/media/destination/image-titan.png",
+        "webp": "/media/destination/image-titan.webp"
       },
       "description": "The only moon known to have a dense atmosphere other than Earth, Titan is a home away from home (just a few hundred degrees colder!). As a bonus, you get striking views of the Rings of Saturn.",
       "distance": "1.6 bil. km",
@@ -45,8 +45,8 @@
     {
       "name": "Douglas Hurley",
       "images": {
-        "png": "./media/crew/image-douglas-hurley.png",
-        "webp": "./media/crew/image-douglas-hurley.webp",
+        "png": "/media/crew/image-douglas-hurley.png",
+        "webp": "/media/crew/image-douglas-hurley.webp",
         "width" : 514,
         "height": 700
       },
@@ -56,8 +56,8 @@
     {
       "name": "Mark Shuttleworth",
       "images": {
-        "png": "./media/crew/image-mark-shuttleworth.png",
-        "webp": "./media/crew/image-mark-shuttleworth.webp",
+        "png": "/media/crew/image-mark-shuttleworth.png",
+        "webp": "/media/crew/image-mark-shuttleworth.webp",
         "width" : 433,
         "height": 640
       },
@@ -67,8 +67,8 @@
     {
       "name": "Victor Glover",
       "images": {
-        "png": "./media/crew/image-victor-glover.png",
-        "webp": "./media/crew/image-victor-glover.webp",
+        "png": "/media/crew/image-victor-glover.png",
+        "webp": "/media/crew/image-victor-glover.webp",
         "width" : 549,
         "height": 645
       },
@@ -78,8 +78,8 @@
     {
       "name": "Anousheh Ansari",
       "images": {
-        "png": "./media/crew/image-anousheh-ansari.png",
-        "webp": "./media/crew/image-anousheh-ansari.webp",
+        "png": "/media/crew/image-anousheh-ansari.png",
+        "webp": "/media/crew/image-anousheh-ansari.webp",
         "width" : 575,
         "height": 602
       },
@@ -91,24 +91,24 @@
     {
       "name": "Launch vehicle",
       "images": {
-        "portrait": "./media/technology/image-launch-vehicle-portrait.jpg",
-        "landscape": "./media/technology/image-launch-vehicle-landscape.jpg"
+        "portrait": "/media/technology/image-launch-vehicle-portrait.jpg",
+        "landscape": "/media/technology/image-launch-vehicle-landscape.jpg"
       },
       "description": "A launch vehicle or carrier rocket is a rocket-propelled vehicle used to carry a payload from Earth's surface to space, usually to Earth orbit or beyond. Our WEB-X carrier rocket is the most powerful in operation. Standing 150 metres tall, it's quite an awe-inspiring sight on the launch pad!"
     },
     {
       "name": "Spaceport",
       "images": {
-        "portrait": "./media/technology/image-spaceport-portrait.jpg",
-        "landscape": "./media/technology/image-spaceport-landscape.jpg"
+        "portrait": "/media/technology/image-spaceport-portrait.jpg",
+        "landscape": "/media/technology/image-spaceport-landscape.jpg"
       },
       "description": "A spaceport or cosmodrome is a site for launching (or receiving) spacecraft, by analogy to the seaport for ships or airport for aircraft. Based in the famous Cape Canaveral, our spaceport is ideally situated to take advantage of the Earth’s rotation for launch."
     },
     {
       "name": "Space capsule",
       "images": {
-        "portrait": "./media/technology/image-space-capsule-portrait.jpg",
-        "landscape": "./media/technology/image-space-capsule-landscape.jpg"
+        "portrait": "/media/technology/image-space-capsule-portrait.jpg",
+        "landscape": "/media/technology/image-space-capsule-landscape.jpg"
       },
       "description": "A space capsule is an often-crewed spacecraft that uses a blunt-body reentry capsule to reenter the Earth's atmosphere without wings. Our capsule is where you'll spend your time during the flight. It includes a space gym, cinema, and plenty of other activities to keep you entertained."
     }

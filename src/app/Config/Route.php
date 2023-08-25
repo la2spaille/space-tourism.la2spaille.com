@@ -10,11 +10,11 @@ class Route
      * For the same page, always put the most accurate routes first
      *
      * Examples of use :
-     * 1. Call show function of P404Controller     →    $router->p404('show');
-     * 2. Call show function of HomeController     →    $router->get('/', 'Home#show');
-     * 3. WorkController with multiple option      →    $router->get('/work/:id/:name', 'WorkOne#show')->with('id', '[0-9]+')->with('name', '[a-z0-9-]+');
-     * 4. WorkController with type option          →    $router->get('/work/:type', 'WorkAll#showWithType')->with('type', 'date|title|type');
-     * 5. Call show function of WorkController     →    $router->get('/work', 'WorkAll#show');
+     * 1. Call show function of P404Controller     →    Router::p404('show');
+     * 2. Call show function of HomeController     →    Router::get('/', 'Home#show');
+     * 3. WorkController with multiple option      →    Router::get('/work/:id/:name', 'WorkOne#show')->with('id', '[0-9]+')->with('name', '[a-z0-9-]+');
+     * 4. WorkController with type option          →    Router::get('/work/:type', 'WorkAll#showWithType')->with('type', 'date|title|type');
+     * 5. Call show function of WorkController     →    Router::get('/work', 'WorkAll#show');
      *
      * Regex examples of optional with :
      * 1. [0-9]+
@@ -26,45 +26,19 @@ class Route
 
     public static function init()
     {
-        $router = new Router();
+        Router::init();
 
-        $router->get('/', 'Home#show');
-        $router->get('/destination', 'Destination#show');
-        $router->get('/crew', 'Crew#show');
-        $router->get('/technology', 'Technology#show');
+        Router::get('/', 'Home#show','Home');
+        Router::get('/destination', 'Destination#show','Destination');
+        Router::get('/crew', 'Crew#show','Crew');
+        Router::get('/technology', 'Technology#show','Technology');
 
-        $router->p404('show');
-        $router->run();
+        Router::get('/brain', 'Brain#show', 'Brain');
+
+        Router::p404('show');
+        Router::run();
 
     }
 
-    public static function get_routes()
-    {
-        return [
-            "/" => [
-                "path" => "/",
-                "title" => "Space Tourism — Home",
-                "view" => "home",
-            ],
-            "/destination" => [
-                "path" => "/destination",
-                "title" => "Space Tourism — Destination",
-                "view" => "destination",
-                "model" => "destination"
-            ],
-            "/crew" => [
-                "path" => "/crew",
-                "title" => "Space Tourism — Crew",
-                "view" => "crew",
-                "model" => "crew"
-            ],
-            "/technology" => [
-                "path" => "/technology",
-                "title" => "Space Tourism — Technology",
-                "view" => "technology",
-                "model" => "technology"
-            ]
-        ];
-    }
 
 }

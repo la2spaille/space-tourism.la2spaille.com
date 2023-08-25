@@ -2,6 +2,7 @@
 
 namespace App\Controller\Page;
 
+use App\Model\Data;
 use \Engine\Controller\Controller;
 
 class Destination extends Controller
@@ -9,10 +10,18 @@ class Destination extends Controller
     public function show () {
 
         /*------------------------------------
-            MESSAGE
+            DATA
         ------------------------------------*/
 
-        $this->data->msg = 'Destination';
+        $this->data = Data::get('destination');
+        $i = 0;
+        foreach($this->data as $data) {
+            $this->media[$i] = $data['images']['png'];
+            $i++;
+            $this->media[$i] = $data['images']['webp'];
+            $i++;
+
+        }
 
         /*------------------------------------
             HEAD
@@ -21,7 +30,7 @@ class Destination extends Controller
         // SEO
         $this->head['title'] = 'Space Tourism — Destination';
         $this->head['description'] = '';
-        $this->head['opengraph'] = '/og/destination.png?';
+        $this->head['opengraph'] = '/og/destination.jpg';
 
         // Robots
         $this->head['allow-robots'] = true;
@@ -29,8 +38,7 @@ class Destination extends Controller
         /*------------------------------------
             RENDER
         ------------------------------------*/
-        $this->get_data('destination');
-        $this->render('destination');
+        return $this->render('destination');
     }
 
 }

@@ -1,4 +1,4 @@
-<?php $technologies = $this->src; ?>
+<?php $technologies = $this->data; ?>
 
 <div id="technology" class="page p-technology">
     <h3 class="w-page-title f-heading5 motion">

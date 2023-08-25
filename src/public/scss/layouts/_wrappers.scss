@@ -3,10 +3,8 @@
   position: relative;
   z-index: 1;
   overflow-y: hidden;
-  transition: 0.7s;
 
   span {
-    transition: 1s;
 
     &::before {
       content: attr(data-number);
@@ -93,12 +91,7 @@
     flex: 1;
     overflow-y: hidden;
 
-    &.motion {
-      span {
-        transform: translateY(100%);
-        opacity: 0;
-      }
-    }
+
   }
 
   &.destination {
@@ -138,35 +131,23 @@
 }
 
 .w-strong {
-  &.home {
-    overflow: visible;
 
-    span {
-      transition: 0.7s;
-    }
-  }
 
   &.crew {
     opacity: 0.5;
   }
 
   &.technology {
-    transition: 1s 0.5s;
 
-    &.motion {
-      opacity: 0;
-    }
+
   }
 }
 
 .w-h1 {
   &.home {
     margin: 25px 0 0;
-    overflow: visible;
 
-    span {
-      transition: 0.7s 0.5s;
-    }
+
   }
 
   &.destination {
@@ -189,11 +170,7 @@
 
   &.home {
     margin: 25px 0 0;
-    overflow: visible;
 
-    span {
-      transition: 0.7s 0.75s;
-    }
   }
 
   &.destination {
@@ -222,8 +199,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  //animation: space 40s 1 ease-in-out;
-  animation-fill-mode: forwards;
+  background-position: center;
 
   &.home {
     background-image: url("/media/home/background-home-desktop.jpg");

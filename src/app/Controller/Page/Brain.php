@@ -15,6 +15,7 @@ class Brain extends Controller
         $routes = Router::getRoutes();
 
         $routes = $routes['GET'];
+
         $xhr = [];
         foreach ($routes as $route) {
             if ($route->getPath() !== '/brain'  && !str_contains($route->getPath(), ":")) {

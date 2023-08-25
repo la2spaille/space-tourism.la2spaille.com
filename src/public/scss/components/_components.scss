@@ -1,118 +1,123 @@
 .w-site-cursor {
-    width: 60px;
-    height: 60px;
-    top: 0;
-    left: 0;
-    position: fixed;
-    z-index: 999;
-    pointer-events: none;
-    mix-blend-mode: difference;
-    will-change: transform;
-    &.site-cursor--link-hover {
-        .site-cursor {
-            transform: translate(-50%, -50%) scale(3.75);
-        }
+  width: 60px;
+  height: 60px;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  will-change: transform;
+  transform: translate(-100%, -100%);
+
+  &.site-cursor--link-hover {
+    .site-cursor {
+      transform: translate(-50%, -50%) scale(3.75);
     }
-    &.site-cursor--explore-hover {
-        .site-cursor {
-            transform: translate(-50%, -50%) scale(11);
-            opacity: 0;
-        }
+  }
+
+  &.site-cursor--explore-hover {
+    .site-cursor {
+      transform: translate(-50%, -50%) scale(11);
+      opacity: 0;
     }
-    &.site-cursor--tech-hover {
-        .site-cursor {
-            transform: translate(-50%, -50%) scale(4.5);
-            opacity: 0;
-        }
+  }
+
+  &.site-cursor--tech-hover {
+    .site-cursor {
+      transform: translate(-50%, -50%) scale(4.5);
+      opacity: 0;
     }
-    @media(hover: none) {
-        display: none;
-    }
+  }
+
+  @media(hover: none) {
+    display: none;
+  }
 }
+
 .site-cursor {
-    position: absolute;
-    height: 16px;
-    background-color: var(--blue);
-    top: 50%;
-    left: 50%;
-    width: 16px;
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    transition: .35s ease-in-out;
+  position: absolute;
+  height: 16px;
+  background-color: var(--blue);
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  transition: .35s ease-in-out;
 }
 
 .w-2-half-wrapper {
+  display: flex;
+  width: 100%;
+  margin: 55px 0 0;
+  padding: 25px 0 0;
+  border-top: 1px solid #383B4B;
+  transition: 1s 0.7s;
+
+  &.transformation {
+    opacity: 0;
+  }
+
+  & > div {
+    width: 50%;
     display: flex;
-    width: 100%;
-    margin:  55px 0 0;
-    padding: 25px 0 0;
-    border-top: 1px solid #383B4B;
-    transition: 1s 0.7s;
-        &.transformation {
-            opacity: 0;
-        }
-    div {
-        width: 50%;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-    p {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-    }
-    span {
-        position: relative;
-    }
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  p {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  span {
+    position: relative;
+  }
 }
 
 #progress {
-    width: 4px;
-    z-index: 739;
-    &, div {
-        position: absolute;
-        top: 0;
-        right: 0;
-        height: 100%;
-    }
-    div {
-        background: #fff;
-        width: 100%;
-        transform: translateY(-100%);
+  width: 4px;
+  z-index: 739;
 
-    }
-}
-#loader {
-    position: fixed;
+  &, div {
+    position: absolute;
     top: 0;
-    left: 0;
     right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    background: #0B0D17;
-    transition: .7s cubic-bezier(0.6, 0.01, 0.43, 0.99);
-    clip-path: inset(0 0 0 0);
-    &.dom-loaded {
-        clip-path: inset(0 0 100% 0);
-    }
-    svg {
-        transform: scale(3.75);
-    }
-    strong {
-        position: relative;
-        min-width: 100vw;
-        display: flex;
-        justify-content: center;
-        transform: scale(3.5) translateY(225%);
-        font-family: "Bellefair", serif;
-    }
-    span {
-        display: inline-block;
-        color: #fff;
-    }
+    height: 100%;
+  }
+
+  div {
+    background: #fff;
+    width: 100%;
+    transform: translateY(-100%);
+
+  }
+}
+
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  background: #fff;
+  transition: 900ms cubic-bezier(.17, .84, .44, 1);
+  clip-path: inset(0 0 0 0);
+
+  &.dom-loaded {
+    pointer-events: none;
+    clip-path: inset(0 0 100% 0);
+  }
+
+  svg {
+    mix-blend-mode: difference;
+    transform: scale(3.75);
+  }
+
 }

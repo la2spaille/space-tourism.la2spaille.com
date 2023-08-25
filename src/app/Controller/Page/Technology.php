@@ -2,6 +2,7 @@
 
 namespace App\Controller\Page;
 
+use App\Model\Data;
 use \Engine\Controller\Controller;
 
 class Technology extends Controller
@@ -12,7 +13,16 @@ class Technology extends Controller
             MESSAGE
         ------------------------------------*/
 
-        $this->data->msg = 'Technology';
+        $this->data = Data::get('technology');
+        $i = 0;
+        foreach($this->data as $data) {
+            
+            $this->media[$i] = $data['images']['portrait'];
+            $i++;
+            $this->media[$i] = $data['images']['landscape'];
+            $i++;
+
+        }
 
         /*------------------------------------
             HEAD
@@ -21,7 +31,7 @@ class Technology extends Controller
         // SEO
         $this->head['title'] = 'Space Tourism — Technology';
         $this->head['description'] = '';
-        $this->head['opengraph'] = '/og/technology.png?';
+        $this->head['opengraph'] = '/og/technology.jpg';
 
         // Robots
         $this->head['allow-robots'] = true;
@@ -29,8 +39,7 @@ class Technology extends Controller
         /*------------------------------------
             RENDER
         ------------------------------------*/
-        $this->get_data('technology');
-        $this->render('technology');
+        return $this->render('technology');
     }
 
 }

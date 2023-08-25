@@ -2,16 +2,27 @@
 
 namespace App\Controller\Page;
 
+use App\Model\Data;
 use \Engine\Controller\Controller;
 
 class Crew extends Controller {
 
     public function show () {
+
         /*------------------------------------
-                   MESSAGE
+                   DATA
          ------------------------------------*/
 
-        $this->data->msg = 'Crew';
+        $this->data = Data::get('crew');
+        $i = 0;
+        foreach($this->data as $data) {
+            $this->media[$i] = $data['images']['png'];
+            $i++;
+            $this->media[$i] = $data['images']['webp'];
+            $i++;
+
+        }
+
         /*------------------------------------
             HEAD
         ------------------------------------*/
@@ -19,7 +30,7 @@ class Crew extends Controller {
         // SEO
         $this->head['title'] = 'Space Tourism — Crew';
         $this->head['description'] = '';
-        $this->head['opengraph'] = '/og/crew.png';
+        $this->head['opengraph'] = '/og/crew.jpg';
 
         // Robots
         $this->head['allow-robots'] = true;
@@ -27,8 +38,8 @@ class Crew extends Controller {
         /*------------------------------------
             RENDER
         ------------------------------------*/
-        $this->get_data('crew');
-        $this->render('crew');
+
+        return $this->render('crew');
     }
 
 }

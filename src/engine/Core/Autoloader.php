@@ -2,23 +2,19 @@
 
 namespace Engine\Core;
 
-class Autoloader
-{
+class Autoloader {
 
-    static function register()
-    {
+    static function register () {
         spl_autoload_register(array(__CLASS__, 'autoload'));
     }
 
-    static function autoload($class)
-    {
+    static function autoload ($class) {
         $rootFolder = explode('\\', $class)[0];
 
         if ($rootFolder === 'Engine' || $rootFolder === 'App') {
-            $class = str_replace($rootFolder, '', $class);
+            $class = str_replace($rootFolder . '\\', '', $class);
             $class = str_replace('\\', '/', $class);
-
-            include ROOT . strtolower($rootFolder) . $class . '.php';
+            require ROOT . '/' . strtolower($rootFolder) . '/' . $class . '.php';
         }
     }
 

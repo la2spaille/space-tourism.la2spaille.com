@@ -1,4 +1,3 @@
-import {Renderer, Program, Texture, Mesh, Vec2, Flowmap, Triangle} from './ogl/src/index.mjs';
 import "./M.js"
 import "./W.js"
 
@@ -12,6 +11,13 @@ Math.degToRad = (d) => {
 !function () {
     "use strict"
 
+    class i  {
+        constructor(){
+
+        }
+
+    }
+
     // Introduction / Outroduction
     class io {
         constructor() {
@@ -23,16 +29,13 @@ Math.degToRad = (d) => {
         }
 
         plug() {
-            M.sLetter('#logo')
 
         }
 
         init() {
-            M.S(M.Dom.root, 'height', 'auto')
             B.e.s.init()
-
-            C.hasIntro() || M.O('#main', 0)
-            C.hasIntro() && M.O('#main', 1)
+            M.O('#main', 0)
+            M.O('#nav', 0)
             C.on()
 
         }
@@ -48,22 +51,34 @@ Math.degToRad = (d) => {
         intro() {
             this.run()
             let TL = new M.TL()
-            if (C.hasIntro()) {
-                TL.add({
-                    delay: 1000,
-                    cb: () => {
-                        C.intro()
-                    }
-                })
-            } else {
-                TL.add({
-                    el: '#main',
-                    p: {o: [0, 1]},
-                    e: 'o3',
-                    d: 1500,
-                    delay: 1000
-                })
-            }
+            TL.add({
+                delay: 300,
+                cb: () => {
+                    B.e.bg.intro()
+                }
+            })
+            TL.add({
+                el: '#nav',
+                p: {o: [0, 1]},
+                d: 700,
+                o: 'o3',
+                delay: 2000,
+            })
+            TL.add({
+                el: '#main',
+                p: {o: [0, 1]},
+                d: 700,
+                o: 'o3',
+                delay: 1000,
+
+            })
+            TL.add({
+                delay: 1000,
+                cb: () => {
+                    C.intro()
+                    B.e.s.run()
+                }
+            })
 
             TL.play()
         }
@@ -72,28 +87,7 @@ Math.degToRad = (d) => {
             this.init()
 
             let TL = new M.TL()
-            TL.add({
-                el: '#main',
-                p: {o: [1, 0]},
-                e: 'o3',
-                d: 1500
-            })
-            TL.add({
-                el: '#menu_btn',
-                p: {o: [1, 0]},
-                d: 500,
-                e: 'o3',
-                delay: 300
-            })
-            M.C(M.Select('#logo')).forEach(el => {
-                TL.add({
-                    el: el,
-                    p: {y: [0, -110]},
-                    d: 700,
-                    e: 'o3',
-                    delay: 50
-                })
-            })
+
 
             TL.play()
 
@@ -133,7 +127,7 @@ Math.degToRad = (d) => {
             this.cache = ''
             this.o = null
             this.s = {
-                '_a': 'ca',
+                '_a': 'tA',
                 '_h': 'ch',
                 '_g': 'cg',
             }
@@ -142,7 +136,7 @@ Math.degToRad = (d) => {
 
 
         init() {
-            var t = B
+            const t = B
             M.Fetch({
                 url: origin + "/brain?xhr=true",
                 type: "html",
@@ -158,6 +152,7 @@ Math.degToRad = (d) => {
                     }
                     c.routes = {...c.routes, ...r.routes}
                     this.d = new d({...r.cache, ...i.cache})
+                    console.log(this.d)
                     this.layer = M.Select('#main')
                 }
             })
@@ -192,97 +187,70 @@ Math.degToRad = (d) => {
             h && t.was.push({
                 ...t.route.old
             })
-            if (!!this.d.get()) {
-                this[this.s[this.o]]()
-
-            } else {
-                M.Fetch({
-                    url: origin + u + "?xhr=true",
-                    type: "html",
-                    method: 'GET',
-                    success: r => {
-                        r = JSON.parse(r)
-                        const xhr = r.xhr
-                        t.route.new.page = xhr.routes[u]
-                        this.d.set(xhr.routes, xhr.cache)
-                        this[this.s[this.o]]()
-
-                    }
-                })
-            }
+            this[this.s[this.o]]()
 
 
         }
 
-        ca() {
+        tA() {
+            this.insertNew()
+
+            let _old = this.layer.children[0],
+                _new = this.layer.children[1],
+                t = B.e.s
+            t.stop()
             let tl = new M.TL()
-            C.off()
             tl
                 .add({
+                    el: _new,
+                    p: {o: [0, 0]},
                     cb: () => {
-                        this.insertNew()
-                        this.removeOld()
-
+                        C.on()
 
                     }
                 })
                 .add({
-                    delay: 500,
+                    el: _old,
+                    p: {o: [1, 0]},
+                    d: 400,
+                    delay: 400
+                })
+                .add({
+                    el: _old,
                     cb: () => {
-                        B.e.n.cb(null, 'r', true)
-                    }
+                        B.e.bg.outro()
+                        C.off()
+                        this.removeOld()
+                    },
+                    delay: 800
+                })
+                .add({
+                    el: _new,
+                    cb: () => {
+                        B.e.bg.intro()
+
+                    },
+                    delay: 2000
+                })
+                .add({
+                    el: _new,
+                    p: {o: [0, 1]},
+                    d: 400,
+
+                    delay: 600
+                })
+                .add({
+                    cb: () => {
+                        C.intro()
+                        t.run()
+                    },
+                    delay: 3000
                 })
             tl.play()
         }
 
         ch() {
-            B.e.s.stop()
-            B.E.P = P.unplug()
 
-            let tl = new M.TL()
-            C.off()
-            M.D('#loader', 'b')
-            tl
-                .add({
-                    el: '._n',
-                    d: 2000,
-                    e: 'io6',
-                    p: {x: [0, -W.w, 'px']}
-                })
-                .add({
-                    el: '#loader',
-                    d: 2000,
-                    e: 'io6',
-                    p: {x: [100, 0]}
-                })
-            tl.delay += 3000
-            tl.add({
-                el: '.w-loading_signal',
-                p: {
-                    o: [0, 1],
-                },
-                e: 'o3',
-                d: 1000
-            })
-            tl.delay += 1500
-            tl.add({
-                cb: () => {
-                    this.insertNew()
-                    this.removeOld()
-
-
-                }
-            })
-            tl.add({
-                delay: 500,
-                cb: () => {
-                    B.e.io.l.outro()
-                }
-            })
-            tl.delay += 500
-
-
-            tl.play()
         }
 
         insertNew() {
@@ -318,146 +286,41 @@ Math.degToRad = (d) => {
     // Loader
     class l {
         constructor() {
-            this.l = M.Select('.loader_txt')
 
         }
 
-        get w() {
-            return this.l.offsetWidth
-        }
-
-        get h() {
-            return this.l.offsetHeight
-        }
 
         init() {
-            M.sLetter('.loader_word')
-            M.SelectAll('.loader_word').forEach((el) => {
-                M.T(el, 0, this.h, 'px')
-            })
-            M.T(M.Select('#loader_logo'), this.w / 4, this.h, 'px')
+
 
         }
 
         intro() {
             const TL = new M.TL();
-            TL.add({
-                el: '.w-loading_signal',
-                p: {
-                    o: [1, 0],
-                },
-                e: 'o3',
-                d: 1000
-            })
             TL.delay += 700
-            const [w0, w1, w2] = M.SelectAll('.loader_word')
-            const c0 = w0.childNodes
-            c0.forEach((t, i) => {
-                TL.add({
-                    el: c0[i],
-                    p: {y: [0, -this.h, 'px']},
-                    e: 'cb',
-                    d: 700,
-                    delay: 50
-                })
-            })
-            TL.add({
-                el: w0,
-                p: {x: [this.w / 4, 0, 'px'], y: [this.h, this.h, 'px']},
-                e: 'o3',
-                d: 700,
-                delay: 700
-            })
-            TL.delay += 700
-            const c1 = w1.childNodes
-            c1.forEach((t, i) => {
-                TL.add({
-                    el: c1[i],
-                    p: {y: [0, -this.h, 'px']},
-                    e: 'o3',
-                    d: 700,
-                    delay: 100
-                })
-            })
-            TL.delay += 350
-            const c2 = w2.childNodes
-            c2.forEach((t, i) => {
-                TL.add({
-                    el: c2[i],
-                    p: {y: [0, -this.h, 'px']},
-                    e: 'o3',
-                    d: 700,
-                    delay: 50
-                })
-            })
-            TL.add({
-                delay: 700,
-                cb: () => {
-                    M.Cl('.w-loader', 'a', 'load')
-
-                }
-            })
-            TL.delay += 1000
             TL
                 .add({
-                    el: '._n',
-                    d: 2000,
-                    e: 'io6',
-                    p: {x: [W.w, 0, 'px']}
+                    cb: () => {
+                        M.Cl('#loader', 'a', 'dom-loaded')
+                    }
                 })
                 .add({
-                    el: '#loader',
-                    d: 2000,
-                    e: 'io6',
-                    p: {x: [0, -100]},
+                    delay: 1300,
                     cb: () => {
-                        M.Pe.none('#loader')
-                        M.D('.w-loader', 'n')
                         M.D('#loader', 'n')
                         B.e.io.intro()
-
                     }
                 })
             TL.play()
         }
 
-        outro() {
-            B.E.P = P.plug()
-            B.e.io.init()
-
-            let tl = new M.TL
-            tl.add({
-                el: '._n',
-                d: 2000,
-                e: 'io6',
-                p: {x: [W.w, 0, 'px']}
-            })
-                .add({
-                    el: '#loader',
-                    d: 2000,
-                    e: 'io6',
-                    p: {x: [0, -100]}
-                })
-                .add({
-                    delay: 2000,
-                    cb: () => {
-                        M.D('#loader', 'n')
-                        B.e.io.intro()
-
-                    }
-                })
-            tl.play()
-        }
 
     }
 
     class C$Home {
         constructor() {
             this.isOn = false
-            this.i = null
 
-            this.hasInit = true
-            this.hasIntro = true
 
         }
 
@@ -469,29 +332,48 @@ Math.degToRad = (d) => {
 
         off() {
             this.isOn = false
+            this.p = null
 
         }
 
         plug() {
-            this.i = M.Select('#intro_img')
+            this.p = new M.SLine('.w--m-line__p', 'm-line__p')
 
         }
 
 
         init() {
-            // M.S(this.i, 'clipPath', `inset(0 ${50}% 0 ${50}%)`)
+            M.S('.w-home-cta', 'transform', 'scale(0.7)')
+            M.O('.w-home-cta', 0)
 
         }
 
         intro() {
             let TL = new M.TL()
+            M.SelectAll('._line').forEach(el => {
+                TL.add({
+                    el: el,
+                    p: {y: [110, 0], o: [0.5, 1]},
+                    d: 1500,
+                    e: 'o3',
+                    delay: 50
+                })
+            })
+            TL.delay += 1000
+            M.SelectAll('.m-line__p').forEach(el => {
+                TL.add({
+                    el: el,
+                    p: {y: [110, 0], o: [0.5, 1]},
+                    d: 1500,
+                    e: 'o3',
+                    delay: 50
+                })
+            })
             TL.add({
-                el: this.i,
-                d: 2100,
-                e: 'io6',
-                p: {s: [1.4, 1]}
-
-
+                el: '.w-home-cta',
+                p: {s: [0.7, 1], o: [0, 1]},
+                d: 350,
+                e: 'o3'
             })
             TL.play()
 
@@ -510,11 +392,9 @@ Math.degToRad = (d) => {
 
     }
 
-    class C$Apod {
+    class C$Destination {
         constructor() {
             this.isOn = false
-            this.hasInit = false
-            this.hasIntro = false
 
         }
 
@@ -531,17 +411,54 @@ Math.degToRad = (d) => {
         }
 
         plug() {
+            this.arrTxt = []
+            const p = M.SelectAll('.m-destination-description')
+            p.forEach((el, i) => {
+                this.arrTxt.push(new M.SLine(el, 'm-line__p'))
+            })
+            this.C = new M$C([
+                {
+                    el: '.m-destination-name',
+                    active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                    inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                    init: {p: {y: [100, 100], opacity: [0, 0]}}
+                },
+                {
+                    el: 'm-line__p',
+                    active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                    inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                    init: {p: {y: [125, 125], opacity: [0, 0]}},
+                    parent: M.SelectAll('.m-destination-description')
+                }, {
+                    el: '.m-destination-distance',
+                    active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 500},
+                    inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                    init: {p: {y: [100, 100], opacity: [0, 0]}}
+
+                }, {
+                    el: '.m-destination-travel',
+                    active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 500},
+                    inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                    init: {p: {y: [100, 100], opacity: [0, 0]}}
+
+                }, {
+                    el: '.m-destination-img',
+                    active: {p: {opacity: [0, 1]}, d: 1000},
+                    inactive: {p: {opacity: [1, 0]}, d: 1000},
+                    init: {p: {y: [0, 0], opacity: [0, 0]}}
+                }
+            ])
+
 
         }
 
 
         init() {
-            return 0
+            this.C.on()
         }
 
         intro() {
-            return 0
-
+            this.C.intro()
 
         }
 
@@ -558,11 +475,9 @@ Math.degToRad = (d) => {
 
     }
 
-    class C$Calendar {
+    class C$Crew {
         constructor() {
             this.isOn = false
-            this.hasInit = true
-            this.hasIntro = true
 
         }
 
@@ -574,101 +489,53 @@ Math.degToRad = (d) => {
 
         off() {
             this.isOn = false
-            this.title = {}
-            M.O('.l-years', 1)
             this.e('r')
 
         }
 
         plug() {
-            this.title = new M.SLine('#calendar_title', 'm-line__title')
-            // this.e('a')
+            this.C = new M$C([
+                {
+                    el: '.m-crew-job',
+                    active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                    inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                    init: {p: {y: [100, 100], opacity: [0, 0]}}
+                },
+                {
+                    el: '.m-crew-name',
+                    active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                    inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                    init: {p: {y: [100, 100], opacity: [0, 0]}}
+                }, {
+                    el: '.m-crew-description',
+                    active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                    inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                    init: {p: {y: [100, 100], opacity: [0, 0]}}
+
+                }, {
+                    el: '.m-crew-img',
+                    active: {p: {opacity: [0, 1]}, d: 1000},
+                    inactive: {p: {opacity: [1, 0]}, d: 1000},
+                    init: {p: {opacity: [0, 0]}}
+                }
+            ])
 
         }
 
         e(a) {
-            M.E(M.C('.ul-years_nav'), 'click', this.updateNav, a)
-            M.E(M.C('.ul-years_nav'), 'mouseenter', this.setFocus, o)
-            M.E(M.C('.ul-years_nav'), 'mouseleave', this.unSetFocus, o)
-        }
-        setFocus(e) {}
-        unSetFocus(e) {}
-
-        updateNav(e) {
-            M.Sp(e)
-            const tg = M.Tg(e, true)
-            const arr = M.C('.ul-years_nav')
-            const offsetX = M.Index(tg,arr) / M.L(arr);
-            console.log(offsetX)
-            new M.Mo({
-                d: 1500,
-                e: 'o3',
-                a: (t) => {
-                    B.e.s._scroll.y = M.R(M.Lerp(B.e.s._scroll.y, B.e.s.maxY * offsetX, t))
-                    if (!B.e.s.isScrolling) B.e.s.rRaf();
-                }
-            }).play()
         }
 
 
         init() {
-            const line = [...M.SelectAll('.m-line__title')]
-            line.forEach(el => {
-                M.T(el, 0, 0)
-                M.O(el, 0)
-            })
-            M.O('.l-years', 0)
-            M.O('.w-years_nav', 0)
-            M.S(M.Dom.root, 'height', M.Select('.X').offsetWidth + 'px')
-
+            this.C.on()
 
         }
 
         intro() {
-            let TL = new M.TL()
-            M.SelectAll('.m-line__title').forEach(el => {
-                TL.add({
-                    el: el,
-                    delay: 50,
-                    d: 700,
-                    e: 'i3',
-                    p: {o: [0, 1]}
-                })
-            })
-            TL.add({
-                el: '.l-years',
-                delay: 300,
-                d: 700,
-                e: 'i3',
-                p: {o: [0, 1]}
-            })
-            TL.add({
-                el: '.w-years_nav',
-                delay: 300,
-                d: 700,
-                e: 'i3',
-                p: {o: [0, 1]}
-            })
-
-            TL.play()
-
+            this.C.intro()
         }
 
         outro() {
-            let TL = new M.TL()
-            TL.add({
-                el: '.m-line__title',
-                p: {y: [0, -110]},
-                d: 700,
-                e: 'o3',
-            })
-            TL.add({
-                el: '.l-years',
-                d: 700,
-                p: {o: [1, 0]}
-            })
-            TL.play()
-            this.d = 700
 
         }
 
@@ -679,11 +546,9 @@ Math.degToRad = (d) => {
 
     }
 
-    class C$Month {
+    class C$Technology {
         constructor() {
             this.isOn = false
-            this.hasInit = true
-            this.hasIntro = false
 
         }
 
@@ -700,131 +565,53 @@ Math.degToRad = (d) => {
         }
 
         plug() {
-
-        }
-
-        init() {
-            M.S(M.Dom.root, 'height', M.Select('.X').offsetWidth + 'px')
-
-        }
-
-        intro() {
-            return 0
-
-
-        }
-
-        outro() {
-            return 0
-
-
-        }
-
-        run() {
-
-        }
-    }
-
-    class C$About {
-        constructor() {
-            this.arrTxt = []
-            this.i = null
-            this.title = {}
-            this.isOn = false
-
-            this.hasInit = true
-            this.hasIntro = true
-
-        }
-
-        on() {
-            this.isOn || this.plug()
-            this.init()
-            this.isOn = true
-        }
-
-        off() {
-            this.isOn = false
-            this.title = {}
-            this.arrTxt = []
-            this.i = null
-        }
-
-        plug() {
-            // this.i = M.Select('.c-img_about')
-            // this.title = new M.SLine('#about_title', 'm-line__title')
-            // M.SelectAll('._line').forEach(txt => {
-            //     this.arrTxt.push(new M.SLine(txt, 'm-line__txt'))
-            // })
-        }
-
-
-        init() {
-            M.O('.w-about',0)
-
-
-        }
-
-        intro() {
-            let TL = new M.TL()
-            TL.add({
-                el:'.w-about',
-                d: 2100,
-                e: 'io6',
-                p:{o:[0,1]},
-            })
-
-            TL.play()
-
-
-        }
-
-        outro() {
-            let TL = new M.TL()
-            TL.add({
-                el: '.m-line__title',
-                p: {y: [0, -110]},
-                d: 1050,
-                e: 'o3',
-            })
-
-            TL.add({
-                el: '.m-line__txt',
-                p: {y: [0, -110]},
-                d: 1050,
-                e: 'o3',
-            })
-            TL.add({
-                d: 1050,
-                e: 'io6',
-                a: (t) => {
-                    M.S(this.i, 'clipPath', `inset(0 0 ${100 * t}% 0)`)
-
+            this.C = new M$C([
+                {
+                    el: '.m-technology-name',
+                    active: {p: {y: [100, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                    inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                    init: {p: {y: [100, 100], opacity: [0, 0]}}
                 },
-                i: () => {
-                    M.S(this.i, 'clipPath', 'inset(0 0 0 0)')
+                {
+                    el: '.m-technology-description',
+                    active: {p: {y: [125, 0], opacity: [0, 1]}, d: 700, delay: 400},
+                    inactive: {p: {y: [0, -100], opacity: [1, 0.25]}, d: 400},
+                    init: {p: {y: [125, 125], opacity: [0, 0]}}
+                }, {
+                    el: '.m-technology-img',
+                    active: {p: {opacity: [0, 1]}, d: 1100},
+                    inactive: {p: {opacity: [1, 0]}, d: 1100},
+                    init: {p: {opacity: [0, 0]}}
                 }
+            ])
+        }
 
-            })
-            TL.play()
-            this.d = 1200
+        init() {
+            this.C.on()
+
+        }
+
+        intro() {
+            this.C.intro()
+        }
+
+        outro() {
+            return 0
+
 
         }
 
         run() {
 
         }
-
-
     }
-
 
     class C {
         static p = {
-            'Calendar': new C$Calendar(),
             'Home': new C$Home(),
-            'Month': new C$Month(),
-            'Apod': new C$Apod(),
+            'Destination': new C$Destination(),
+            'Crew': new C$Crew(),
+            'Technology': new C$Technology(),
         }
 
         static hasInit() {
@@ -858,16 +645,7 @@ Math.degToRad = (d) => {
         }
 
         static outro() {
-            if (location.pathname === '/about') {
-                C.p['About'].outro()
-
-            } else if (location.pathname === '/calendar') {
-                C.p['Calendar'].outro()
-
-            } else if (location.pathname === '/') {
-                C.p['Home'].outro()
-
-            }
+            C.p[B.route.old.page].outro()
 
         }
 
@@ -876,85 +654,108 @@ Math.degToRad = (d) => {
         }
     }
 
-
-    // Pop Up
-    class p {
-        constructor(el) {
-            M.Bind(this, ['close'])
-            this.el = M.Select(el)
+    class bg {
+        constructor() {
+            M.Bind(this, ['loop', 'intro', 'outro'])
+            this.bg = M.SelectAll('.bg')
+            this.r = new M.RafR(this.loop)
+            this.i = {
+                "/": 0,
+                "/destination": 1,
+                "/crew": 2,
+                "/technology": 3
+            }
+            this.c = {
+                l: 0,
+                r: 0,
+                curr: 0
+            }
+            this.f = {
+                l: 0,
+                r: 0,
+            }
+            this.init()
         }
 
-        show() {
-            B.e.s.stop()
-            this.run()
+        loop() {
+            let a = this.bg, n = a.length
+            this.c.l = M.Lerp(this.c.l, this.f.l, 0.1)
+            this.c.r = M.Lerp(this.c.r, this.f.r, 0.1)
+            this.zIndex(this.curr)
+            this.clip(a[this.curr], this.c.l, this.c.r)
         }
 
-        close(e) {
+        init() {
+            let a = this.bg, n = a.length
+            for (let i = 0; i < n; i++) {
+                this.clip(a[i], i * 100 / n, (100 / n) * (n - 1 - i))
+            }
+        }
+
+        outro() {
+            const t = B.route.old.url
+            this.update(this.i[t], 'o')
+        }
+
+        intro() {
+            const t = B.route.new.url
+            this.update(this.i[t], 'n')
+        }
+
+        update(i, v) {
+            const n = M.L(this.bg)
+            this.curr = i
+            if (v == "n") {
+                this.c.l = i * 100 / n
+                this.c.r = (100 / n) * (n - 1 - i)
+                this.f.l = 0
+                this.f.r = 0
+            } else {
+                this.c.l = 0
+                this.c.r = 0
+                this.f.l = i * 100 / n
+                this.f.r = (100 / n) * (n - 1 - i)
+            }
+            new M.Delay(500, this.r.run).run()
+            new M.Delay(3000, this.r.stop).run()
 
         }
 
-        run() {
-            this.e('a')
+        zIndex(c) {
+            let a = this.bg, n = M.L(a)
+            for (; n--;) {
+                a[n].style.zIndex = (c != n) ? '0' : '7'
+            }
         }
 
-        e(o) {
+        clip(el, l, r) {
+            el.style.clipPath = `inset(0 ${r}% 0 ${l}%)`
         }
     }
 
     // Nav
     class n {
         constructor() {
-            M.Bind(this, ["open", "close", "clock"])
-            this.about = new C$About()
-            this.a = M.SelectAll('.nav_link')
-            this.cd = ''
+            M.Bind(this, ["open", "close"])
+            this.a = M.SelectAll('.w-nav_link')
             this.l = {
                 'Home': 0,
-                'Calendar': 1,
-                'Month': 1,
-                'Apod': 1,
-                'About': 2
+                'Destination': 1,
+                'Crew': 2,
+                'Technology': 3,
             }
-            this.isOn = false
             this.on()
         }
 
-        clock() {
-            const utcOffset = -8; // UTC-8 (Pacific Standard Time)
-            const now = new Date();
-            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000); // Convert to UTC
-            const localTime = utcTime + (utcOffset * 3600000); // Add UTC-8 offset in milliseconds
-            const localDate = new Date(localTime);
-            const hours = String(localDate.getHours()).padStart(2, '0');
-            const minutes = String(localDate.getMinutes()).padStart(2, '0');
-            const clockDisplay = `<div>${hours}<span class="blink">:</span>${minutes}</div>`;
-            if (this.cd !== clockDisplay) {
-                this.cd = clockDisplay
-                M.SelectAll('.time').forEach(t => {
-                    t.innerHTML = clockDisplay
-                })
-
-            }
-
-
-        }
-
-        plug() {
-
-            setInterval(this.clock, 1000);
-            this.clock()
-        }
 
         on() {
-            !this.isOn && this.plug()
             this.init()
-            this.isOn = true
         }
 
 
         init() {
-            M.Cl('.nav_link', 'r', 'is-active')
-            M.Cl(this.a[this.l[B.route.new.page]], 'a', 'is-active')
+            M.Cl(this.a, 'r', 'is-active')
+            new M.Delay(2000, () => M.Cl(this.a[this.l[B.route.new.page]], 'a', 'is-active')).run()
 
 
         }
@@ -962,347 +763,164 @@ Math.degToRad = (d) => {
         e(o) {
             M.E(".open_menu", 'click', this.open, o)
             M.E(".close_menu", 'click', this.close, o)
-            M.E(".nav_link", 'mouseenter', this.setFocus, o)
-            M.E(".nav_link", 'mouseleave', this.unSetFocus, o)
-            M.E(".close-about", 'click', ()=> {
-                M.Cl('#about', 'r', 'is-active')
-                M.Cl('#overlay', 'r', 'is-active')
-            }, o)
-            M.E(".open-about", 'click', ()=> {
-                M.Cl('#about', 'a', 'is-active')
-                M.Cl('#overlay', 'a', 'is-active')
-            }, o)
+
         }
 
         run() {
             this.e('a')
+
         }
 
-        setFocus(e) {
-            const tg = M.Tg(e, true)
-            M.Cl('.nav_link', 'a', 'isN-focus')
-            M.Cl(tg, 'r', 'isN-focus')
-            M.Cl(tg, 'a', 'is-focus')
-        }
-
-        unSetFocus(e) {
-            M.Cl('.nav_link', 'r', 'isN-focus')
-            M.Cl('.nav_link', 'r', 'is-focus')
-        }
 
         open(e) {
             this.init()
             this.cb(e, 'a')
+            B.e.s.stop()
         }
 
         close(e) {
             this.init()
             this.cb(e, 'r')
+            B.e.s.run()
         }
 
-        cb(e, o, t = false) {
-            if (e !== null) M.Sp(e)
-            if (o === 'a') {
-                M.D('#menu', 'b')
-                B.e.s.stop()
+        cb(e, o) {
+            M.Sp(e)
+            M.Cl('.w-nav', o, 'is-active')
+            M.Cl('.w-menu-btn', o, 'is-active')
 
-                const OPEN = new M.TL;
-                OPEN
-                    .add({
-                        el: '._n',
-                        d: 2000,
-                        e: 'io6',
-                        p: {x: [0, W.w, 'px']}
-
-                    })
-                    .add({
-                        el: '#menu',
-                        d: 2000,
-                        e: 'io6',
-                        p: {x: [-100, 0]}
-                    })
-                    .add({
-                        delay: 2000,
-                        cb: () => {
-                            M.D('._n', 'n')
-
-                            B.e.io.init()
-                        }
-                    })
-                    .play()
-
-            } else {
-                M.D('._n', 'b')
-                B.e.b.setSafePadding()
-                B.e.io.init()
-
-
-                const CLOSE = new M.TL;
-                CLOSE
-                    .add({
-                        el: '._n',
-                        d: 2000,
-                        e: 'io6',
-                        p: {x: [W.w, 0, 'px']}
-                    })
-                    .add({
-                        el: '#menu',
-                        d: 2000,
-                        e: 'io6',
-                        p: {x: [0, -100]}
-                    })
-                CLOSE.add({
-                    delay: 2000,
-                    cb: () => {
-                        M.D('#menu', 'n')
-                        B.e.io.intro()
-
-                    }
-                })
-                    .play()
-            }
-        }
-    }
-
-    // Toggle
-    class T {
-        constructor(el) {
-            M.Bind(this, ['open', 'close'])
-            this.el = el
-            this.id = el.id
-            this.run()
-        }
-
-        static plug() {
-            return M.SelectAll('.T').map(
-                (el) => {
-                    return new T(el)
-                }
-            )
-        }
-
-        run() {
-            this.e('a')
-        }
-
-        open(e) {
-            M.Sp(e);
-            B.e.s.stop();
-            this.cl('a');
-            // TODO focus
-        }
-
-        close(e) {
-            M.Sp(e);
-            B.e.s.run();
-            this.cl('r');
-        }
-
-        e(a) {
-            M.E("." + this.id + "-open", 'click', this.open, a);
-            M.E("." + this.id + "-close", 'click', this.close, a);
-        }
-
-        cl(o) {
-            M.Cl(M.Select("#" + this.id), o, "is-active");
-            M.Cl(M.Select("#overlay"), o, "is-active");
         }
     }
 
     // Scroll
     class s {
         constructor() {
-            M.Bind(this, ["w", "key", "tS", "tM", "onScroll", "loop", "run", "resize", "loop"])
-            this._scroll = {
+            const t = B
+            M.Bind(this, ["w", "key", "loop", "tS", "tM", "roc"])
+            M.De(document, "vScroll")
+            t.scroll = {
+                x: 0,
                 y: 0,
-                dY: 0,
-                o: null,
-
+                deltaX: 0,
+                deltaY: 0,
+                origin: null,
             }
             this.options = {
-                mM: 1,
-                tM: 2,
-                fM: 50,
-                kS: 240,
-                s: 0.5,
-                preventTouch: false,
-                space: true,
-                direction: 'y'
+                mM: -1,
+                tM: -4.5,
+                fM: 15,
+                kS: 120,
+                speed: 0.5,
             }
-            this.scroll = {
-                ...this._scroll,
-                v: 0
-            }
-            this.isFirefox = navigator.userAgent.indexOf('Firefox') > -1;
-            this.isScrolling = false;
-            this.hasScrollTicking = false
-            this.l = false
-            this.roR = new M.ROR(this.resize)
-            this.roR.on()
-
-
+            this.prog = M.Select('.progress')
+            this.el = M.Select('.page')
+            this.max = this.scrollY = 0
+            this.tsX = this.tsY = null
+            this.r = new M.RafR(this.loop)
+            this.run()
+            this.isOn = false
         }
 
-        get maxY() {
-            return M.Dom.root.scrollHeight - W.h
-        }
+        update(e) {
+            M.De(document, "vScroll")
 
-        rRaf() {
-            this.t = Date.now();
-            this.isScrolling = true;
-            this.loop()
-        }
-
-        pause() {
-            cancelAnimationFrame(this.loopId);
-            this.isScrolling = false;
-            this._scroll.y = M.R(this._scroll.y)
-
-        }
-
-        cb(e) {
-            const s = this._scroll,
-                smooth = !!e.changedTouches ? false : true
-            if (e.ctrlKey) return
-            // if (!smooth) return
-            if (e.buttons === 4) return
-            M.PD(e)
-            requestAnimationFrame(() => {
-                s.y = M.Clamp(s.y + s.dY, 0, this.maxY)
-                this.scroll.o = s.o = e
-                if (!this.isScrolling) this.rRaf();
-            })
-
-
+            this.setMax()
+            const t = B.scroll
+            t.y = M.R(M.Clamp(t.y + t.deltaY, 0, this.max), 2)
+            t.originalEvent = e
         }
 
         loop() {
-            if (this.isScrolling) {
-                if (!this.hasScrollTicking) {
-                    this.loopId = requestAnimationFrame(() => this.loop());
-                    this.hasScrollTicking = true
-                }
-                this.lerp()
-                scrollTo(0, this.scroll.y)
-                M.T('.X', -1 * this.scroll.y, 0, 'px')
-
-
-                const d = Math.abs(this.scroll.y - this._scroll.y), _t = Date.now() - this.t
-                if (_t > 100 && d < 0.5) {
-                    this.pause();
-                }
-                this.hasScrollTicking = false
-            }
-
-        }
-
-        run() {
-            M.Cl(M.Dom.root, 'r', 's')
-            !this.l && this.e('a')
-            this.l = true
-        }
-
-        stop() {
-            M.Cl(M.Dom.root, 'a', 's')
-            this.l && this.e('r')
-            this.l = false
-        }
-
-        init() {
-            scrollTo(0, 0)
-            this.scroll = {...this.scroll, maxY: this.maxY}
-            B.scroll = this.scroll
-            this.scroll.y = this._scroll.y = scrollY
-            M.T('.X', -1 * this.scroll.y, 0, 'px')
-
-
-        }
-
-        w(e) {
-            const s = this._scroll
-            const o = this.options
-            const {deltaY} = e
-            s.dY = deltaY
-            if (this.isFirefox && e.deltaMode === 1) {
-                s.dY *= o.fM;
-            }
-            s.dY *= o.mM
-            this.cb(e)
+            const t = B.scroll
+            this.scrollY = M.R(M.Lerp(this.scrollY, t.y, 0.1), 2)
+            this.r.on && M.Is.interval(this.scrollY - t.y, -0.55, 0.55) && this.r.stop()
+            M.T(this.el, 0, -1 * this.scrollY, 'px')
+            M.T(this.prog, 0, (this.scrollY / this.max - 1) * 100, '%')
         }
 
         tS(e) {
-            const T = (e.targetTouches) ? e.targetTouches[0] : e
+            let T = (e.targetTouches) ? e.targetTouches[0] : e
+            this.tsX = T.pageX
             this.tsY = T.pageY
         }
 
         tM(e) {
-            const s = this._scroll
-            const T = (e.targetTouches) ? e.targetTouches[0] : e
-            s.dY = (T.pageY - this.tsY) * this.options.tM
+            const t = B.scroll
+            let T = (e.targetTouches) ? e.targetTouches[0] : e
+            t.deltaX = (T.pageX - this.tsX) * this.options.tM
+            t.deltaY = (T.pageY - this.tsY) * this.options.tM
+            this.tsX = T.pageX
             this.tsY = T.pageY
-            this.cb(e)
+            this.update(e)
+        }
+
+        w(e) {
+            const t = B.scroll
+            t.deltaX = e.deltaX * -1 * .556
+            t.deltaY = e.deltaY * -1 * .556
+            t.deltaX *= this.options.mM
+            t.deltaY *= this.options.mM
+            this.update(e)
         }
 
         key(e) {
-            const o = this.options;
-            if (e.keyCode === 32 && !o.space) return
-            const s = this._scroll;
-            s.dY = 0;
-            const keys = [
-                {c: 37, d: 'y', s: -1},
-                {c: 39, d: 'y', s: 1},
-                {c: 38, d: 'y', s: -1},
-                {c: 40, d: 'y', s: 1},
-                {c: 32, d: 'y', s: 2}
-            ];
-            keys.forEach(key => {
-                if (e.keyCode === key.c) {
-                    s[key.d === "x" ? "dX" : "dY"] = o.kS * key.s;
+            const t = B.scroll
+            t.deltaX = t.deltaY = 0
+            let key = [
+                    {c: 37, d: 'x', s: -1},
+                    {c: 39, d: 'x', s: 1},
+                    {c: 38, d: 'y', s: -1},
+                    {c: 40, d: 'y', s: 1},
+                    {c: 32, d: 'y', s: 2}
+                ],
+                n = key.length
+            for (let i = 0; i < n; i++) {
+                if (e.keyCode === key[i].c) {
+                    t[key[i].d === "x" ? "deltaX" : "deltaY"] = this.options.kS * key[i].s
                 }
-            });
-
-            (s.dY) && this.cb(e);
-        }
-
-        lerp() {
-            const s = 0.09
-            this.scroll.y = M.Lerp(this.scroll.y, this._scroll.y, s)
-        }
-
-        resize(e) {
-            if (this.maxY === 0) return
-            requestAnimationFrame(() => {
-                const s = this._scroll
-                s.y = M.R(M.Clamp(s.y, 0, this.maxY), 0)
-                if (!this.isScrolling) this.rRaf();
-            })
-
-        }
-
-        onScroll() {
-            if (this.maxY === 0) return
-            if (!this.isScrolling) {
-                this.scroll.y = this._scroll.y = scrollY
             }
+            (t.deltaX || t.deltaY) && this.update(e)
+        }
 
+        setMax() {
+            let s = M.Select(".page")
+            this.max = s.offsetHeight
+            this.max -= innerHeight
+        }
+
+        roc(e) {
+            this.setMax()
+            const t = B.scroll
+            t.y = M.R(M.Clamp(t.y, 0, this.max), 0)
+            t.originalEvent = e
+            this.max || this.init()
+            this.max || this.r.on || this.r.run()
+        }
+
+        init() {
+            this.el = M.Select(".page")
+            M.T(this.prog, 0, -100, '%')
         }
 
         e(o) {
+            M.E(document, "wheel", this.w, o)
             M.E(document, "keydown", this.key, o)
-            M.E(document, "wheel", this.w, o, {passive: false})
-            M.E(window, "touchstart", this.tS, o, {passive: false})
-            M.E(window, "touchmove", this.tM, o)
-            M.E(document, "scroll", this.onScroll, o, {passive: !1})
+            M.E(document, "touchstart", this.tS, o)
+            M.E(document, "touchmove", this.tM, o)
+            M.E(window, "resize", this.roc, o)
+            M.E(window, "orientationchange", this.roc, o)
+            M.E(document, "vScroll", () => this.r.on || this.r.run(), o)
+            M.E(document, "scroll", () => this.r.on || this.r.run(), o)
         }
 
-
-        scrollTo(y) {
-            if (this.maxY === 0) return
-            this._scroll = y
-
+        run() {
+            this.setMax()
+            this.e('a')
         }
 
-
+        stop() {
+            this.e('r')
+        }
     }
 
     // Scroll => Animation
@@ -1318,264 +936,213 @@ Math.degToRad = (d) => {
         }
     }
 
-    // Parallax
-    class P {
-        constructor(el) {
-            M.Bind(this, ['onScroll'])
-            this.el = el
-            this.o = JSON.parse(this.el.dataset.options)
-            this.r = this.o.s
-            this.c = this.o.c
-            this.elY = M.XY.offsetTop(this.el) + this.el.offsetHeight / 2
-            this.elX = M.XY.offsetLeft(this.el) + this.el.offsetWidth / 2
-            this.el.style.willChange = 'transform'
-            this.s = new M.Scope(el, 0)
-            this.run()
+    class c {
+        constructor() {
+            M.Bind(this, ["loop", "update", "cl"])
+            this.el = M.G.id('cursor')
+            this.hover = [
+                {el: ".w-home-cta", css: "site-cursor--explore-hover"},
+                {el: ".link-hover", css: "site-cursor--link-hover"},
+                {el: ".js-technology-nav", css: "site-cursor--tech-hover"}
+            ]
+            this.h = this.el.offsetHeight;
+            this.w = this.el.offsetWidth
+            this.s = 0.1
+            this.eX = this.eY = this.x = this.y = 0
+            this.r = new M.RafR(this.loop)
         }
 
-        static plug() {
-            return M.SelectAll('.P').map(
-                (el) => {
-                    return new P(el)
-                }
-            )
+        loop() {
+            this.x = M.Lerp(this.x, this.eX, this.s)
+            this.y = M.Lerp(this.y, this.eY, this.s)
+            M.T(this.el, this.x, this.y, 'px')
         }
 
-        static unplug() {
-            B.E.P.forEach(p => p.stop())
-            return []
+        update(e) {
+            this.eX = e.pageX - this.w / 2
+            this.eY = e.pageY - this.h / 2
         }
 
-        t(el, x, y) {
-            const xyz = `matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,${x},${y},0,1)`;
-            el.style.setProperty('webkitTransform', xyz);
-            el.style.setProperty('msTransform', xyz);
-            el.style.setProperty('transform', xyz);
+        e() {
+            M.E(document, "mousemove", this.update)
         }
 
-        cb() {
-            const screnY = scrollY + innerHeight / 2;
-            const screnX = scrollY + innerWidth / 2;
+        run() {
+            this.e()
+            this.onHover()
+            this.r.run()
+        }
 
-            const dY = this.o.y ? this.elY - screnY : 0;
-            const dX = this.o.x ? this.elX - screnX : 0;
-            if (this.c && d < 0) {
-                this.t(this.el, dX * -1 * this.r, dY * -1 * this.r)
-
-            } else if (!this.c) {
-                this.t(this.el, dX * -1 * this.r, dY * -1 * this.r)
+        onHover() {
+            let a = this.hover, n = a.length
+            for (let i = 0; i < n; i++) {
+                M.E(a[i].el, "mouseenter", () => this.cl('a', a[i].css))
+                M.E(a[i].el, "mouseleave", () => this.cl('r', a[i].css))
             }
+        }
+
+        cl(a, css) {
+            M.Cl(this.el, a, css)
+        }
+    }
+
+    class M$C {
+        constructor(o) {
+            M.Bind(this, ['_b', '_w'])
+            this.b = M.SelectAll('.m--brain')
+            this.w = M.SelectAll('.m--wrapper')
+            this.l = 0
+            this.duration = 1100
+            this.o = o
+            this.roR = new M.ROR(this._w)
+            this.isOn = false
 
         }
 
-        onScroll(f = false) {
-            f || this.cb();
-            (this.s.visible()) && (this.cb());
+        on() {
+            !this.isOn && this.plug()
+            this.init()
+            this.isOn = true
+        }
+
+        off() {
+            this.isOn = false
+            this.e('r')
+
+        }
+
+
+        intro() {
+
+            this.o.forEach((o) => {
+                const t = this.t(o)
+                this.d(t[0], 'b')
+                new M.Mo({
+                    el: t[0],
+                    p: o.active.p,
+                    d: o.active.d,
+                    e: 'o3',
+                    delay: 1000
+                }).play()
+
+            })
+
+
+        }
+
+        _w() {
+            let a = this.w, n = a.length
+            for (let i = 0; i < n; i++) {
+                let b = a[i].children, m = b.length,
+                    maxH = 0
+                for (let j = 0; j < m; j++) {
+                    let h = M.Is.img(b[j]) ? b[j].offsetHeight : b[j].offsetHeight
+                    if (h > maxH) maxH = h
+                }
+                a[i].style.height = maxH + 'px'
+            }
+        }
+
+        _b(e) {
+            const I = M.Index(e.target, this.b)
+            if (I === this.l) return
+            this.updNav(I)
+            this.o.forEach(o => {
+
+                const t = this.t(o)
+                t.forEach((el, i) => {
+                    if (i === I) {
+                        const l = this.l
+                        new M.Mo({
+                            el: t[I],
+                            p: o.active.p,
+                            e: 'o3',
+                            d: o.active.d,
+                            delay: o.active.delay || 0
+                        }).play()
+                        new M.Mo({
+                            el: t[l],
+                            p: o.inactive.p,
+                            e: 'cb',
+                            d: o.inactive.d,
+                        }).play()
+                        new M.Mo({
+                            el: t[l],
+                            p: o.init.p,
+                            e: 'cb',
+                            delay: o.inactive.d
+                        }).play()
+                        new M.Delay(o.inactive.d || 0, () => this.d(t[l], 'n')).run()
+                        new M.Delay(o.active.delay || 0, () => this.d(t[I], 'b')).run()
+                    }
+                })
+            })
+
+            this.l = I
+        }
+
+        plug() {
+            this.roR.on()
+            this.e('a')
+
+        }
+
+
+        init() {
+            this._w()
+            const I = 0
+            this.updNav(I)
+            this.o.forEach(o => {
+                const t = this.t(o)
+                t.forEach(el => {
+                    this.d(el, 'n')
+                    new M.Mo({
+                        el: el,
+                        p: o.init.p,
+                    }).play()
+                })
+
+            })
 
         }
 
         e(o) {
-            M.E(document, "scroll", this.onScroll, o)
+            M.E('.m--brain', 'click', this._b, o)
+        }
+
+        updNav(I) {
+            this.b.forEach((el, i) => {
+                let css = I === i ? 'a' : 'r'
+                M.Cl(el, css, 'active')
+                M.Pe.none(el)
+                new M.Delay(this.duration, () => M.Pe.all(el)).run()
+            })
 
         }
 
-        run() {
-            this.onScroll(true)
-            this.e('a')
-        }
-
-        stop() {
-            this.e('r')
-        }
-
-    }
-
-
-
-
-    // webgl
-    class gl {
-        onResize() {
-        }
-
-        static run() {
-            const vertex = /* glsl */ `
-                attribute vec2 uv;
-                attribute vec2 position;
-
-                varying vec2 vUv;
-
-                void main() {
-                    vUv = uv;
-                    gl_Position = vec4(position, 0, 1);
-                }
-            `;
-            const fragment = /* glsl */ `
-                precision highp float;
-
-                uniform sampler2D tImg;
-                uniform sampler2D tFlow;
-
-                varying vec2 vUv;
-
-                void main() {
-                    
-                    // R and G values are velocity in the x and y direction
-                    // B value is the velocity length
-                    vec3 flow = texture2D(tFlow, vUv).rgb;
-
-                    // Use flow to adjust the uv lookup of a texture
-                    vec2 uv = gl_FragCoord.xy / 600.0;
-                    uv += flow.xy * 0.05;
-                    vec3 tex = texture2D(tImg, uv).rgb;
-
-
-                    gl_FragColor.rgb = tex;
-                    gl_FragColor.a = 1.0;
-                }
-            `;
-            const renderer = new Renderer({canvas: M.Select('#gl'), dpr: 2});
-            const gl = renderer.gl;
-
-            // Variable inputs to control flowmap
-            let aspect = 1;
-            const mouse = new Vec2(-1);
-            const velocity = new Vec2();
-
-            function resize() {
-                renderer.setSize(W.w, W.h);
-                aspect = W.w / W.h;
-            }
-
-            M.E(window, 'resize', resize, 'a', false);
-            resize();
-
-            const flowmap = new Flowmap(gl);
-
-            // Triangle that includes -1 to 1 range for 'position', and 0 to 1 range for 'uv'.
-            const geometry = new Triangle(gl, {
-                position: {size: 2, data: new Float32Array([0, 0, 0, 0, 0, 0])}
-            });
-
-            const texture = new Texture(gl, {wrapS: gl.REPEAT, wrapT: gl.REPEAT});
-            const img = new Image();
-            img.onload = () => (texture.image = img);
-            img.src = 'media/fav.png';
-
-            const program = new Program(gl, {
-                vertex,
-                fragment,
-                uniforms: {
-                    tImg: {value: texture},
-
-                    // Note that the uniform is applied without using an object and value property
-                    // This is because the class alternates this texture between two render targets
-                    // and updates the value property after each render.
-                    tFlow: flowmap.uniform,
-                },
-            });
-
-            const mesh = new Mesh(gl, {geometry, program});
-
-            // Create handlers to get mouse position and velocity
-            const isTouchCapable = 'ontouchstart' in window;
-            if (isTouchCapable) {
-                window.addEventListener('touchstart', updateMouse, false);
-                window.addEventListener('touchmove', updateMouse, false);
+        d(t, p) {
+            if (M.Is.arr(t)) {
+                t.forEach(el => {
+                    M.D(el, p)
+                })
             } else {
-                window.addEventListener('mousemove', updateMouse, false);
+                M.D(t, p)
             }
+        }
 
-            let lastTime;
-            const lastMouse = new Vec2();
-
-            function updateMouse(e) {
-                if (e.changedTouches && e.changedTouches.length) {
-                    e.x = e.changedTouches[0].pageX;
-                    e.y = e.changedTouches[0].pageY;
-                }
-                if (e.x === undefined) {
-                    e.x = e.pageX;
-                    e.y = e.pageY;
-                }
-
-                // Get mouse value in 0 to 1 range, with y flipped
-                mouse.set(e.x / gl.renderer.width, 1.0 - e.y / gl.renderer.height);
-
-                // Calculate velocity
-                if (!lastTime) {
-                    // First frame
-                    lastTime = performance.now();
-                    lastMouse.set(e.x, e.y);
-                }
-
-                const deltaX = e.x - lastMouse.x;
-                const deltaY = e.y - lastMouse.y;
-
-                lastMouse.set(e.x, e.y);
-
-                let time = performance.now();
-
-                // Avoid dividing by 0
-                let delta = Math.max(14, time - lastTime);
-                lastTime = time;
-
-                velocity.x = deltaX / delta;
-                velocity.y = deltaY / delta;
-
-                // Flag update to prevent hanging velocity values when not moving
-                velocity.needsUpdate = true;
+        t(o) {
+            let t = [];
+            if (o.parent) {
+                o.parent.forEach((el, i) => {
+                    t.push(M.G.class(o.el, o.parent[i]));
+                })
+            } else {
+                t = M.SelectAll(o.el)
             }
-
-            requestAnimationFrame(update);
-
-            function update(t) {
-                requestAnimationFrame(update);
-
-                // Reset velocity when mouse not moving
-                if (!velocity.needsUpdate) {
-                    mouse.set(-1);
-                    velocity.set(0);
-                }
-                velocity.needsUpdate = false;
-
-                // Update flowmap inputs
-                flowmap.aspect = aspect;
-                flowmap.mouse.copy(mouse);
-
-                // Ease velocity input, slower when fading out
-                flowmap.velocity.lerp(velocity, velocity.len() ? 0.5 : 0.1);
-
-                flowmap.update();
-
-
-                renderer.render({scene: mesh});
-            }
+            return t
         }
     }
 
-    // class M$F {
-    //     constructor() {
-    //         M.Bind(this, ['onMouseMove', 'onMouseLeave'])
-    //         this.in = false
-    //     }
-    //     e(a){
-    //         M.E(M.C('.ul-years_nav'), 'mouseenter', this.setFocus, o)
-    //         M.E(M.C('.ul-years_nav'), 'mouseleave', this.unSetFocus, o)
-    //     }
-    //     setFocus(e) {
-    //         const tg = M.Tg(e, true)
-    //         M.Cl('.nav_link', 'a', 'isN-focus')
-    //         M.Cl(tg, 'r', 'isN-focus')
-    //         M.Cl(tg, 'a', 'is-focus')
-    //     }
-    //
-    //     unSetFocus(e) {
-    //         M.Cl('.nav_link', 'r', 'isN-focus')
-    //         M.Cl('.nav_link', 'r', 'is-focus')
-    //     }
-    //
-    // }
 
     // Brain
     class b {
@@ -1588,15 +1155,14 @@ Math.degToRad = (d) => {
         }
 
         plug() {
-            B.e.s = new s
-            B.e.n = new n
-            B.e.io = new io
-            B.E.T = T.plug()
-            B.E.P = P.plug()
+            B.e.s = new s()
+            B.e.c = new c()
+            B.e.n = new n()
+            B.e.io = new io()
+            B.e.bg = new bg()
         }
 
         unplug() {
-            B.E.P.unplug()
         }
 
         init() {
@@ -1614,6 +1180,7 @@ Math.degToRad = (d) => {
         run() {
             B.e.s.run()
             B.e.n.run()
+            B.e.c.run()
 
         }
 
@@ -1621,12 +1188,6 @@ Math.degToRad = (d) => {
             if (M.Dom.nav !== undefined) {
                 const top = M.Dom.nav.offsetHeight
                 M.__('--safe-padding-top', top + 'px')
-            }
-
-            if (B.route.new.page === 'Calendar') {
-                const h = M.GBCR('.w-years_nav', 'top') - M.GBCR('.h-calendar', 'bottom')
-                const top = (h - M.Select('.w-years').offsetHeight) / 2
-                M.__('--years-safe-padding-top', top + 'px')
             }
 
 
@@ -1646,3 +1207,5 @@ Math.degToRad = (d) => {
     B.e.b = new b
     console.log('\n %c Made with ❤️ by La2spaille : https://www.la2spaille.studio  %c \n ', 'border: 1px solid #26282a;color: #fff; background: #26282a; padding:5px 0;', '')
 }()
+
+
