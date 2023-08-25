@@ -1,0 +1,10 @@
+{
+    "name": "APOD by La2spaille",
+    "version": "1.0.0",
+    "author": "La2spaille",
+    "license": "MIT",
+    "scripts": {
+        "build": "node scripts/build/index.js && rollup -c",
+        "dev": "node scripts/dev/index.js && rollup -c --watch"
+    }
+}
