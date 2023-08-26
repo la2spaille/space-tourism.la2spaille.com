@@ -20,7 +20,8 @@ header {
 }
 .w-nav {
     background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(35px);
+    -webkit-backdrop-filterr: blur(40px);
+    backdrop-filter: blur(40px);
     padding: 0 165px 0 123px;
     &::after {
         display: block;

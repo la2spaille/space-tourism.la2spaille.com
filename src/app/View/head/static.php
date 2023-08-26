@@ -10,6 +10,7 @@
         },
         config: {
             sswitch: true,
+            preload:true,
             routes: {
                 '<?= $this->path?>': '<?= $this->page?>'
             }

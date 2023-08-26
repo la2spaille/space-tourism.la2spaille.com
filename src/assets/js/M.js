@@ -15,15 +15,19 @@ M.Ease = {
     linear: t => t,
     cb: t => t ** 3 - 3 * t ** 2 + 3 * t,
     o1: t => Math.sin(t * (Math.PI / 2)),
+    io2: t => t < 0.5 ? 2 * t * t : (4 - 2 * t) * t - 1,
     o3: t => (--t) * t * t + 1,
     i3: t => t * t * t,
     io3: t => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+    o5: t => 1 + --t * t * t * t * t,
+    o6: t => 1 === t ? 1 : 1 - 2**( - 10 * t),
     io6: t => {
         if (t === 0) return 0
         if (t === 1) return 1
         if ((t /= 0.5) < 1) return 0.5 * Math.pow(2, 10 * (t - 1))
         return 0.5 * (-Math.pow(2, -10 * --t) + 2)
     }
+    
 }
 M.XY = {
     accX: 0, accY: 0,
