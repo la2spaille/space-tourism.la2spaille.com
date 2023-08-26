@@ -1,9 +1,9 @@
 <?php $destinations = $this->data; ?>
 <div id="destination" class="page p-destination">
     <h3 class="w-page-title f-heading5">
-        <span data-number="01" class="m-line__title">Pick your destination</span>
+        <span data-number="01" class="m-line__title destination_title">Pick your destination</span>
     </h3>
-    <div class="l-wrapper destination">
+    <div class="l-wrapper destination l-destination">
         <div class="w-img destination m--wrapper">
             <?php foreach ($destinations as $destination) : ?>
                 <img  class="m-destination-img" src="<?=$destination['images']['png']?>" srcset="<?= $destination['images']['webp'] ?>" alt="<?= $destination['name'] ?>>">

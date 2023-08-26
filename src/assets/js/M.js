@@ -296,7 +296,7 @@ M.Mo = class {
 
             let x = M.Has(li, 'x') ? p[li.x].curr + p[li.x].unit : 0,
                 y = M.Has(li, 'y') ? p[li.y].curr + p[li.y].unit : 0,
-                r = M.Has(li, 'r') ? p[li.r].name + '(' + p[li.r].curr + 'deg)' : 0,
+                r = M.Has(li, 'r') ? 'rotate(' + p[li.r].curr + 'deg)' : 0,
                 sX = M.Has(li, 'sX') ? 'scaleX(' + p[li.sX].curr + ')' : 0,
                 sY = M.Has(li, 'sY') ? 'scaleY(' + p[li.sY].curr + ')' : 0,
                 s = M.Has(li, 's') ? 'scale(' + p[li.s].curr + ')' : 0,

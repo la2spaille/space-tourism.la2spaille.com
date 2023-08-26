@@ -298,7 +298,7 @@ M.Mo = class {
 
             let x = M.Has(li, 'x') ? p[li.x].curr + p[li.x].unit : 0,
                 y = M.Has(li, 'y') ? p[li.y].curr + p[li.y].unit : 0,
-                r = M.Has(li, 'r') ? p[li.r].name + '(' + p[li.r].curr + 'deg)' : 0,
+                r = M.Has(li, 'r') ? 'rotate(' + p[li.r].curr + 'deg)' : 0,
                 sX = M.Has(li, 'sX') ? 'scaleX(' + p[li.sX].curr + ')' : 0,
                 sY = M.Has(li, 'sY') ? 'scaleY(' + p[li.sY].curr + ')' : 0,
                 s = M.Has(li, 's') ? 'scale(' + p[li.s].curr + ')' : 0,
@@ -869,8 +869,7 @@ Math.degToRad = (d) => {
 
         init() {
             B.e.s.init();
-            M.O('#main', 0);
-            M.O('#nav', 0);
+            C.hasIntro() || M.O('#main', 0);
             C.on();
 
         }
@@ -885,34 +884,28 @@ Math.degToRad = (d) => {
 
         }
 
-        intro() {
-            this.run();
+        intro(d=0) {
             let TL = new M.TL();
-            TL.add({
-                delay: 300,
-                cb: () => {
-                    B.e.bg.intro();
-                }
-            });
-            TL.add({
-                el: '#nav',
-                p: { o: [0, 1] },
-                d: 700,
-                o: 'o3',
-                delay: 2000,
-            });
-            TL.add({
-                el: '#main',
-                p: { o: [0, 1] },
-                d: 700,
-                o: 'o3',
-                delay: 700,
+            if (!C.hasIntro()) {
+                TL.add({
+                    el: '#main',
+                    p: { o: [0, 1] },
+                    d: 700,
+                    o: 'o3',
+                    delay: d,
 
-            });
+                });
+            } else {
+                const d = 1200;
+
+                TL.add({
+                    cb: () => {
+                        C.intro(d);
+                    }
+                });
+            }
             TL.add({
-                delay: 1000,
                 cb: () => {
-                    C.intro();
                     this.run();
                 }
             });
@@ -921,18 +914,13 @@ Math.degToRad = (d) => {
         }
 
         outro() {
-            this.init();
 
-            let TL = new M.TL();
-
-
-            TL.play();
 
         }
 
 
         run() {
-            B.e.s.run();
+            B.e.b.run();
         }
 
     }
@@ -1044,7 +1032,7 @@ Math.degToRad = (d) => {
         tA() {
             this.insertNew();
 
-            let _old = this.layer.children[0],
+            const _old = this.layer.children[0],
                 _new = this.layer.children[1],
                 t = B.e.s;
             t.stop();
@@ -1054,7 +1042,7 @@ Math.degToRad = (d) => {
                     el: _new,
                     p: { o: [0, 0] },
                     cb: () => {
-                        C.on();
+                        B.e.io.init();
 
                     }
                 })
@@ -1077,7 +1065,6 @@ Math.degToRad = (d) => {
                     el: _new,
                     cb: () => {
                         B.e.bg.intro();
-
                     },
                     delay: 2000
                 })
@@ -1090,16 +1077,11 @@ Math.degToRad = (d) => {
                 })
                 .add({
                     cb: () => {
-                        C.intro();
-                        t.run();
+                        B.e.io.intro();
                     },
                     delay: 3000
                 });
             tl.play();
-        }
-
-        ch() {
-
         }
 
         insertNew() {
@@ -1141,6 +1123,7 @@ Math.degToRad = (d) => {
 
         init() {
 
+            M.T('#nav', 0, -100);
 
         }
 
@@ -1149,17 +1132,39 @@ Math.degToRad = (d) => {
             TL.delay += 700;
             TL
                 .add({
+                    // el:'#loader',
+                    // p:{o:[1,0]},
+                    // d:700,
+                    // e:'io6',
                     cb: () => {
                         M.Cl('#loader', 'a', 'dom-loaded');
                     }
                 })
+
                 .add({
                     delay: 1300,
                     cb: () => {
                         M.D('#loader', 'n');
-                        B.e.io.intro();
+                    }
+                })
+                .add({
+                    delay: 300,
+                    cb: () => {
+                        B.e.bg.intro();
+                    }
+                })
+                .add({
+                    el: '#nav',
+                    p: { y: [-100, 0] },
+                    d: 1200,
+                    e: 'o5',
+                    delay: 2000,
+                    cb: () => {
+                        B.e.io.intro(1200);
+
                     }
                 });
+
             TL.play();
         }
 
@@ -1169,7 +1174,7 @@ Math.degToRad = (d) => {
     class C$Home {
         constructor() {
             this.isOn = false;
-
+            this.hasIntro = false;
 
         }
 
@@ -1189,30 +1194,7 @@ Math.degToRad = (d) => {
 
         }
 
-
         init() {
-            M.S('.w-home-cta', 'transform', 'scale(0.7)');
-            M.O('.w-home-cta', 0);
-
-        }
-
-        intro() {
-            let TL = new M.TL();
-           
-            TL.add({
-                el: '.w-home-cta',
-                p: { s: [0.7, 1], o: [0, 1] },
-                d: 1200,
-                e: 'o5',
-                delay:200
-            });
-            TL.play();
-
-        }
-
-        outro() {
-            return 0
-
 
         }
 
@@ -1226,12 +1208,13 @@ Math.degToRad = (d) => {
     class C$Destination {
         constructor() {
             this.isOn = false;
+            this.hasIntro = true;
+
 
         }
 
         on() {
             !this.isOn && this.plug();
-
             this.init();
             this.isOn = true;
         }
@@ -1242,6 +1225,7 @@ Math.degToRad = (d) => {
         }
 
         plug() {
+            this.title = M.Select('.destination_title');
             this.arrTxt = [];
             const p = M.SelectAll('.m-destination-description');
             p.forEach((el, i) => {
@@ -1250,33 +1234,33 @@ Math.degToRad = (d) => {
             this.C = new M$C([
                 {
                     el: '.m-destination-name',
-                    active: { p: { y: [100, 0], opacity: [0, 1] }, d: 700, delay: 400 },
-                    inactive: { p: { y: [0, -100], opacity: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [100, 100], opacity: [0, 0] } }
+                    active: { p: { y: [100, 0], o: [0.5, 1] }, d: 1000, delay: 400 },
+                    inactive: { p: { y: [0, -100], o: [1, 1] }, d: 400 },
+                    init: { p: { y: [100, 100], o: [0, 0] } }
                 },
                 {
                     el: 'm-line__p',
-                    active: { p: { y: [100, 0], opacity: [0.5, 1] }, d: 700, delay: 400 },
-                    inactive: { p: { y: [0, -100], opacity: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [125, 125], opacity: [0, 0] } },
+                    active: { p: { y: [100, 0], o: [1, 1] }, d: 1000, delay: 600 },
+                    inactive: { p: { y: [0, -100], o: [1, 1] }, d: 400 },
+                    init: { p: { y: [125, 125], o: [0, 0] } },
                     parent: M.SelectAll('.m-destination-description')
                 }, {
                     el: '.m-destination-distance',
-                    active: { p: { y: [100, 0], opacity: [0, 1] }, d: 700, delay: 500 },
-                    inactive: { p: { y: [0, -100], opacity: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [100, 100], opacity: [0, 0] } }
+                    active: { p: { y: [100, 0], o: [1, 1] }, d: 1000, delay: 700 },
+                    inactive: { p: { y: [0, -100], o: [1, 1] }, d: 400 },
+                    init: { p: { y: [100, 100], o: [0, 0] } }
 
                 }, {
                     el: '.m-destination-travel',
-                    active: { p: { y: [100, 0], opacity: [0, 1] }, d: 700, delay: 500 },
-                    inactive: { p: { y: [0, -100], opacity: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [100, 100], opacity: [0, 0] } }
+                    active: { p: { y: [100, 0], o: [1, 1] }, d: 1000, delay: 700 },
+                    inactive: { p: { y: [0, -100], o: [1, 1] }, d: 400 },
+                    init: { p: { y: [100, 100], o: [0, 0] } }
 
                 }, {
                     el: '.m-destination-img',
-                    active: { p: { opacity: [0, 1] }, d: 1000 },
-                    inactive: { p: { opacity: [1, 0] }, d: 1000 },
-                    init: { p: { y: [0, 0], opacity: [0, 0] } }
+                    active: { p: { o: [0, 1] }, d: 1000, delay: 400 },
+                    inactive: { p: { o: [1, 0] }, d: 1000, delay: 400 },
+                    init: { p: { y: [0, 0], o: [0, 0] } }
                 }
             ]);
 
@@ -1286,10 +1270,35 @@ Math.degToRad = (d) => {
 
         init() {
             this.C.on();
+            M.S(this.title, 'transform', 'translateY(125%) rotate(5deg)');
+            M.O('.l-destination', 0);
         }
 
-        intro() {
-            this.C.intro();
+        intro(d) {
+            let TL = new M.TL();
+            TL
+                .add({
+                    el: this.title,
+                    p: { y: [125, 0], r: [5, 0] },
+                    d: 1000,
+                    e: 'o3',
+                    delay: d
+                })
+                .add({
+                    el: '.l-destination',
+                    p: { o: [0, 1] },
+                    d: 1000,
+                    e: 'o5',
+                    delay: 1000,
+                    i: () => {
+                        this.C.intro(16);
+                    }
+                });
+
+
+            TL.play();
+
+
 
         }
 
@@ -1309,6 +1318,8 @@ Math.degToRad = (d) => {
     class C$Crew {
         constructor() {
             this.isOn = false;
+            this.hasIntro = true;
+
 
         }
 
@@ -1328,26 +1339,26 @@ Math.degToRad = (d) => {
             this.C = new M$C([
                 {
                     el: '.m-crew-job',
-                    active: { p: { y: [100, 0], opacity: [0, 1] }, d: 700, delay: 400 },
-                    inactive: { p: { y: [0, -100], opacity: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [100, 100], opacity: [0, 0] } }
+                    active: { p: { y: [100, 0], o: [0, 1] }, d: 700, delay: 400 },
+                    inactive: { p: { y: [0, -100], o: [1, 0.25] }, d: 400 },
+                    init: { p: { y: [100, 100], o: [0, 0] } }
                 },
                 {
                     el: '.m-crew-name',
-                    active: { p: { y: [100, 0], opacity: [0, 1] }, d: 700, delay: 400 },
-                    inactive: { p: { y: [0, -100], opacity: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [100, 100], opacity: [0, 0] } }
+                    active: { p: { y: [100, 0], o: [0, 1] }, d: 700, delay: 400 },
+                    inactive: { p: { y: [0, -100], o: [1, 0.25] }, d: 400 },
+                    init: { p: { y: [100, 100], o: [0, 0] } }
                 }, {
                     el: '.m-crew-description',
-                    active: { p: { y: [100, 0], opacity: [0, 1] }, d: 700, delay: 400 },
-                    inactive: { p: { y: [0, -100], opacity: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [100, 100], opacity: [0, 0] } }
+                    active: { p: { y: [100, 0], o: [0, 1] }, d: 700, delay: 400 },
+                    inactive: { p: { y: [0, -100], o: [1, 0.25] }, d: 400 },
+                    init: { p: { y: [100, 100], o: [0, 0] } }
 
                 }, {
                     el: '.m-crew-img',
-                    active: { p: { opacity: [0, 1] }, d: 1000 },
-                    inactive: { p: { opacity: [1, 0] }, d: 1000 },
-                    init: { p: { opacity: [0, 0] } }
+                    active: { p: { o: [0, 1] }, d: 1000 },
+                    inactive: { p: { o: [1, 0] }, d: 1000 },
+                    init: { p: { o: [0, 0] } }
                 }
             ]);
 
@@ -1362,7 +1373,7 @@ Math.degToRad = (d) => {
 
         }
 
-        intro() {
+        intro(d) {
             this.C.intro();
         }
 
@@ -1380,6 +1391,7 @@ Math.degToRad = (d) => {
     class C$Technology {
         constructor() {
             this.isOn = false;
+            this.hasIntro = true;
 
         }
 
@@ -1399,20 +1411,20 @@ Math.degToRad = (d) => {
             this.C = new M$C([
                 {
                     el: '.m-technology-name',
-                    active: { p: { y: [100, 0], opacity: [0, 1] }, d: 700, delay: 400 },
-                    inactive: { p: { y: [0, -100], opacity: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [100, 100], opacity: [0, 0] } }
+                    active: { p: { y: [100, 0], o: [0, 1] }, d: 700, delay: 400 },
+                    inactive: { p: { y: [0, -100], o: [1, 0.25] }, d: 400 },
+                    init: { p: { y: [100, 100], o: [0, 0] } }
                 },
                 {
                     el: '.m-technology-description',
-                    active: { p: { y: [125, 0], opacity: [0, 1] }, d: 700, delay: 400 },
-                    inactive: { p: { y: [0, -100], opacity: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [125, 125], opacity: [0, 0] } }
+                    active: { p: { y: [125, 0], o: [0, 1] }, d: 700, delay: 400 },
+                    inactive: { p: { y: [0, -100], o: [1, 0.25] }, d: 400 },
+                    init: { p: { y: [125, 125], o: [0, 0] } }
                 }, {
                     el: '.m-technology-img',
-                    active: { p: { opacity: [0, 1] }, d: 1100 },
-                    inactive: { p: { opacity: [1, 0] }, d: 1100 },
-                    init: { p: { opacity: [0, 0] } }
+                    active: { p: { o: [0, 1] }, d: 1100 },
+                    inactive: { p: { o: [1, 0] }, d: 1100 },
+                    init: { p: { o: [0, 0] } }
                 }
             ]);
         }
@@ -1422,7 +1434,7 @@ Math.degToRad = (d) => {
 
         }
 
-        intro() {
+        intro(d) {
             this.C.intro();
         }
 
@@ -1460,9 +1472,9 @@ Math.degToRad = (d) => {
 
         }
 
-        static intro() {
+        static intro(d) {
 
-            return C.p[B.route.new.page].intro()
+            return C.p[B.route.new.page].intro(d)
 
 
         }
@@ -1575,6 +1587,7 @@ Math.degToRad = (d) => {
                 'Crew': 2,
                 'Technology': 3,
             };
+            this.isOn = false;
             this.on();
         }
 
@@ -1598,7 +1611,8 @@ Math.degToRad = (d) => {
         }
 
         run() {
-            this.e('a');
+            this.isOn ||this.e('a');
+            this.isOn = true;
 
         }
 
@@ -1648,7 +1662,6 @@ Math.degToRad = (d) => {
             this.max = this.scrollY = 0;
             this.tsX = this.tsY = null;
             this.r = new M.RafR(this.loop);
-            this.run();
             this.isOn = false;
 
             this.roR = new M.ROR(this.resize);
@@ -1773,6 +1786,7 @@ Math.degToRad = (d) => {
             this.s = 0.1;
             this.eX = this.eY = this.x = this.y = 0;
             this.r = new M.RafR(this.loop);
+            this.isOn = false;
         }
 
         loop() {
@@ -1791,16 +1805,19 @@ Math.degToRad = (d) => {
         }
 
         run() {
-            this.e();
-            this.onHover();
-            this.r.run();
+            this.isOn || this.e();
+            this.onHover('r');
+            this.onHover('a');
+            this.r.on || this.r.run();
+
+            this.isOn = true;
         }
 
-        onHover() {
+        onHover(o) {
             let a = this.hover, n = a.length;
             for (let i = 0; i < n; i++) {
-                M.E(a[i].el, "mouseenter", () => this.cl('a', a[i].css));
-                M.E(a[i].el, "mouseleave", () => this.cl('r', a[i].css));
+                M.E(a[i].el, "mouseenter", () => this.cl('a', a[i].css,o));
+                M.E(a[i].el, "mouseleave", () => this.cl('r', a[i].css,o));
             }
         }
 
@@ -1811,7 +1828,7 @@ Math.degToRad = (d) => {
 
     class M$C {
         constructor(o) {
-            M.Bind(this, ['_b', '_w']);
+            M.Bind(this, ['_b', '_w', 'intro']);
             this.b = M.SelectAll('.m--brain');
             this.w = M.SelectAll('.m--wrapper');
             this.l = 0;
@@ -1835,7 +1852,7 @@ Math.degToRad = (d) => {
         }
 
 
-        intro() {
+        intro(d) {
 
             this.o.forEach((o) => {
                 const t = this.t(o);
@@ -1843,9 +1860,8 @@ Math.degToRad = (d) => {
                 new M.Mo({
                     el: t[0],
                     p: o.active.p,
-                    d: o.active.d,
-                    e: 'o3',
-                    delay: 1000
+                    d: d,
+                    e: 'o3'
                 }).play();
 
             });
@@ -1886,13 +1902,13 @@ Math.degToRad = (d) => {
                         new M.Mo({
                             el: t[l],
                             p: o.inactive.p,
-                            e: 'cb',
+                            e: 'i3',
                             d: o.inactive.d,
                         }).play();
                         new M.Mo({
                             el: t[l],
                             p: o.init.p,
-                            e: 'cb',
+                            e: 'i3',
                             delay: o.inactive.d
                         }).play();
                         new M.Delay(o.inactive.d || 0, () => this.d(t[l], 'n')).run();
