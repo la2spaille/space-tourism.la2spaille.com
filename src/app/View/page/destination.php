@@ -6,7 +6,10 @@
     <div class="l-wrapper destination l-destination">
         <div class="w-img destination m--wrapper">
             <?php foreach ($destinations as $destination) : ?>
-                <img  class="m-destination-img" src="<?=$destination['images']['png']?>" srcset="<?= $destination['images']['webp'] ?>" alt="<?= $destination['name'] ?>>">
+                <img  class="m-destination-img" 
+                src="<?=$destination['images']['png']?>" 
+                srcset="<?= $destination['images']['webp'] ?>" 
+                alt="<?= $destination['name'] ?>>">
             <?php endforeach ?>
         </div>
         <div class="w-text destination ">

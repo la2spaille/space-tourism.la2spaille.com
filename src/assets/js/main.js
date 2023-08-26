@@ -491,11 +491,7 @@ Math.degToRad = (d) => {
 
         }
 
-        outro() {
-            return 0
-
-
-        }
+ 
 
         run() {
 
@@ -525,6 +521,12 @@ Math.degToRad = (d) => {
         }
 
         plug() {
+            this.title = M.Select('.crew_title')
+            this.arrTxt = []
+            const p = M.SelectAll('.m-crew-description')
+            p.forEach((el, i) => {
+                this.arrTxt.push(new M.SLine(el, 'm-line__p'))
+            })
             this.C = new M$C([
                 {
                     el: '.m-crew-job',
@@ -538,10 +540,12 @@ Math.degToRad = (d) => {
                     inactive: { p: { y: [0, -100], o: [1, 0.25] }, d: 400 },
                     init: { p: { y: [100, 100], o: [0, 0] } }
                 }, {
-                    el: '.m-crew-description',
+                    el: 'm-line__p',
                     active: { p: { y: [100, 0], o: [0, 1] }, d: 700, delay: 400 },
                     inactive: { p: { y: [0, -100], o: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [100, 100], o: [0, 0] } }
+                    init: { p: { y: [100, 100], o: [0, 0] } },
+                    parent: M.SelectAll('.m-crew-description')
+
 
                 }, {
                     el: '.m-crew-img',
@@ -553,18 +557,38 @@ Math.degToRad = (d) => {
 
         }
 
-        e(a) {
-        }
 
 
         init() {
             this.C.on()
+            M.S(this.title, 'transform', 'translateY(125%) rotate(5deg)')
+            M.O('.l-crew', 0)
 
         }
 
         intro(d) {
-            this.C.intro()
-        }
+            let TL = new M.TL()
+            TL
+                .add({
+                    el: this.title,
+                    p: { y: [125, 0], r: [5, 0] },
+                    d: 1000,
+                    e: 'o3',
+                    delay: d
+                })
+                .add({
+                    el: '.l-crew',
+                    p: { o: [0, 1] },
+                    d: 1000,
+                    e: 'o5',
+                    delay: 1000,
+                    i: () => {
+                        this.C.intro(16)
+                    }
+                })
+
+
+            TL.play()        }
 
         outro() {
 
@@ -1064,6 +1088,11 @@ Math.degToRad = (d) => {
                 let b = a[i].children, m = b.length,
                     maxH = 0
                 for (let j = 0; j < m; j++) {
+                    if(M.Is.img(b[j])) {
+                        console.log(M.GBCR(b[j],'height'))
+                        console.log(b[j].complete + ':'+b[j].offsetHeight)
+
+                    }
                     let h = M.Is.img(b[j]) ? b[j].offsetHeight : b[j].offsetHeight
                     if (h > maxH) maxH = h
                 }

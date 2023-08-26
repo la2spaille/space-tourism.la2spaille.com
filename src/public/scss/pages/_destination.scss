@@ -3,10 +3,7 @@
     nav {
         display: flex;
         gap: 35px;
-        transition: 1s 0.7s;
-        &.motion {
-            opacity: 0;
-        }
+        
     }
     span {
         padding: 0 0 15px;

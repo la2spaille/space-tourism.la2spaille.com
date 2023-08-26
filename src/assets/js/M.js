@@ -8,7 +8,6 @@ M.Is = {
     obj: t => t === Object(t),
     arr: t => t.constructor === Array,
     img: t => t.tagName === "IMG",
-    imgLoad: t => t.complete === true, // A gérer avec un RAF
     interval: (t, inf, sup) => t >= inf && t <= sup
 }
 M.Ease = {
