@@ -288,9 +288,6 @@ header {
   margin: 0 11px 0 0;
   opacity: 0.25;
 }
-.w-page-title.motion span {
-  transform: translateY(125%) rotate(5deg);
-}
 
 .l-wrapper {
   color: #fff;
@@ -338,6 +335,7 @@ header {
 .w-img.crew img {
   width: 90%;
   left: 5%;
+  z-index: 0;
 }
 .w-img img {
   width: 100%;
@@ -582,10 +580,6 @@ header {
 .w-destination-nav nav {
   display: flex;
   gap: 35px;
-  transition: 1s 0.7s;
-}
-.w-destination-nav nav.motion {
-  opacity: 0;
 }
 .w-destination-nav span {
   padding: 0 0 15px;
@@ -650,13 +644,11 @@ header {
 
 .m-crew-job, .m-crew-name {
   position: relative;
-  position: relative;
 }
 
 .m-crew-img {
   position: absolute;
   bottom: 0;
-  pointer-events: none;
 }
 
 .w-technology-nav {

@@ -33,7 +33,7 @@ exit();
 
 */
 
-$IS_PROD =  false;
+$IS_PROD =  true;
 define('IS_PROD',$IS_PROD);
 const VERSION = 1.2;
 

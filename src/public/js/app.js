@@ -1893,21 +1893,22 @@ Math.degToRad = (d) => {
         }
 
         _w() {
-            let a = this.w, n = a.length;
+            const a = this.w, n = a.length;
             for (let i = 0; i < n; i++) {
-                let b = a[i].children, m = b.length,
-                    maxH = 0;
+                const b = a[i].children, m = b.length;
+                    let maxH = 0;
                 for (let j = 0; j < m; j++) {
                     if(M.Is.img(b[j])) {
                         console.log(M.GBCR(b[j],'height'));
-                        console.log(b[j].complete + ':'+b[j].offsetHeight);
+                        console.log(b[j].complete + ':'+ b[j].offsetHeight);
 
                     }
-                    let h = M.Is.img(b[j]) ? b[j].offsetHeight : b[j].offsetHeight;
+                    const h =  b[j].offsetHeight;
                     if (h > maxH) maxH = h;
                 }
                 a[i].style.height = maxH + 'px';
             }
+
         }
 
         _b(e) {
@@ -1962,10 +1963,15 @@ Math.degToRad = (d) => {
             this.o.forEach(o => {
                 const t = this.t(o);
                 t.forEach(el => {
-                    this.d(el, 'n');
+                    this._w();
+
                     new M.Mo({
                         el: el,
                         p: o.init.p,
+                        delay:100,
+                        cb:()=> {
+                            // this.d(el, 'n')
+                        }
                     }).play();
                 });
 
