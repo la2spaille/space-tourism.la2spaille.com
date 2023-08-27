@@ -35,7 +35,7 @@ exit();
 
 $IS_PROD =  true;
 define('IS_PROD',$IS_PROD);
-const VERSION = 1.2;
+const VERSION = 1.7;
 
 $root = substr($_SERVER['DOCUMENT_ROOT'], 0, -6);
 

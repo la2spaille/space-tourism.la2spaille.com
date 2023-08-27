@@ -1,6 +1,6 @@
 // function
 @function rem($value) {
-    $result: $value / 16px;
+    $result:calc($value / 16px);
     @return $result * 1rem;
 }
 .f-heading1 {

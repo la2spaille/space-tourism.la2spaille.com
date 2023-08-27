@@ -516,7 +516,6 @@ Math.degToRad = (d) => {
 
         off() {
             this.isOn = false
-            this.e('r')
 
         }
 
@@ -563,6 +562,8 @@ Math.degToRad = (d) => {
             this.C.on()
             M.S(this.title, 'transform', 'translateY(125%) rotate(5deg)')
             M.O('.l-crew', 0)
+
+        
 
         }
 
@@ -621,6 +622,12 @@ Math.degToRad = (d) => {
         }
 
         plug() {
+            this.title = M.Select('.technology_title')
+            this.arrTxt = []
+            const p = M.SelectAll('.m-technology-description')
+            p.forEach((el, i) => {
+                this.arrTxt.push(new M.SLine(el, 'm-line__p'))
+            })
             this.C = new M$C([
                 {
                     el: '.m-technology-name',
@@ -629,10 +636,11 @@ Math.degToRad = (d) => {
                     init: { p: { y: [100, 100], o: [0, 0] } }
                 },
                 {
-                    el: '.m-technology-description',
+                    el: 'm-line__p',
                     active: { p: { y: [125, 0], o: [0, 1] }, d: 700, delay: 400 },
                     inactive: { p: { y: [0, -100], o: [1, 0.25] }, d: 400 },
-                    init: { p: { y: [125, 125], o: [0, 0] } }
+                    init: { p: { y: [125, 125], o: [0, 0] } },
+                    parent:M.SelectAll('.m-technology-description')
                 }, {
                     el: '.m-technology-img',
                     active: { p: { o: [0, 1] }, d: 1100 },
@@ -644,16 +652,37 @@ Math.degToRad = (d) => {
 
         init() {
             this.C.on()
+            M.S(this.title, 'transform', 'translateY(125%) rotate(5deg)')
+            M.O('.l-technology', 0)
 
         }
 
         intro(d) {
-            this.C.intro()
+            let TL = new M.TL()
+            TL
+                .add({
+                    el: this.title,
+                    p: { y: [125, 0], r: [5, 0] },
+                    d: 1000,
+                    e: 'o3',
+                    delay: d
+                })
+                .add({
+                    el: '.l-technology',
+                    p: { o: [0, 1] },
+                    d: 1000,
+                    e: 'o5',
+                    delay: 1000,
+                    i: () => {
+                        this.C.intro(16)
+                    }
+                })
+
+
+            TL.play()         
         }
 
         outro() {
-            return 0
-
 
         }
 
@@ -1089,7 +1118,7 @@ Math.degToRad = (d) => {
                     let maxH = 0
                 for (let j = 0; j < m; j++) {
                     if(M.Is.img(b[j])) {
-                        console.log(M.GBCR(b[j],'height'))
+                        console.log(M.GBCR(b[j]))
                         console.log(b[j].complete + ':'+ b[j].offsetHeight)
 
                     }

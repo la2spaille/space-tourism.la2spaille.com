@@ -5,7 +5,7 @@ function set_nav($id, $link, $url): string
     $class = ($R_url === $url ? "active" : " ");
     return <<<HTML
     <span class='w-nav_link link-hover $class'>
-      <a data-id="$id" href='$url' class="_a link header close_btn nav_link"> $link</a>
+      <a data-id="$id" href='$url' class="_a link header close_menu nav_link"> $link</a>
     </span>
 HTML;
 
@@ -18,8 +18,8 @@ HTML;
                 <a class="link-hover" href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><g
                                 fill="none" fill-rule="evenodd"><circle cx="24" cy="24" r="24" fill="#FFF"/><path
-                                    fill="#0B0D17"
-                                    d="M24 0c0 16-8 24-24 24 15.718.114 23.718 8.114 24 24 0-16 8-24 24-24-16 0-24-8-24-24z"/></g>
+                                fill="#0B0D17"
+                                d="M24 0c0 16-8 24-24 24 15.718.114 23.718 8.114 24 24 0-16 8-24 24-24-16 0-24-8-24-24z"/></g>
                     </svg>
                 </a>
     </div>

@@ -48,22 +48,14 @@
 }
 
 @media (max-width: 1400px) {
-  .w-page-title {
-    padding: 0 100px;
-  }
+ 
   .l-wrapper {
-    padding: 0 100px;
     &.technology {
-      padding: 0 0 0 100px;
       gap: 50px;
     }
-    &.destination {
-      gap: 78.5px;
-      padding: 0 100px;
-    }
+ 
     &.crew {
       gap: 40px;
-      padding: 0 100px;
     }
   }
   .w-navXtext {
@@ -254,6 +246,9 @@
         left: 0;
       }
     }
+    &.destination {
+      justify-content: center;
+    }
     &.technology {
       min-width: 100% !important;
       max-height: 310px;
@@ -374,7 +369,7 @@
   .l-wrapper {
     padding: 0 24px;
     &.destination {
-      gap: 25.5px;
+      gap: 32px;
       padding: 0 24px;
     }
     &.technology {
@@ -414,7 +409,7 @@
   }
   .w-img {
     &.destination {
-      margin: 0;
+      margin: auto;
       max-width: 300px;
     }
     &.crew {
@@ -591,7 +586,6 @@
 @media (max-width: 450px) {
   .page {
     padding: 110px 0 50px;
-    gap: 32px;
     &.p-destination {
       padding: 90px 0 60px;
     }

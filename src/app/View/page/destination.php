@@ -1,7 +1,7 @@
 <?php $destinations = $this->data; ?>
 <div id="destination" class="page p-destination">
     <h3 class="w-page-title f-heading5">
-        <span data-number="01" class="m-line__title destination_title">Pick your destination</span>
+        <span data-number="01" class="m-line__title destination_title f-upper">Pick your destination</span>
     </h3>
     <div class="l-wrapper destination l-destination">
         <div class="w-img destination m--wrapper">
@@ -16,13 +16,13 @@
             <div class="w-destination-nav f-nav-text">
                 <nav>
                     <?php foreach ($destinations as $destination) : ?>
-                        <span class="m--brain destination link-hover"><?= $destination['name'] ?></span>
+                        <span class="m--brain destination link-hover f-upper"><?= $destination['name'] ?></span>
                     <?php endforeach ?>
                 </nav>
             </div>
             <h1 class="w-h1 destination f-heading2 m--wrapper">
                 <?php foreach ($destinations as $destination) : ?>
-                    <span class="m-destination-name"><?= $destination['name'] ?></span>
+                    <span class="m-destination-name f-upper"><?= $destination['name'] ?></span>
                 <?php endforeach ?>
             </h1>
             <div class="w-paragraph destination f-body-copy m--wrapper" >

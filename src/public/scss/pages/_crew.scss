@@ -1,5 +1,6 @@
 .w-crew-nav {
-    display: flex;
+    display: grid;
+    grid-template-columns: 15px 15px 15px 15px;
     gap:24px ;
 
 }
@@ -18,7 +19,7 @@
     }
 }
 .m-crew-job,.m-crew-name{
-    position: relative;
+    position: absolute;
 
 }
 
